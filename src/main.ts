@@ -30,3 +30,11 @@ const app = createApp(App)
 router.isReady().then(() => {
   app.mount('#app');
 });
+
+// icons
+import { addIcons } from 'ionicons';
+import { heart } from 'ionicons/icons';
+
+addIcons({
+  'heart': heart 
+});

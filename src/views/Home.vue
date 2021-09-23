@@ -2,7 +2,7 @@
   <ion-page>
     <ion-header :translucent="true">
       <ion-toolbar>
-        <ion-title>Blank1</ion-title>
+        <ion-title>События</ion-title>
       </ion-toolbar>
     </ion-header>
 
@@ -12,18 +12,90 @@
           <ion-title size="large">Blank</ion-title>
         </ion-toolbar>
       </ion-header>
-
-      <ion-icon icon="heart"></ion-icon>
       <ion-list>
         <ion-item>
-          <ion-checkbox slot="start"></ion-checkbox>
           <ion-label>
-            <h1>Create Idea</h1>
-            <ion-note>Run Idea By Brandy</ion-note>
+            <h1>Чтения про всякое разное</h1>
+            <h2>Татка</h2>
+            <ion-note>На среднем</ion-note>
           </ion-label>
-          <ion-badge color="success" slot="end"> 5 Days </ion-badge>
+          <!-- <ion-icon icon="heart"></ion-icon> -->
+          <ion-badge color="success" slot="end">24 сентября</ion-badge>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            <h1>Игра в 30ке</h1>
+            <ion-note>На среднем</ion-note>
+          </ion-label>
+          <!-- <ion-icon icon="heart"></ion-icon> -->
+          <ion-badge color="success" slot="end">25 сентября</ion-badge>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            <h1>Игра в 30ке</h1>
+            <ion-note>На среднем</ion-note>
+          </ion-label>
+          <!-- <ion-icon icon="heart"></ion-icon> -->
+          <ion-badge color="success" slot="end">25 сентября</ion-badge>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            <h1>Игра в 30ке</h1>
+            <ion-note>На среднем</ion-note>
+          </ion-label>
+          <!-- <ion-icon icon="heart"></ion-icon> -->
+          <ion-badge color="success" slot="end">25 сентября</ion-badge>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            <h1>Игра в 30ке</h1>
+            <ion-note>На среднем</ion-note>
+          </ion-label>
+          <!-- <ion-icon icon="heart"></ion-icon> -->
+          <ion-badge color="success" slot="end">25 сентября</ion-badge>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            <h1>Игра в 30ке</h1>
+            <ion-note>На среднем</ion-note>
+          </ion-label>
+          <!-- <ion-icon icon="heart"></ion-icon> -->
+          <ion-badge color="success" slot="end">25 сентября</ion-badge>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            <h1>Игра в 30ке</h1>
+            <ion-note>На среднем</ion-note>
+          </ion-label>
+          <!-- <ion-icon icon="heart"></ion-icon> -->
+          <ion-badge color="success" slot="end">25 сентября</ion-badge>
         </ion-item>
       </ion-list>
+
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <div>Что</div>
+          </ion-col>
+          <ion-col>
+            <div>Где</div>
+          </ion-col>
+          <ion-col>
+            <div>Когда</div>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <div>Чтения</div>
+          </ion-col>
+          <ion-col>
+            <div>На среднем</div>
+          </ion-col>
+          <ion-col>
+            <div>24 сентября</div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
 
       <ion-fab vertical="bottom" horizontal="end" slot="fixed">
         <ion-fab-button @click="() => router.push('/new')">
@@ -31,7 +103,7 @@
         </ion-fab-button>
       </ion-fab>
 
-      <div id="container">
+      <!-- <div id="container">
         <strong>Ready to create an app?</strong>
         <p>
           Start with Ionic
@@ -42,28 +114,38 @@
             >UI Components</a
           >
         </p>
-      </div>
+      </div> -->
     </ion-content>
   </ion-page>
 </template>
 
 <script lang="ts">
 import {
-    IonContent,
-    IonFab,
-    IonFabButton,
-    IonHeader,
-    IonIcon,
-    IonPage,
-    IonTitle,
-    IonToolbar
+  IonContent,
+  IonFab,
+  IonFabButton,
+  IonHeader,
+  IonIcon,
+  IonPage,
+  IonTitle,
+  IonToolbar,
+  IonCheckbox,
+  IonInput,
+  IonItem,
+  IonItemOption,
+  IonItemOptions,
+  IonItemSliding,
+  IonList,
+  IonLabel,
+  IonRadio,
+  IonToggle,
 } from "@ionic/vue";
 import { defineComponent } from "vue";
-import { add } from 'ionicons/icons';
-import { useRouter } from 'vue-router';
+import { add } from "ionicons/icons";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
-  name: 'Home',
+  name: "Home",
   components: {
     IonContent,
     IonFab,
@@ -72,14 +154,24 @@ export default defineComponent({
     IonIcon,
     IonPage,
     IonTitle,
-    IonToolbar
+    IonToolbar,
+    IonCheckbox,
+    IonInput,
+    IonItem,
+    IonItemOption,
+    IonItemOptions,
+    IonItemSliding,
+    IonList,
+    IonLabel,
+    IonRadio,
+    IonToggle,
   },
   setup() {
     return {
       router: useRouter(),
-      add
-    }
-  }
+      add,
+    };
+  },
 });
 </script>
 

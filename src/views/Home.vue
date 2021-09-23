@@ -13,7 +13,28 @@
         </ion-toolbar>
       </ion-header>
       <ion-list>
-        <ion-item>
+        <!-- That thing -->
+        
+        <ion-item button="" @click="buttonClick()" detail="" expand="full">
+          <ion-label>
+            Button Item with Detail Arrow
+          </ion-label>
+        </ion-item>       
+
+
+        <ion-item button="" @click="buttonClick()" detail="">
+          <ion-label>
+            Button Item with Detail Arrow
+          </ion-label>
+        </ion-item>
+
+        <ion-item detail="false" href="https://www.ionicframework.com">
+          <ion-label>
+            Anchor Item with no Detail Arrow
+          </ion-label>
+        </ion-item>
+        
+        <ion-item button="" @click="buttonClick()">
           <ion-label>
             <h1>Чтения про всякое разное</h1>
             <h2>Татка</h2>
@@ -155,16 +176,9 @@ export default defineComponent({
     IonPage,
     IonTitle,
     IonToolbar,
-    IonCheckbox,
-    IonInput,
     IonItem,
-    IonItemOption,
-    IonItemOptions,
-    IonItemSliding,
     IonList,
     IonLabel,
-    IonRadio,
-    IonToggle,
   },
   setup() {
     return {

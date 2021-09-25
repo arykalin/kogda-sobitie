@@ -12,109 +12,22 @@
           <ion-title size="large">Blank</ion-title>
         </ion-toolbar>
       </ion-header>
+      <ion-button expand="full" @click="showevents()">show events</ion-button>
       <ion-list>
-        <ion-item>
+        <ion-item v-for="event in events" :key="event.id">
           <ion-label>
-            <h1>Чтения про всякое разное</h1>
-            <h2>Татка</h2>
-            <ion-note>На среднем</ion-note>
+            <h1>{{ event.title }}</h1>
+            <ion-note>{{ event.who_manages }}</ion-note>
           </ion-label>
-          <!-- <ion-icon icon="heart"></ion-icon> -->
-          <ion-badge color="success" slot="end">24 сентября</ion-badge>
-        </ion-item>
-        <ion-item>
-          <ion-label>
-            <h1>Игра в 30ке</h1>
-            <ion-note>На среднем</ion-note>
-          </ion-label>
-          <!-- <ion-icon icon="heart"></ion-icon> -->
-          <ion-badge color="success" slot="end">25 сентября</ion-badge>
-        </ion-item>
-        <ion-item>
-          <ion-label>
-            <h1>Игра в 30ке</h1>
-            <ion-note>На среднем</ion-note>
-          </ion-label>
-          <!-- <ion-icon icon="heart"></ion-icon> -->
-          <ion-badge color="success" slot="end">25 сентября</ion-badge>
-        </ion-item>
-        <ion-item>
-          <ion-label>
-            <h1>Игра в 30ке</h1>
-            <ion-note>На среднем</ion-note>
-          </ion-label>
-          <!-- <ion-icon icon="heart"></ion-icon> -->
-          <ion-badge color="success" slot="end">25 сентября</ion-badge>
-        </ion-item>
-        <ion-item>
-          <ion-label>
-            <h1>Игра в 30ке</h1>
-            <ion-note>На среднем</ion-note>
-          </ion-label>
-          <!-- <ion-icon icon="heart"></ion-icon> -->
-          <ion-badge color="success" slot="end">25 сентября</ion-badge>
-        </ion-item>
-        <ion-item>
-          <ion-label>
-            <h1>Игра в 30ке</h1>
-            <ion-note>На среднем</ion-note>
-          </ion-label>
-          <!-- <ion-icon icon="heart"></ion-icon> -->
-          <ion-badge color="success" slot="end">25 сентября</ion-badge>
-        </ion-item>
-        <ion-item>
-          <ion-label>
-            <h1>Игра в 30ке</h1>
-            <ion-note>На среднем</ion-note>
-          </ion-label>
-          <!-- <ion-icon icon="heart"></ion-icon> -->
-          <ion-badge color="success" slot="end">25 сентября</ion-badge>
+          <ion-badge color="success" slot="end">{{ event.date }}</ion-badge>
         </ion-item>
       </ion-list>
-
-      <ion-grid>
-        <ion-row>
-          <ion-col>
-            <div>Что</div>
-          </ion-col>
-          <ion-col>
-            <div>Где</div>
-          </ion-col>
-          <ion-col>
-            <div>Когда</div>
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col>
-            <div>Чтения</div>
-          </ion-col>
-          <ion-col>
-            <div>На среднем</div>
-          </ion-col>
-          <ion-col>
-            <div>24 сентября</div>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
 
       <ion-fab vertical="bottom" horizontal="end" slot="fixed">
         <ion-fab-button @click="() => router.push('/new')">
           <ion-icon :icon="add"></ion-icon>
         </ion-fab-button>
       </ion-fab>
-
-      <!-- <div id="container">
-        <strong>Ready to create an app?</strong>
-        <p>
-          Start with Ionic
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://ionicframework.com/docs/components"
-            >UI Components</a
-          >
-        </p>
-      </div> -->
     </ion-content>
   </ion-page>
 </template>
@@ -143,6 +56,7 @@ import {
 import { defineComponent } from "vue";
 import { add } from "ionicons/icons";
 import { useRouter } from "vue-router";
+import axios from "axios";
 
 export default defineComponent({
   name: "Home",
@@ -166,6 +80,18 @@ export default defineComponent({
     IonRadio,
     IonToggle,
   },
+  methods: {
+    async showevents() {
+      const response = await axios.get("http://95.216.158.138:80/events");
+      console.log("got events1", response.data);
+      this.events = response.data.events;
+    },
+  },
+  data() {
+    return {
+      events: [],
+    };
+  },  
   setup() {
     return {
       router: useRouter(),

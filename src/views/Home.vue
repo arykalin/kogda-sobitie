@@ -2,14 +2,17 @@
   <ion-page>
     <ion-header :translucent="true">
       <ion-toolbar>
-        <ion-title>Blank</ion-title>
+        <ion-title>События</ion-title>
       </ion-toolbar>
     </ion-header>
 
     <ion-content :fullscreen="true">
       <accordion :list="list">
         <template v-slot="sp">
-          <ion-item>{{ sp.item.id }} {{ sp.item.name }}</ion-item>
+          <ion-item>
+            <ion-badge color="success" slot="end">24 сентября</ion-badge>
+            {{ sp.item.id }} {{ sp.item.title }}
+          </ion-item>
         </template>
       </accordion>
     </ion-content>
@@ -42,10 +45,10 @@
   data() {
   return {
   list: [
-  { id: 1, name: "a"},
-  { id: 2, name: "b"},
-  { id: 3, name: "c"},
-  { id: 4, name: "d"}
+  { id: 1, title: "Танго", org: "???"},
+  { id: 2, title: "Киноклуб", org: "Затворник"},
+  { id: 3, title: "Чтения", org: "Татка"},
+  { id: 4, title: "smth else", org: "smb else"}
   ]
   };
   },

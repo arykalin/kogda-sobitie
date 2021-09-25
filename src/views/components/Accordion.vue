@@ -2,14 +2,13 @@
   <div
     v-for="listItem in displayList"
     :key="listItem.id"
-    style="margin: 8px;  border:solid green 1px"
+    style="margin: 8px;"
   >
     <div
       :ref="'header-' + listItem.id"
       class="ion-padding default-header"
-      @click="headerClicked(listItem)"
-    >
-      title {{ listItem.name }}
+      @click="headerClicked(listItem)">
+      {{ listItem.title }} {{listItem.org}}
     </div>
     <transition name="fade">
       <div
@@ -74,7 +73,7 @@ name: "Accordion",
 
 <style  scoped>
 .default-header {
-  background-color: gray;
+  background-color: #8c8c8c;
   margin: 2px;
   text-transform: uppercase;
 }

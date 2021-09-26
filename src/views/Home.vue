@@ -10,8 +10,15 @@
       <accordion :list="list">
         <template v-slot="sp">
           <ion-item>
-            <ion-badge color="success" slot="end">24 сентября</ion-badge>
-            {{ sp.item.id }} {{ sp.item.title }}
+            <ion-label>
+              <ion-note>
+                {{ "место: " + sp.item.place }}<br/>
+                {{ "длительность: " + sp.item.duration }}<br/>
+                {{ "для кого: " + sp.item.target }}<br/>
+                {{ "сколько: " + sp.item.amount }}<br/>
+                {{ "ссылка:" + sp.item.link }}
+              </ion-note>
+            </ion-label>
           </ion-item>
         </template>
       </accordion>
@@ -45,17 +52,18 @@
   data() {
   return {
   list: [
-  { id: 1, title: "Танго", org: "???"},
-  { id: 2, title: "Киноклуб", org: "Затворник"},
-  { id: 3, title: "Чтения", org: "Татка"},
-  { id: 4, title: "smth else", org: "smb else"}
+  { id: 1, title: "Танго", org: "???", date: "30.09.21", duration: "", place: "Дом на Среднем", link: "", target: "", amount: ""},
+  { id: 2, title: "Ресурсные онлайн", org: "Агни", date: "01.10.21", duration: "", place: "Ресурсные состояния", link: "", target: "взрослые", amount: "10"},
+  { id: 3, title: "Нежная школа навигаторов", org: "Ира Жукова", date: "01.10.21", duration: "2 месяца", place: "Школа Навигаторов", link: "", target: "образованцы", amount: "20"},
+  { id: 4, title: "Танго", org: "???", date: "30.09.21", duration: "", place: "Дом на Среднем", link: "", target: "", amount: ""},
+  { id: 5, title: "Ресурсные онлайн", org: "Агни", date: "01.10.21", duration: "", place: "Ресурсные состояния", link: "", target: "взрослые", amount: "10"},
+  { id: 6, title: "Нежная школа навигаторов", org: "Ира Жукова", date: "01.10.21", duration: "2 месяца", place: "Школа Навигаторов", link: "", target: "образованцы", amount: "20"},
+  { id: 7, title: "Танго", org: "???", date: "30.09.21", duration: "", place: "Дом на Среднем", link: "", target: "", amount: ""},
+  { id: 8, title: "Ресурсные онлайн", org: "Агни", date: "01.10.21", duration: "", place: "Ресурсные состояния", link: "", target: "взрослые", amount: "10"},
+  { id: 9, title: "Нежная школа навигаторов", org: "Ира Жукова", date: "01.10.21", duration: "2 месяца", place: "Школа Навигаторов", link: "", target: "образованцы", amount: "20"},
   ]
   };
-  },
-  methods: {}
+  }
   });
 </script>
 
-<style scoped="">
-
-</style>

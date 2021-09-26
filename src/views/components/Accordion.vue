@@ -2,31 +2,40 @@
   <div
     v-for="listItem in displayList"
     :key="listItem.id"
-    style="margin: 8px;"
-  >
-    <div
+    style="margin: 0px;">
+
+    <div 
       :ref="'header-' + listItem.id"
       class="ion-padding default-header"
       @click="headerClicked(listItem)">
-      {{ listItem.title }} {{listItem.org}}
+
+      <ion-label>
+        <h1>{{ listItem.title }}</h1>
+        <h3>{{ listItem.org }}</h3>
+        <ion-note>{{ listItem.date }}</ion-note>
+      </ion-label>
+
     </div>
     <transition name="fade">
       <div
         :ref="'body-' + listItem.id"
-        style="margin-top:8px;display:none; height: 100px;"
-        v-show="expandElement(listItem)"
-      >
-        <slot :item="listItem"></slot>
+        style="display:none; height: 115px;" 
+        v-show="expandElement(listItem)">
+        
+		<slot :item="listItem"></slot>
+
       </div>
     </transition>
   </div>
 </template>
 
-<script>
-export default {
-name: "Accordion",
+<script lang="ts">
+  export default{
+  name: "Accordion",
+  
   // list of data to display
   props: ["list"],
+  
   // data section of component
   data() {
     return {
@@ -38,15 +47,12 @@ name: "Accordion",
      * this function is called to determine if the element
      * should be in the expanded mode or not
      */
-    expandElement(listItem) {
+	expandElement(listItem) {
       const curE = this.$refs["body-" + listItem.id];
       if (curE === undefined) return false;
-      if (curE.dataset.isExpanded === "true") {
-        return true;
-      } else {
-        return false;
-      }
+      return curE.dataset.isExpanded === "true";
     },
+
     /**
      * this iterates through all of the elements in the list
      * and set data attribute isExpanded appropriately based on
@@ -73,9 +79,8 @@ name: "Accordion",
 
 <style  scoped>
 .default-header {
-  background-color: #8c8c8c;
-  margin: 2px;
-  text-transform: uppercase;
+  background-color: #1d1d1d;
+  margin: 0px;
 }
 .fade-enter-active,
 .fade-leave-active {

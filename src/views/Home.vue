@@ -7,78 +7,47 @@
     </ion-header>
 
     <ion-content :fullscreen="true">
-      <ion-header collapse="condense">
-        <ion-toolbar>
-          <ion-title size="large">Blank</ion-title>
-        </ion-toolbar>
-      </ion-header>
-      <ion-button expand="full" @click="showevents()">show events</ion-button>
-      <ion-list>
-        <ion-item v-for="event in events" :key="event.id">
-          <ion-label>
-            <h1>{{ event.title }}</h1>
-            <ion-note>{{ event.who_manages }}</ion-note>
-          </ion-label>
-          <ion-badge color="success" slot="end">{{ event.date }}</ion-badge>
-        </ion-item>
-      </ion-list>
-
-      <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-        <ion-fab-button @click="() => router.push('/new')">
-          <ion-icon :icon="add"></ion-icon>
-        </ion-fab-button>
-      </ion-fab>
+      <accordion :list="list">
+        <template v-slot="sp">
+          <ion-item>
+            <ion-label>
+              <ion-note>
+                {{ "место: " + sp.item.place }}<br/>
+                {{ "длительность: " + sp.item.duration }}<br/>
+                {{ "для кого: " + sp.item.target }}<br/>
+                {{ "сколько: " + sp.item.amount }}<br/>
+                {{ "ссылка:" + sp.item.link }}
+              </ion-note>
+            </ion-label>
+          </ion-item>
+        </template>
+      </accordion>
     </ion-content>
   </ion-page>
 </template>
 
 <script lang="ts">
-import {
+  import {
   IonContent,
-  IonFab,
-  IonFabButton,
   IonHeader,
-  IonIcon,
   IonPage,
   IonTitle,
   IonToolbar,
-  IonCheckbox,
-  IonInput,
-  IonItem,
-  IonItemOption,
-  IonItemOptions,
-  IonItemSliding,
-  IonList,
-  IonLabel,
-  IonRadio,
-  IonToggle,
-} from "@ionic/vue";
-import { defineComponent } from "vue";
-import { add } from "ionicons/icons";
-import { useRouter } from "vue-router";
-import axios from "axios";
+  IonItem
+  } from "@ionic/vue";
+  import { defineComponent } from "vue";
+  import Accordion from "./components/Accordion.vue";
 
-export default defineComponent({
+  export default defineComponent({
   name: "Home",
   components: {
-    IonContent,
-    IonFab,
-    IonFabButton,
-    IonHeader,
-    IonIcon,
-    IonPage,
-    IonTitle,
-    IonToolbar,
-    IonCheckbox,
-    IonInput,
-    IonItem,
-    IonItemOption,
-    IonItemOptions,
-    IonItemSliding,
-    IonList,
-    IonLabel,
-    IonRadio,
-    IonToggle,
+  Accordion,
+  IonContent,
+  IonHeader,
+  IonPage,
+  IonTitle,
+  IonToolbar,
+  IonItem
   },
   methods: {
     async showevents() {
@@ -90,8 +59,19 @@ export default defineComponent({
   data() {
     return {
       events: [],
+      list: [
+        { id: 1, title: "Танго", org: "???", date: "30.09.21", duration: "", place: "Дом на Среднем", link: "", target: "", amount: ""},
+        { id: 2, title: "Ресурсные онлайн", org: "Агни", date: "01.10.21", duration: "", place: "Ресурсные состояния", link: "", target: "взрослые", amount: "10"},
+        { id: 3, title: "Нежная школа навигаторов", org: "Ира Жукова", date: "01.10.21", duration: "2 месяца", place: "Школа Навигаторов", link: "", target: "образованцы", amount: "20"},
+        { id: 4, title: "Танго", org: "???", date: "30.09.21", duration: "", place: "Дом на Среднем", link: "", target: "", amount: ""},
+        { id: 5, title: "Ресурсные онлайн", org: "Агни", date: "01.10.21", duration: "", place: "Ресурсные состояния", link: "", target: "взрослые", amount: "10"},
+        { id: 6, title: "Нежная школа навигаторов", org: "Ира Жукова", date: "01.10.21", duration: "2 месяца", place: "Школа Навигаторов", link: "", target: "образованцы", amount: "20"},
+        { id: 7, title: "Танго", org: "???", date: "30.09.21", duration: "", place: "Дом на Среднем", link: "", target: "", amount: ""},
+        { id: 8, title: "Ресурсные онлайн", org: "Агни", date: "01.10.21", duration: "", place: "Ресурсные состояния", link: "", target: "взрослые", amount: "10"},
+        { id: 9, title: "Нежная школа навигаторов", org: "Ира Жукова", date: "01.10.21", duration: "2 месяца", place: "Школа Навигаторов", link: "", target: "образованцы", amount: "20"},
+      ]
     };
-  },  
+  },
   setup() {
     return {
       router: useRouter(),
@@ -101,32 +81,3 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
-#container {
-  text-align: center;
-
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-#container strong {
-  font-size: 20px;
-  line-height: 26px;
-}
-
-#container p {
-  font-size: 16px;
-  line-height: 22px;
-
-  color: #8c8c8c;
-
-  margin: 0;
-}
-
-#container a {
-  text-decoration: none;
-}
-</style>

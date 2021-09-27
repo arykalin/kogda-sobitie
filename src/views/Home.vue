@@ -7,6 +7,17 @@
     </ion-header>
 
     <ion-content :fullscreen="true">
+      <ion-button expand="full" @click="showevents()">show events</ion-button>
+      <ion-list>
+        <ion-item v-for="event in events" :key="event.id">
+          <ion-label>
+            <h1>{{ event.title }}</h1>
+            <ion-note>{{ event.who_manages }}</ion-note>
+          </ion-label>
+          <ion-badge color="success" slot="end">{{ event.date }}</ion-badge>
+        </ion-item>
+      </ion-list>
+
       <accordion :list="list">
         <template v-slot="sp">
           <ion-item>
@@ -37,6 +48,9 @@
   } from "@ionic/vue";
   import { defineComponent } from "vue";
   import Accordion from "./components/Accordion.vue";
+  import { useRouter } from "vue-router";
+  import { add } from "ionicons/icons";
+  import axios from "axios";
 
   export default defineComponent({
   name: "Home",

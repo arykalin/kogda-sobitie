@@ -47,7 +47,7 @@
   IonItem
   } from "@ionic/vue";
   import { defineComponent } from "vue";
-  import Accordion from "./components/Accordion.vue";
+  import Accordion from "@/components/Accordion.vue";
   import { useRouter } from "vue-router";
   import { add } from "ionicons/icons";
   import axios from "axios";
@@ -66,7 +66,7 @@
   methods: {
     async showevents() {
       const response = await axios.get("http://95.216.158.138:80/events");
-      console.log("got events1", response.data);
+      console.log("got events", response.data);
       this.events = response.data.events;
     },
   },

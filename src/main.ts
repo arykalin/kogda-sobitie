@@ -24,10 +24,17 @@ import '@ionic/vue/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 
+// Google login
+import gAuthPlugin from 'vue3-google-oauth2';
+const gauthClientId = "634894223473-3tgmno07c1tp5cucn12m5cffug6dib95.apps.googleusercontent.com";
+
+
 const app = createApp(App)
     .use(IonicVue)
     .use(router)
-    .use(store);
+    .use(store)
+    // eslint-disable-next-line @typescript-eslint/camelcase
+    .use(gAuthPlugin, { clientId: gauthClientId, scope: 'email', prompt: 'consent', fetch_basic_profile: false });
 
 router.isReady().then(() => {
     app.mount('#app');

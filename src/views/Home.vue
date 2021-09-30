@@ -7,7 +7,12 @@
     </ion-header>
 
     <ion-content :fullscreen="true">
-      <ion-button @click="login()">login</ion-button>
+      <ion-button expand="full" @click="login()">login</ion-button>
+      <ion-item>
+        <ion-label>
+          {{ token }}
+        </ion-label>
+      </ion-item>
       <ion-button expand="full" @click="showevents()">show events</ion-button>
       <ion-list>
         <ion-item v-for="event in events" :key="event.id">
@@ -73,6 +78,7 @@
     async login() {
       const tokenResp = await axios.get("http://localhost:8080/auth");
       axios.defaults.headers.common['Token'] = tokenResp.data.msg
+      this.token = tokenResp.data.msg
     },
     async showevents() {
       const response = await axios.get("http://127.0.0.1:8080/events");
@@ -82,6 +88,7 @@
   },
   data() {
     return {
+      token: "",
       events: [],
       list: [
         { id: 1, title: "Танго", org: "???", date: "30.09.21", duration: "", place: "Дом на Среднем", link: "", target: "", amount: ""},

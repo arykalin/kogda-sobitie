@@ -1,6 +1,8 @@
 import { createRouter, createWebHistory } from '@ionic/vue-router';
 import { RouteRecordRaw } from 'vue-router';
-import Home from '@/views/Home.vue'
+import Home from '@/views/Home.vue';
+import SignIn from "@/views/Signin.vue";
+import Signup from "@/views/Signup.vue";
 import NewItem from '@/views/NewItem.vue';
 
 const routes: Array<RouteRecordRaw> = [
@@ -17,6 +19,22 @@ const routes: Array<RouteRecordRaw> = [
     path: '/new',
     name: 'NewItem',
     component: NewItem
+  },
+  {
+    path: '/login',
+    component: SignIn,
+    meta: {
+      public: true,
+      onlyWhenLoggedOut: true
+    }
+  },
+  {
+    path: '/signup',
+    component: Signup,
+    meta: {
+      public: true,
+      onlyWhenLoggedOut: true
+    }
   }
 ]
 

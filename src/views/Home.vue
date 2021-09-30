@@ -39,6 +39,7 @@
           </ion-item>
         </template>
       </accordion>
+
       <ion-fab vertical="bottom" horizontal="end" slot="fixed">
         <ion-fab-button @click="() => router.push('/new')">
           <ion-icon :icon="add"></ion-icon>

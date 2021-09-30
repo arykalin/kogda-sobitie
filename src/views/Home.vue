@@ -7,6 +7,15 @@
     </ion-header>
 
     <ion-content :fullscreen="true">
+      <ion-item>
+        <h1>IsInit: {{ Vue3GoogleOauth.isInit }}</h1>
+        <h1>IsAuthorized: {{ Vue3GoogleOauth.isAuthorized }}</h1>
+        <h2 v-if="user">signed user: {{user}}</h2>
+        <button @click="handleClickSignIn" :disabled="!Vue3GoogleOauth.isInit || Vue3GoogleOauth.isAuthorized">sign in</button>
+        <button @click="handleClickGetAuthCode" :disabled="!Vue3GoogleOauth.isInit">get authCode</button>
+        <button @click="handleClickSignOut" :disabled="!Vue3GoogleOauth.isAuthorized">sign out</button>
+        <button @click="handleClickDisconnect" :disabled="!Vue3GoogleOauth.isAuthorized">disconnect</button>
+      </ion-item>
       <ion-button expand="full" @click="login()">login</ion-button>
       <ion-item>
         <ion-label>
@@ -63,6 +72,7 @@
   import { useRouter } from "vue-router";
   import { add } from "ionicons/icons";
   import axios from "axios";
+  import { inject, toRefs } from "vue";
 
   export default defineComponent({
   name: "Home",
@@ -77,7 +87,6 @@
   },
   methods: {
     async login() {
-      const authCode = await this.$gAuth.getAuthCode()
       const tokenResp = await axios.get("http://localhost:8080/auth");
       axios.defaults.headers.common['Token'] = tokenResp.data.msg
       this.token = tokenResp.data.msg
@@ -125,7 +134,6 @@
     handleClickDisconnect() {
       window.location.href = `https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=${window.location.href}`;
     },
-  },
     async showevents() {
       const response = await axios.get("http://127.0.0.1:8080/events");
       console.log("got events", response.data);
@@ -150,9 +158,16 @@
     };
   },
   setup() {
+    const { isSignIn } = toRefs();
+    const Vue3GoogleOauth = inject("Vue3GoogleOauth");
+
+    const handleClickLogin = () => {};
     return {
       router: useRouter(),
       add,
+      Vue3GoogleOauth,
+      handleClickLogin,
+      isSignIn,
     };
   },
 });

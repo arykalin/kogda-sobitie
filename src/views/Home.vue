@@ -65,7 +65,9 @@
   },
   methods: {
     async showevents() {
-      const response = await axios.get("http://95.216.158.138:80/events");
+      const tokenResp = await axios.get("http://localhost:8080/auth");
+      axios.defaults.headers.common['Token'] = tokenResp.data.msg
+      const response = await axios.get("http://127.0.0.1:8080/events");
       console.log("got events", response.data);
       this.events = response.data.events;
     },

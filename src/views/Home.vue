@@ -8,13 +8,17 @@
 
     <ion-content :fullscreen="true">
       <ion-item>
-        <h1>IsInit: {{ Vue3GoogleOauth.isInit }}</h1>
-        <h1>IsAuthorized: {{ Vue3GoogleOauth.isAuthorized }}</h1>
-        <h2 v-if="user">signed user: {{user}}</h2>
-        <button @click="handleClickSignIn" :disabled="!Vue3GoogleOauth.isInit || Vue3GoogleOauth.isAuthorized">sign in</button>
-        <button @click="handleClickGetAuthCode" :disabled="!Vue3GoogleOauth.isInit">get authCode</button>
-        <button @click="handleClickSignOut" :disabled="!Vue3GoogleOauth.isAuthorized">sign out</button>
-        <button @click="handleClickDisconnect" :disabled="!Vue3GoogleOauth.isAuthorized">disconnect</button>
+        <ion-label>
+          <h1>IsInit: {{ Vue3GoogleOauth.isInit }}</h1>
+          <h1>IsAuthorized: {{ Vue3GoogleOauth.isAuthorized }}</h1>
+          <h2 v-if="user">signed user: {{ user }}</h2>
+        </ion-label>
+        <ion-button @click="handleClickSignIn" :disabled="!Vue3GoogleOauth.isInit || Vue3GoogleOauth.isAuthorized">sign
+          in
+        </ion-button>
+        <ion-button @click="handleClickGetAuthCode" :disabled="!Vue3GoogleOauth.isInit">get authCode</ion-button>
+        <ion-button @click="handleClickSignOut" :disabled="!Vue3GoogleOauth.isAuthorized">sign out</ion-button>
+        <ion-button @click="handleClickDisconnect" :disabled="!Vue3GoogleOauth.isAuthorized">disconnect</ion-button>
       </ion-item>
       <ion-button expand="full" @click="login()">login</ion-button>
       <ion-item>
@@ -59,31 +63,31 @@
 </template>
 
 <script lang="ts">
-  import {
+import {
   IonContent,
   IonHeader,
   IonPage,
   IonTitle,
   IonToolbar,
   IonItem
-  } from "@ionic/vue";
-  import { defineComponent } from "vue";
-  import Accordion from "@/components/Accordion.vue";
-  import { useRouter } from "vue-router";
-  import { add } from "ionicons/icons";
-  import axios from "axios";
-  import { inject, toRefs } from "vue";
+} from "@ionic/vue";
+import {defineComponent} from "vue";
+import Accordion from "@/components/Accordion.vue";
+import {useRouter} from "vue-router";
+import {add} from "ionicons/icons";
+import axios from "axios";
+import {inject, toRefs} from "vue";
 
-  export default defineComponent({
+export default defineComponent({
   name: "Home",
   components: {
-  Accordion,
-  IonContent,
-  IonHeader,
-  IonPage,
-  IonTitle,
-  IonToolbar,
-  IonItem
+    Accordion,
+    IonContent,
+    IonHeader,
+    IonPage,
+    IonTitle,
+    IonToolbar,
+    IonItem
   },
   methods: {
     async login() {
@@ -91,7 +95,7 @@
       axios.defaults.headers.common['Token'] = tokenResp.data.msg
       this.token = tokenResp.data.msg
     },
-    async handleClickSignIn(){
+    async handleClickSignIn() {
       try {
         const googleUser = await this.$gAuth.signIn();
         if (!googleUser) {
@@ -112,11 +116,11 @@
         return null;
       }
     },
-    async handleClickGetAuthCode(){
+    async handleClickGetAuthCode() {
       try {
         const authCode = await this.$gAuth.getAuthCode();
         console.log("authCode", authCode);
-      } catch(error) {
+      } catch (error) {
         //on fail do something
         console.error(error);
         return null;
@@ -158,10 +162,11 @@
     };
   },
   setup() {
-    const { isSignIn } = toRefs();
+    const {isSignIn} = toRefs();
     const Vue3GoogleOauth = inject("Vue3GoogleOauth");
 
-    const handleClickLogin = () => {};
+    const handleClickLogin = () => {
+    };
     return {
       router: useRouter(),
       add,

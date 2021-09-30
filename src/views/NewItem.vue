@@ -119,7 +119,6 @@ export default defineComponent({
       amount,
       link
     ) {
-      const axios = require('axios');
       const data = JSON.stringify({
         "date": date,
         "title": title,

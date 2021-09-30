@@ -7,8 +7,7 @@
     </ion-header>
 
     <ion-content :fullscreen="true">
-      <ion-button @click="showevents()">show events
-      </ion-button>
+      <ion-button @click="login()">login</ion-button>
       <ion-button expand="full" @click="showevents()">show events</ion-button>
       <ion-list>
         <ion-item v-for="event in events" :key="event.id">
@@ -35,6 +34,11 @@
           </ion-item>
         </template>
       </accordion>
+      <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+        <ion-fab-button @click="() => router.push('/new')">
+          <ion-icon :icon="add"></ion-icon>
+        </ion-fab-button>
+      </ion-fab>
     </ion-content>
   </ion-page>
 </template>

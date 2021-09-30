@@ -37,9 +37,9 @@
   props: ["list"],
   
   // data section of component
-  data() {
+  data(): any {
     return {
-      displayList: this.list
+      displayList: (this as any).list
     };
   },
   methods: {
@@ -47,8 +47,8 @@
      * this function is called to determine if the element
      * should be in the expanded mode or not
      */
-	expandElement(listItem) {
-      const curE = this.$refs["body-" + listItem.id];
+	expandElement(listItem: any): boolean {
+      const curE = (this as any).$refs["body-" + listItem.id];
       if (curE === undefined) return false;
       return curE.dataset.isExpanded === "true";
     },
@@ -58,9 +58,9 @@
      * and set data attribute isExpanded appropriately based on
      * this listItem that was clicked
      */
-    headerClicked(listItem) {
-      this.displayList.map(function(e) {
-        const curE = this.$refs["body-" + e.id];
+    headerClicked(listItem: any): any {
+      (this as any).displayList.map((e: any) => {
+        const curE = (this as any).$refs["body-" + e.id];
         if (e === listItem) {
           if (curE.dataset.isExpanded === "true") {
             curE.setAttribute("data-is-expanded", false);
@@ -71,7 +71,7 @@
           curE.setAttribute("data-is-expanded", false);
         }
       }, this);
-      this.displayList = [...this.displayList];
+      (this as any).displayList = [...(this as any).displayList];
     }
   }
 };

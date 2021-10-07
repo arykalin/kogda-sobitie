@@ -18,10 +18,10 @@
       </ion-item>
 
       <ion-item>
-        <ion-textarea
+        <ion-input
           v-model="description"
           placeholder="Описание"
-        ></ion-textarea>
+        ></ion-input>
       </ion-item>
 
       <ion-item>
@@ -61,19 +61,7 @@
       </ion-item>
 
       <ion-button
-        @click="
-          eventCreated(
-            title,
-            description,
-            org,
-            place,
-            date,
-            duration,
-            target,
-            amount,
-            link
-          )
-        "
+        @click="postEvent()"
         expand="block"
         fill="outline"
         color="medium"
@@ -92,9 +80,11 @@ import {
   IonPage,
   IonTitle,
   IonToolbar,
+  IonInput,
 } from "@ionic/vue";
 import { defineComponent, ref } from "vue";
-import axios from 'axios';
+import axios from "axios";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   name: "NewItem",
@@ -106,35 +96,42 @@ export default defineComponent({
     IonPage,
     IonTitle,
     IonToolbar,
+    IonInput,
+  },
+  data(){
+    return{
+      title: '',
+      description: '',
+      org: '',
+      place: '',
+      date: '',
+      duration: '',
+      target: '',
+      amount: '',
+      link: ''
+    }
+  },
+  setup() {
+    return {
+      router: useRouter(),
+    };
   },
   methods: {
-    eventCreated(
-      title,
-      description,
-      org,
-      place,
-      date,
-      duration,
-      target,
-      amount,
-      link
-    ) {
-      const axios = require('axios');
-      const data = JSON.stringify({
-        "date": date,
-        "title": title,
-        "duration": duration,
-        "link": link,
-        "who_manages": org,
-        "for_whom": target,
-        "where": place,
-        "description": description,
-        "wanting_people": amount
-      });
-
+    postEvent() {
+      const data = {
+        date: this.date,
+        title: this.title,
+        duration: this.duration,
+        link: this.link,
+        'who_manages': this.org,
+        'for_whom': this.target,
+        where: this.place,
+        description: this.description,
+        'wanting_people': this.amount,
+      };
       const config = {
         method: "post",
-        url: "http://localhost:8080/event",
+        url: "http://95.216.158.138:80/event",
         headers: {
           "Content-Type": "application/json",
         },
@@ -143,11 +140,23 @@ export default defineComponent({
 
       axios(config)
         .then(function (response) {
-          console.log(JSON.stringify(response.data));
+          console.log(response.data);
         })
         .catch(function (error) {
           console.log(error);
         });
+
+      this.title = '';
+      this.description = '';
+      this.org = '';
+      this.place = '';
+      this.date = '';
+      this.duration = '';
+      this.target = '';
+      this.amount = '';
+      this.link = '';
+
+      return this.router.push('/home');
     },
   },
 });

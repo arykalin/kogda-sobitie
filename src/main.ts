@@ -1,6 +1,6 @@
 import {createApp} from 'vue'
 import App from './App.vue'
-import {store} from '@/store';
+// import {store} from '@/store';
 import router from './router';
 
 import {IonicVue} from '@ionic/vue';
@@ -32,7 +32,7 @@ const gauthClientId = "634894223473-3tgmno07c1tp5cucn12m5cffug6dib95.apps.google
 const app = createApp(App)
     .use(IonicVue)
     .use(router)
-    .use(store)
+    // .use(store)
     // eslint-disable-next-line @typescript-eslint/camelcase
     .use(gAuthPlugin, { clientId: gauthClientId, scope: 'email', prompt: 'consent', fetch_basic_profile: false });
 

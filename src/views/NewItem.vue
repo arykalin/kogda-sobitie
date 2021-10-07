@@ -10,18 +10,11 @@
     </ion-header>
     <ion-content ref="content">
       <ion-item>
-        <ion-input
-          v-model="title"
-          placeholder="Название события"
-          required="true"
-        ></ion-input>
+        <ion-input v-model="title" placeholder="Название"></ion-input>
       </ion-item>
 
       <ion-item>
-        <ion-input
-          v-model="description"
-          placeholder="Описание"
-        ></ion-input>
+        <ion-input v-model="description" placeholder="Описание"></ion-input>
       </ion-item>
 
       <ion-item>
@@ -33,11 +26,7 @@
       </ion-item>
 
       <ion-item>
-        <ion-input
-          v-model="date"
-          placeholder="Дата проведения"
-          type="date"
-        ></ion-input>
+        <ion-input v-model="date" type="date"></ion-input>
       </ion-item>
 
       <ion-item>
@@ -81,6 +70,7 @@ import {
   IonTitle,
   IonToolbar,
   IonInput,
+  toastController,
 } from "@ionic/vue";
 import { defineComponent, ref } from "vue";
 import axios from "axios";
@@ -98,18 +88,18 @@ export default defineComponent({
     IonToolbar,
     IonInput,
   },
-  data(){
-    return{
-      title: '',
-      description: '',
-      org: '',
-      place: '',
-      date: '',
-      duration: '',
-      target: '',
-      amount: '',
-      link: ''
-    }
+  data() {
+    return {
+      title: "",
+      description: "",
+      org: "",
+      place: "",
+      date: "",
+      duration: "",
+      target: "",
+      amount: "",
+      link: "",
+    };
   },
   setup() {
     return {
@@ -118,6 +108,25 @@ export default defineComponent({
   },
   methods: {
     postEvent() {
+      if (this.title == ''){
+        this.showToast("Необходимо заполнить поле 'Название'");
+        return;
+      }
+      if (this.description == ''){
+        this.showToast("Необходимо заполнить поле 'Описание'");
+        return;
+      }
+      if (this.org == ''){
+        this.showToast("Необходимо заполнить поле 'Ведущий'");
+        return;
+      }
+      if (this.date == ''){
+        this.showToast("Необходимо указать дату проведения");
+        return;
+      }
+
+      this.showToast("Событие создано");
+
       const data = {
         date: this.date,
         title: this.title,
@@ -146,17 +155,27 @@ export default defineComponent({
           console.log(error);
         });
 
-      this.title = '';
-      this.description = '';
-      this.org = '';
-      this.place = '';
-      this.date = '';
-      this.duration = '';
-      this.target = '';
-      this.amount = '';
-      this.link = '';
 
-      return this.router.push('/home');
+      this.title = "";
+      this.description = "";
+      this.org = "";
+      this.place = "";
+      this.date = "";
+      this.duration = "";
+      this.target = "";
+      this.amount = "";
+      this.link = "";
+
+      return this.router.push("/home");
+    },
+    async showToast(message) {
+      const toast = await toastController
+        .create({
+          message: message,
+          duration: 1500,
+          color: "light",
+        })
+      return toast.present();
     },
   },
 });

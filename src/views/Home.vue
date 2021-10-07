@@ -161,12 +161,11 @@ export default defineComponent({
       ]
     };
   },
-  setup() {
-    const {isSignIn} = toRefs();
+  setup(props) {
+    const {isSignIn} = toRefs(props);
     const Vue3GoogleOauth = inject("Vue3GoogleOauth");
 
-    const handleClickLogin = () => {
-    };
+    const handleClickLogin = () => {};
     return {
       router: useRouter(),
       add,

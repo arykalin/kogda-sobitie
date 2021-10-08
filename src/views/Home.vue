@@ -56,7 +56,6 @@
 <script lang="ts">
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import {
-  IonContent,
   IonHeader,
   IonPage,
   IonTitle,
@@ -67,7 +66,6 @@ import {defineComponent} from "vue";
 import Accordion from "@/components/Accordion.vue";
 import {useRouter} from "vue-router";
 import {add} from "ionicons/icons";
-import axios from "axios";
 import {inject, toRefs} from "vue";
 import { useStore } from 'vuex'
 import { getEvents } from '@/api/getEvents'

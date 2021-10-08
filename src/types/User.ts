@@ -4,13 +4,13 @@ enum Role {
 }
 
 interface User {
-  email?: string
-  fisrtName?: string
-  lastName?: string
-  image?: string
-  googleId?: string
-  active?: boolean
-  role?: Role
+  email?: string;
+  fisrtName?: string;
+  lastName?: string;
+  image?: string;
+  googleId?: string;
+  active?: boolean;
+  role?: Role;
 }
 
 export default User

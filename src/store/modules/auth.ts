@@ -1,9 +1,9 @@
 import User from '@/types/User'
-import { authGoogle } from '../../api/auth'
+import { authGoogle } from '@/api/auth'
 
 interface AuthState {
-  user: User
-  isAuth: boolean
+  user: User;
+  isAuth: boolean;
 }
 
 const state: AuthState = {

@@ -1,51 +1,37 @@
 <template>
-  <div class="flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-    <div class="sm:mx-auto sm:w-full sm:max-w-md">
-      <img
-          class="mx-auto h-12 w-auto"
-          src="@/assets/images/logo.svg"
-          alt="Workflow"
-      />
-      <h2 class="mt-6 mb-6 text-center text-3xl font-bold text-gray-900">
-        Войдите в свой аккаунт
-      </h2>
-    </div>
+  <ion-page>
+    <ion-header :translucent="true">
+      <ion-toolbar>
+        <ion-title>События</ion-title>
+      </ion-toolbar>
+    </ion-header>
 
-    <div class="sm:mx-auto sm:w-full sm:max-w-md">
-      <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-        <div>
-          <div class="relative">
-            <div class="absolute inset-0 flex items-center">
-              <div class="w-full border-t border-gray-300" />
-            </div>
-            <div class="relative flex justify-center text-sm">
-              <span class="px-2 bg-white text-gray-500">
-                Войдите с помощью
-              </span>
-            </div>
-          </div>
-
-          <div class="mt-6">
-            <base-button
-                @click="handleClickSignIn"
-                :disabled="
+    <ion-content :fullscreen="true">
+      <ion-item>
+        <ion-label>
+          <h1>IsInit: {{ Vue3GoogleOauth.isInit }}</h1>
+          <h1>IsAuthorized: {{ Vue3GoogleOauth.isAuthorized }}</h1>
+          <h2 v-if="user">signed user: {{ user }}</h2>
+        </ion-label>
+        <ion-button
+            @click="handleClickSignIn"
+            :disabled="
                 !Vue3GoogleOauth.isInit || Vue3GoogleOauth.isAuthorized
               "
-                class="w-full"
-                color="red"
-            >google</base-button
-            >
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+            class="w-full"
+            color="red"
+        >Login with google
+        </ion-button>
+      </ion-item>
+    </ion-content>
+  </ion-page>
 </template>
 
 <script lang="ts">
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { defineComponent, inject } from 'vue'
-import { useStore } from 'vuex'
+import {defineComponent, inject} from 'vue'
+import {useStore} from 'vuex'
+
 export default defineComponent({
   name: "Login",
   methods: {
@@ -78,7 +64,7 @@ export default defineComponent({
         );
 
         // setting token
-        const { id_token: idToken } = googleUser.getAuthResponse()
+        const {id_token: idToken} = googleUser.getAuthResponse()
         this.store.dispatch('auth/googleAuth', idToken).then(() => {
           this.$router.push('/profile')
         })

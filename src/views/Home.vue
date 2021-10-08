@@ -96,67 +96,6 @@ export default defineComponent({
       axios.defaults.headers.common['Token'] = tokenResp.data.msg
       this.token = tokenResp.data.msg
     },
-    async handleClickSignIn() {
-      try {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-        // @ts-ignore
-        const googleUser = await this.$gAuth.signIn();
-        if (!googleUser) {
-          return null;
-        }
-        console.log("googleUser", googleUser);
-        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-        // @ts-ignore
-        this.user = googleUser.getBasicProfile().getEmail();
-        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-        // @ts-ignore
-        console.log("getId", this.user);
-        console.log("getBasicProfile", googleUser.getBasicProfile());
-        console.log("getAuthResponse", googleUser.getAuthResponse());
-        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-        // @ts-ignore
-        console.log(
-            "getAuthResponse",
-            // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-            // @ts-ignore
-            this.$gAuth.instance.currentUser.get().getAuthResponse()
-        );
-      } catch (error) {
-        //on fail do something
-        console.error(error);
-        return null;
-      }
-    },
-    async handleClickGetAuthCode() {
-      try {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-        // @ts-ignore
-        const authCode = await this.$gAuth.getAuthCode();
-        console.log("authCode", authCode);
-      } catch (error) {
-        //on fail do something
-        console.error(error);
-        return null;
-      }
-    },
-    async handleClickSignOut() {
-      try {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-        // @ts-ignore
-        await this.$gAuth.signOut();
-        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-        // @ts-ignore
-        console.log("isAuthorized", this.Vue3GoogleOauth.isAuthorized);
-        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-        // @ts-ignore
-        this.user = "";
-      } catch (error) {
-        console.error(error);
-      }
-    },
-    handleClickDisconnect() {
-      window.location.href = `https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=${window.location.href}`;
-    },
     async showevents() {
       const response = await axios.get("http://127.0.0.1:8080/events");
       console.log("got events", response.data);

@@ -88,6 +88,37 @@ export default defineComponent({
         return null
       }
     },
+    async handleClickGetAuthCode() {
+      try {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+        // @ts-ignore
+        const authCode = await this.$gAuth.getAuthCode();
+        console.log("authCode", authCode);
+      } catch (error) {
+        //on fail do something
+        console.error(error);
+        return null;
+      }
+    },
+    async handleClickSignOut() {
+      try {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+        // @ts-ignore
+        await this.$gAuth.signOut();
+        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+        // @ts-ignore
+        console.log("isAuthorized", this.Vue3GoogleOauth.isAuthorized);
+        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+        // @ts-ignore
+        this.user = "";
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    handleClickDisconnect() {
+      window.location.href = `https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=${window.location.href}`;
+    },
+
   },
   setup() {
     const store = useStore()

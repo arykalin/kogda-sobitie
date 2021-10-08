@@ -1,5 +1,4 @@
 import User from '@/types/User'
-import {authGoogle} from '@/api/auth'
 
 interface AuthState {
     mail: string;
@@ -28,17 +27,7 @@ const actions = {
         console.log("saving user mail to store ", mail)
         localStorage.setItem('mail', mail)
         commit('setMail', mail)
-    },
-    googleAuth({commit}, idToken: string): Promise<void> {
-        return authGoogle(idToken)
-            .then((res) => {
-                localStorage.setItem('token', res.token)
-                commit('setUser', res.data.user)
-                commit('setAuth', true)
-            })
-            .catch((err) => {
-                console.log('err', err)
-            })
+        commit('setAuth', true)
     },
     logout({commit}) {
         commit('setUser', null)

@@ -1,4 +1,3 @@
-`
 <template>
   <ion-page>
     <ion-header :translucent="true">
@@ -71,6 +70,7 @@ import {add} from "ionicons/icons";
 import axios from "axios";
 import {inject, toRefs} from "vue";
 import { useStore } from 'vuex'
+import { getEvents } from '@/api/getEvents'
 
 export default defineComponent({
   name: "Home",
@@ -84,7 +84,9 @@ export default defineComponent({
   },
   methods: {
     async showevents() {
-      const response = await axios.get("http://127.0.0.1:8080/events");
+      const response = await getEvents().catch((err) => {
+        console.log('err', err)
+      });
       console.log("got events", response.data);
       this.events = response.data.events;
     },

@@ -76,11 +76,9 @@ export default defineComponent({
 
         // return home
         console.log("calling dispatcher for", this.user);
-        this.store.dispatch('auth/saveUser', this.user)
-        this.store.dispatch('auth/googleAuth', idToken).then(() => {
+        this.store.dispatch('auth/saveUser', this.user).then(() => {
           this.$router.push('/home')
         })
-        this.token = idToken
         await this.handleClickGetAuthCode()
       } catch (error) {
         //on fail do something

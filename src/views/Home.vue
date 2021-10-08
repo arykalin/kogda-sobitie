@@ -1,4 +1,5 @@
-`<template>
+`
+<template>
   <ion-page>
     <ion-header :translucent="true">
       <ion-toolbar>
@@ -95,6 +96,14 @@ export default defineComponent({
         // { id: 9, title: "Нежная школа навигаторов", org: "Ира Жукова", date: "01.10.21", duration: "2 месяца", place: "Школа Навигаторов", link: "", target: "образованцы", amount: "20"},
       ]
     };
+  },
+  computed: {
+    user() {
+      return this.store.getters['auth/user']
+    },
+    fullName() {
+      return `${this.user.firstName} ${this.user.lastName}`
+    },
   },
   setup() {
     // eslint-disable-next-line @typescript-eslint/ban-ts-ignore

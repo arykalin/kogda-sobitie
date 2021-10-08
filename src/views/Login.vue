@@ -81,7 +81,7 @@ export default defineComponent({
         this.token = idToken
       } catch (error) {
         //on fail do something
-        await this.showToast("Login failed", 'warning');
+        await this.showToast("Login failed: "+error,  'warning');
         console.error("Error authentication: ", error)
         return null
       }

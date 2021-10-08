@@ -15,12 +15,8 @@
         </ion-label>
       </ion-item>
       <ion-item>
-        <ion-button @click="handleClickSignIn" :disabled="!Vue3GoogleOauth.isInit || Vue3GoogleOauth.isAuthorized">sign
-          in
+        <ion-button @click="handleClickSignIn" :disabled="!Vue3GoogleOauth.isInit || Vue3GoogleOauth.isAuthorized">sign in
         </ion-button>
-        <ion-button @click="handleClickGetAuthCode" :disabled="!Vue3GoogleOauth.isInit">get authCode</ion-button>
-        <ion-button @click="handleClickSignOut" :disabled="!Vue3GoogleOauth.isAuthorized">sign out</ion-button>
-        <ion-button @click="handleClickDisconnect" :disabled="!Vue3GoogleOauth.isAuthorized">disconnect</ion-button>
       </ion-item>
       <ion-item>
         <ion-label>
@@ -36,6 +32,7 @@
 import {defineComponent, inject} from 'vue'
 import {useStore} from 'vuex'
 import {toastController} from "@ionic/vue";
+import { getToken } from '@/api/getToken'
 
 export default defineComponent({
   name: "Login",
@@ -70,7 +67,16 @@ export default defineComponent({
 
         // setting token
         const {id_token: idToken} = googleUser.getAuthResponse()
+        this.idToken = idToken;
 
+        //getting token from server
+        try {
+          const tokenResp = await getToken(this.idToken);
+          console.log("got token: ", tokenResp.data.msg);
+        } catch (error) {
+          //on fail do something
+          console.error("error getting token: ", error);
+        }
         // show toast
         await this.showToast("Login success", 'success');
 
@@ -79,43 +85,12 @@ export default defineComponent({
         this.store.dispatch('auth/saveUser', this.user).then(() => {
           this.$router.push('/home')
         })
-        await this.handleClickGetAuthCode()
       } catch (error) {
         //on fail do something
         await this.showToast("Login failed: "+error,  'warning');
         console.error("Error authentication: ", error)
         return null
       }
-    },
-    async handleClickGetAuthCode() {
-      try {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-        // @ts-ignore
-        const authCode = await this.$gAuth.getAuthCode();
-        console.log("authCode", authCode);
-      } catch (error) {
-        //on fail do something
-        console.error(error);
-        return null;
-      }
-    },
-    async handleClickSignOut() {
-      try {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-        // @ts-ignore
-        await this.$gAuth.signOut();
-        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-        // @ts-ignore
-        console.log("isAuthorized", this.Vue3GoogleOauth.isAuthorized);
-        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-        // @ts-ignore
-        this.user = "";
-      } catch (error) {
-        console.error(error);
-      }
-    },
-    handleClickDisconnect() {
-      window.location.href = `https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=${window.location.href}`;
     },
     async showToast(message, color) {
       const toast = await toastController
@@ -137,7 +112,7 @@ export default defineComponent({
   },
   data() {
     return {
-      token: "",
+      idToken: "",
       user: "",
     };
   },

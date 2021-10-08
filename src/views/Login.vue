@@ -47,6 +47,7 @@
 import { defineComponent, inject } from 'vue'
 import { useStore } from 'vuex'
 export default defineComponent({
+  name: "Login",
   methods: {
     async handleClickSignIn() {
       try {
@@ -56,7 +57,27 @@ export default defineComponent({
         if (!googleUser) {
           return null
         }
-        console.log(googleUser.getAuthResponse())
+
+        // Debug info
+        console.log("googleUser", googleUser);
+        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+        // @ts-ignore
+        this.user = googleUser.getBasicProfile().getEmail();
+        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+        // @ts-ignore
+        console.log("getId", this.user);
+        console.log("getBasicProfile", googleUser.getBasicProfile());
+        console.log("getAuthResponse", googleUser.getAuthResponse());
+        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+        // @ts-ignore
+        console.log(
+            "getAuthResponse",
+            // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+            // @ts-ignore
+            this.$gAuth.instance.currentUser.get().getAuthResponse()
+        );
+
+        // setting token
         const { id_token: idToken } = googleUser.getAuthResponse()
         this.store.dispatch('auth/googleAuth', idToken).then(() => {
           this.$router.push('/profile')

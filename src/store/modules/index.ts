@@ -1,4 +1,4 @@
-import { camelCase } from 'lodash-es'
+import {camelCase} from "lodash-es";
 
 const requireModule = require.context('.', false, /\.ts$/)
 const modules = {}

@@ -25,10 +25,13 @@ import '@ionic/vue/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 
-// Google login1
+/* Store */
+import store from '@/store'
+
+// Google login2
 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore
-import gAuthPlugin from 'vue3-google-oauth2';
+// import gAuthPlugin from 'vue3-google-oauth2';
 // const gauthClientId = "634894223473-3tgmno07c1tp5cucn12m5cffug6dib95.apps.googleusercontent.com";
 
 const gAuthOptions = {
@@ -42,8 +45,7 @@ const gAuthOptions = {
 const app = createApp(App)
     .use(IonicVue)
     .use(router)
-    // .use(store)
-    // eslint-disable-next-line @typescript-eslint/camelcase
+    .use(store)
     .use(GAuth, gAuthOptions);
 
 router.isReady().then(() => {

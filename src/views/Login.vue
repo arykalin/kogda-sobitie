@@ -24,7 +24,7 @@
       </ion-item>
       <ion-item>
         <ion-label>
-          {{ token }}
+          Token: {{ token }}
         </ion-label>
       </ion-item>
     </ion-content>
@@ -32,9 +32,10 @@
 </template>
 
 <script lang="ts">
-/* eslint-disable @typescript-eslint/ban-ts-comment */
+
 import {defineComponent, inject} from 'vue'
 import {useStore} from 'vuex'
+import {toastController} from "@ionic/vue";
 
 export default defineComponent({
   name: "Login",
@@ -69,13 +70,19 @@ export default defineComponent({
 
         // setting token
         const {id_token: idToken} = googleUser.getAuthResponse()
+
+        // show toast
+        await this.showToast("Login success", 'success');
+
+        // return home
         this.store.dispatch('auth/googleAuth', idToken).then(() => {
-          this.$router.push('/profile')
+          this.$router.push('/home')
         })
         this.token = idToken
       } catch (error) {
         //on fail do something
-        console.error(error)
+        await this.showToast("Login failed", 'warning');
+        console.error("Error authentication: ", error)
         return null
       }
     },
@@ -109,7 +116,15 @@ export default defineComponent({
     handleClickDisconnect() {
       window.location.href = `https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=${window.location.href}`;
     },
-
+    async showToast(message, color) {
+      const toast = await toastController
+          .create({
+            message: message,
+            duration: 1500,
+            color: color,
+          })
+      return toast.present();
+    },
   },
   setup() {
     const store = useStore()

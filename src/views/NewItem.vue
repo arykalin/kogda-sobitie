@@ -140,7 +140,7 @@ export default defineComponent({
       };
       const config = {
         method: "post",
-        url: "http://95.216.158.138:80/event",
+        url: "http://127.0.0.1:8080/event",
         headers: {
           "Content-Type": "application/json",
         },

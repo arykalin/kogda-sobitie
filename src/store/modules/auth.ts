@@ -1,49 +1,60 @@
 import User from '@/types/User'
-import { authGoogle } from '@/api/auth'
+import {authGoogle} from '@/api/auth'
 
 interface AuthState {
-  user: User;
-  isAuth: boolean;
+    mail: string;
+    user: User;
+    isAuth: boolean;
 }
 
 const state: AuthState = {
-  user: {},
-  isAuth: false,
+    mail: "",
+    user: {},
+    isAuth: false,
 }
 const mutations = {
-  setUser(state, user: User): void {
-    state.user = user
-  },
-  setAuth(state, auth: AuthState): void {
-    state.isAuth = auth
-  },
+    setMail(state, mail: string): void {
+        state.mail = mail;
+    },
+    setUser(state, user: User): void {
+        state.user = user
+    },
+    setAuth(state, auth: AuthState): void {
+        state.isAuth = auth
+    },
 }
 const actions = {
-  googleAuth({ commit }, idToken: string): Promise<void> {
-    return authGoogle(idToken)
-      .then((res) => {
-        localStorage.setItem('token', res.token)
-        commit('setUser', res.data.user)
-        commit('setAuth', true)
-      })
-      .catch((err) => {
-        console.log('err', err)
-      })
-  },
-  logout({ commit }) {
-    commit('setUser', null)
-    commit('setAuth', false)
-  },
+    saveUser({commit}, mail: string) {
+        console.log("saving user mail to store ", mail)
+        localStorage.setItem('mail', mail)
+        commit('setMail', mail)
+    },
+    googleAuth({commit}, idToken: string): Promise<void> {
+        return authGoogle(idToken)
+            .then((res) => {
+                localStorage.setItem('token', res.token)
+                commit('setUser', res.data.user)
+                commit('setAuth', true)
+            })
+            .catch((err) => {
+                console.log('err', err)
+            })
+    },
+    logout({commit}) {
+        commit('setUser', null)
+        commit('setAuth', false)
+    },
 }
 const getters = {
-  user: (state) => state.user,
-  isAuth: (state) => state.isAuth,
+    mail: (state) => state.mail,
+    user: (state) => state.user,
+    isAuth: (state) => state.isAuth,
 }
 
 export default {
-  namespaced: true,
-  state,
-  getters,
-  actions,
-  mutations,
+    namespaced: true,
+    state,
+    getters,
+    actions,
+    mutations,
 }

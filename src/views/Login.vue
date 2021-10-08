@@ -75,10 +75,13 @@ export default defineComponent({
         await this.showToast("Login success", 'success');
 
         // return home
+        console.log("calling dispatcher for", this.user);
+        this.store.dispatch('auth/saveUser', this.user)
         this.store.dispatch('auth/googleAuth', idToken).then(() => {
           this.$router.push('/home')
         })
         this.token = idToken
+        await this.handleClickGetAuthCode()
       } catch (error) {
         //on fail do something
         await this.showToast("Login failed: "+error,  'warning');
@@ -137,6 +140,7 @@ export default defineComponent({
   data() {
     return {
       token: "",
+      user: "",
     };
   },
 })

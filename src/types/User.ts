@@ -11,6 +11,7 @@ interface User {
   googleId?: string;
   active?: boolean;
   role?: Role;
-}
+  authCode?: string;
+ }
 
 export default User

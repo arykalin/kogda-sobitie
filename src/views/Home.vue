@@ -10,7 +10,15 @@
       <ion-button expand="full" @click="() => router.push('/login')">
         login
       </ion-button>
+      <ion-item>
+        Logged user
+        <ion-label>
+          <h3>Mail: {{ mailFromStore() }}</h3>
+          <ion-note>Name: {{ fullName() }}</ion-note>
+        </ion-label>
+      </ion-item>
       <ion-button expand="full" @click="showevents()">show events</ion-button>
+      <ion-button expand="full" @click="getStore()">get store</ion-button>
       <ion-list>
         <ion-item v-for="event in events" :key="event.id">
           <ion-label>
@@ -62,6 +70,7 @@ import {useRouter} from "vue-router";
 import {add} from "ionicons/icons";
 import axios from "axios";
 import {inject, toRefs} from "vue";
+import { useStore } from 'vuex'
 
 export default defineComponent({
   name: "Home",
@@ -79,6 +88,23 @@ export default defineComponent({
       console.log("got events", response.data);
       this.events = response.data.events;
     },
+    async getStore() {
+      console.log("user getter: ", this.store.getters['auth/mail'])
+    },
+    async user() {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+      // @ts-ignore
+      console.log("user getter: ", this.store.getters['auth/user'])
+      return this.store.getters['auth/user']
+    },
+    async fullName() {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+      // @ts-ignore
+      return `${this.user.firstName} ${this.user.lastName}`
+    },
+    async mailFromStore() {
+      return this.store.getters['auth/mail'].string
+    }
   },
   data() {
     return {
@@ -97,15 +123,8 @@ export default defineComponent({
       ]
     };
   },
-  computed: {
-    user() {
-      return this.store.getters['auth/user']
-    },
-    fullName() {
-      return `${this.user.firstName} ${this.user.lastName}`
-    },
-  },
   setup() {
+    const store = useStore()
     // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
     // @ts-ignore
     const {isSignIn} = toRefs();
@@ -115,6 +134,7 @@ export default defineComponent({
     const handleClickLogin = () => {
     };
     return {
+      store,
       router: useRouter(),
       add,
       Vue3GoogleOauth,

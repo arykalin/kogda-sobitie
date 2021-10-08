@@ -5,27 +5,7 @@
         <ion-title>События</ion-title>
       </ion-toolbar>
     </ion-header>
-
     <ion-content :fullscreen="true">
-      <ion-item>
-        <ion-label>
-          <h1>IsInit: {{ Vue3GoogleOauth.isInit }}</h1>
-          <h1>IsAuthorized: {{ Vue3GoogleOauth.isAuthorized }}</h1>
-          <h2 v-if="user">signed user: {{ user }}</h2>
-        </ion-label>
-        <ion-button @click="handleClickSignIn" :disabled="!Vue3GoogleOauth.isInit || Vue3GoogleOauth.isAuthorized">sign
-          in
-        </ion-button>
-        <ion-button @click="handleClickGetAuthCode" :disabled="!Vue3GoogleOauth.isInit">get authCode</ion-button>
-        <ion-button @click="handleClickSignOut" :disabled="!Vue3GoogleOauth.isAuthorized">sign out</ion-button>
-        <ion-button @click="handleClickDisconnect" :disabled="!Vue3GoogleOauth.isAuthorized">disconnect</ion-button>
-      </ion-item>
-      <ion-button expand="full" @click="login()">login</ion-button>
-      <ion-item>
-        <ion-label>
-          {{ token }}
-        </ion-label>
-      </ion-item>
       <ion-button expand="full" @click="showevents()">show events</ion-button>
       <ion-list>
         <ion-item v-for="event in events" :key="event.id">
@@ -83,7 +63,6 @@ export default defineComponent({
   name: "Home",
   components: {
     Accordion,
-    IonContent,
     IonHeader,
     IonPage,
     IonTitle,

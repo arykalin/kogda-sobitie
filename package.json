@@ -21,13 +21,15 @@
     "core-js": "^3.6.5",
     "qs": "^6.5.2",
     "vue": "^3.2.1",
-    "vue-google-oauth2": "^1.5.8",
     "vue-router": "^4.0.0-0",
+    "vue3-google-auth": "^0.0.2",
     "vue3-google-oauth2": "^1.0.6",
     "vuex": "^4.0.2"
   },
   "devDependencies": {
     "@capacitor/cli": "3.2.2",
+    "@types/gapi": "^0.0.41",
+    "@types/gapi.auth2": "^0.0.55",
     "@types/jest": "^24.0.19",
     "@typescript-eslint/eslint-plugin": "^2.33.0",
     "@typescript-eslint/parser": "^2.33.0",

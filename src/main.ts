@@ -1,5 +1,6 @@
 import {createApp} from 'vue'
 import App from './App.vue'
+import GAuth from 'vue3-google-oauth2'
 // import {store} from '@/store';
 import router from './router';
 
@@ -24,17 +25,26 @@ import '@ionic/vue/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 
-// Google login
+// Google login1
+// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+// @ts-ignore
 import gAuthPlugin from 'vue3-google-oauth2';
-const gauthClientId = "634894223473-3tgmno07c1tp5cucn12m5cffug6dib95.apps.googleusercontent.com";
+// const gauthClientId = "634894223473-3tgmno07c1tp5cucn12m5cffug6dib95.apps.googleusercontent.com";
 
+const gAuthOptions = {
+    clientId:
+        '634894223473-3tgmno07c1tp5cucn12m5cffug6dib95.apps.googleusercontent.com',
+    prompt: 'consent',
+    // eslint-disable-next-line @typescript-eslint/camelcase
+    fetch_basic_profile: true,
+}
 
 const app = createApp(App)
     .use(IonicVue)
     .use(router)
     // .use(store)
     // eslint-disable-next-line @typescript-eslint/camelcase
-    .use(gAuthPlugin, { clientId: gauthClientId, scope: 'email', prompt: 'consent', fetch_basic_profile: false });
+    .use(GAuth, gAuthOptions);
 
 router.isReady().then(() => {
     app.mount('#app');

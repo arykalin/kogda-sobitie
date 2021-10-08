@@ -6,6 +6,9 @@
       </ion-toolbar>
     </ion-header>
     <ion-content :fullscreen="true">
+      <ion-button expand="full" @click="() => router.push('/login')">
+        login
+      </ion-button>
       <ion-button expand="full" @click="showevents()">show events</ion-button>
       <ion-list>
         <ion-item v-for="event in events" :key="event.id">
@@ -70,11 +73,6 @@ export default defineComponent({
     IonItem
   },
   methods: {
-    async login() {
-      const tokenResp = await axios.get("http://localhost:8080/auth");
-      axios.defaults.headers.common['Token'] = tokenResp.data.msg
-      this.token = tokenResp.data.msg
-    },
     async showevents() {
       const response = await axios.get("http://127.0.0.1:8080/events");
       console.log("got events", response.data);

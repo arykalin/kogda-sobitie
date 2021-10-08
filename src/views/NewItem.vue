@@ -10,18 +10,11 @@
     </ion-header>
     <ion-content ref="content">
       <ion-item>
-        <ion-input
-          v-model="title"
-          placeholder="Название события"
-          required="true"
-        ></ion-input>
+        <ion-input v-model="title" placeholder="Название"></ion-input>
       </ion-item>
 
       <ion-item>
-        <ion-textarea
-          v-model="description"
-          placeholder="Описание"
-        ></ion-textarea>
+        <ion-input v-model="description" placeholder="Описание"></ion-input>
       </ion-item>
 
       <ion-item>
@@ -33,11 +26,7 @@
       </ion-item>
 
       <ion-item>
-        <ion-input
-          v-model="date"
-          placeholder="Дата проведения"
-          type="date"
-        ></ion-input>
+        <ion-input v-model="date" type="date"></ion-input>
       </ion-item>
 
       <ion-item>
@@ -61,19 +50,7 @@
       </ion-item>
 
       <ion-button
-        @click="
-          eventCreated(
-            title,
-            description,
-            org,
-            place,
-            date,
-            duration,
-            target,
-            amount,
-            link
-          )
-        "
+        @click="postEvent()"
         expand="block"
         fill="outline"
         color="medium"
@@ -92,9 +69,12 @@ import {
   IonPage,
   IonTitle,
   IonToolbar,
+  IonInput,
+  toastController,
 } from "@ionic/vue";
 import { defineComponent, ref } from "vue";
-import axios from 'axios';
+import axios from "axios";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   name: "NewItem",
@@ -106,34 +86,61 @@ export default defineComponent({
     IonPage,
     IonTitle,
     IonToolbar,
+    IonInput,
+  },
+  data() {
+    return {
+      title: "",
+      description: "",
+      org: "",
+      place: "",
+      date: "",
+      duration: "",
+      target: "",
+      amount: "",
+      link: "",
+    };
+  },
+  setup() {
+    return {
+      router: useRouter(),
+    };
   },
   methods: {
-    eventCreated(
-      title,
-      description,
-      org,
-      place,
-      date,
-      duration,
-      target,
-      amount,
-      link
-    ) {
-      const data = JSON.stringify({
-        "date": date,
-        "title": title,
-        "duration": duration,
-        "link": link,
-        "who_manages": org,
-        "for_whom": target,
-        "where": place,
-        "description": description,
-        "wanting_people": amount
-      });
+    postEvent() {
+      if (this.title == ''){
+        this.showToast("Необходимо заполнить поле 'Название'");
+        return;
+      }
+      if (this.description == ''){
+        this.showToast("Необходимо заполнить поле 'Описание'");
+        return;
+      }
+      if (this.org == ''){
+        this.showToast("Необходимо заполнить поле 'Ведущий'");
+        return;
+      }
+      if (this.date == ''){
+        this.showToast("Необходимо указать дату проведения");
+        return;
+      }
 
+      this.showToast("Событие создано");
+
+      const data = {
+        date: this.date,
+        title: this.title,
+        duration: this.duration,
+        link: this.link,
+        'who_manages': this.org,
+        'for_whom': this.target,
+        where: this.place,
+        description: this.description,
+        'wanting_people': this.amount,
+      };
       const config = {
         method: "post",
-        url: "http://localhost:8080/event",
+        url: "http://95.216.158.138:80/event",
         headers: {
           "Content-Type": "application/json",
         },
@@ -142,11 +149,33 @@ export default defineComponent({
 
       axios(config)
         .then(function (response) {
-          console.log(JSON.stringify(response.data));
+          console.log(response.data);
         })
         .catch(function (error) {
           console.log(error);
         });
+
+
+      this.title = "";
+      this.description = "";
+      this.org = "";
+      this.place = "";
+      this.date = "";
+      this.duration = "";
+      this.target = "";
+      this.amount = "";
+      this.link = "";
+
+      return this.router.push("/home");
+    },
+    async showToast(message) {
+      const toast = await toastController
+        .create({
+          message: message,
+          duration: 1500,
+          color: "light",
+        })
+      return toast.present();
     },
   },
 });

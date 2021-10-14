@@ -32,7 +32,6 @@
 import {defineComponent, inject} from 'vue'
 import {useStore} from 'vuex'
 import {toastController} from "@ionic/vue";
-import { getToken } from '@/api/getToken'
 
 export default defineComponent({
   name: "Login",
@@ -68,21 +67,10 @@ export default defineComponent({
         // setting token
         const {id_token: idToken} = googleUser.getAuthResponse()
         this.idToken = idToken;
-
-        //getting token from server
-        try {
-          const tokenResp = await getToken(this.idToken);
-          console.log("got token: ", tokenResp.data.msg);
-        } catch (error) {
-          //on fail do something
-          console.error("error getting token: ", error);
-        }
-        // show toast
-        await this.showToast("Login success", 'success');
-
-        // return home
-        console.log("calling dispatcher for", this.user);
-        this.store.dispatch('auth/saveUser', this.user).then(() => {
+        this.store.dispatch('auth/backendAuth', idToken).then(() => {
+          // show toast
+          this.showToast("Login success", 'success');
+          // return home
           this.$router.push('/home')
         })
       } catch (error) {

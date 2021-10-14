@@ -1,25 +1,17 @@
 import User from '@/types/User'
+import {getToken} from "@/api/getToken";
 
 interface AuthState {
-    mail: string;
-    token: string;
     user: User;
     isAuth: boolean;
 }
 
 const state: AuthState = {
-    mail: "",
-    token: "",
     user: {},
     isAuth: false,
 }
+
 const mutations = {
-    setToken(state, token: string): void {
-        state.token = token;
-    },
-    setMail(state, mail: string): void {
-        state.mail = mail;
-    },
     setUser(state, user: User): void {
         state.user = user
     },
@@ -28,22 +20,27 @@ const mutations = {
     },
 }
 const actions = {
-    saveUser({commit}, mail: string, token: string) {
-        console.log("saving user mail to store ", mail)
-        localStorage.setItem('mail', mail)
-        localStorage.setItem('token', token)
-        commit('setMail', mail)
-        commit('setToken', token)
-        commit('setAuth', true)
-
+    backendAuth({ commit }, idToken: string): Promise<void> {
+        console.log("getting user id with token ", idToken)
+        return getToken(idToken)
+            .then((res) => {
+                console.log("got response ", res)
+                localStorage.setItem('token', res.data.token)
+                commit('setUser', res.data.userInfo)
+                commit('setMail', res.data.userInfo.email)
+                commit('setAuth', true)
+            })
+            .catch((err) => {
+                console.log('err', err)
+            })
     },
     logout({commit}) {
         commit('setUser', null)
         commit('setAuth', false)
+        localStorage.removeItem('token')
     },
 }
 const getters = {
-    mail: (state) => state.mail,
     user: (state) => state.user,
     token: (state) => state.token,
     isAuth: (state) => state.isAuth,

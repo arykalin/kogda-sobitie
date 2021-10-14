@@ -1,45 +1,48 @@
 <template>
-  <div
-    v-for="listItem in displayList"
-    :key="listItem.id"
-    style="margin: 0px;">
-
-    <div 
+  <div v-for="listItem in displayList" :key="listItem.id" style="margin: 0px">
+    <ion-item
       :ref="'header-' + listItem.id"
-      class="ion-padding default-header"
-      @click="headerClicked(listItem)">
-
+      @click="headerClicked(listItem)"
+    >
       <ion-label>
         <h1>{{ listItem.title }}</h1>
         <h3>{{ listItem.org }}</h3>
         <ion-note>{{ listItem.date }}</ion-note>
       </ion-label>
-
-    </div>
+    </ion-item>
     <transition name="fade">
       <div
         :ref="'body-' + listItem.id"
-        style="display:none; height: 115px;" 
-        v-show="expandElement(listItem)">
-        
-		<slot :item="listItem"></slot>
-
+        style="display: none; height: 115px"
+        v-show="expandElement(listItem)"
+      >
+        <ion-item>
+          <ion-label>
+            <ion-note>
+              {{ "место: " + listItem.place }}<br />
+              {{ "длительность: " + listItem.duration }}<br />
+              {{ "для кого: " + listItem.target }}<br />
+              {{ "сколько: " + listItem.amount }}<br />
+              {{ "ссылка:" + listItem.link }}
+            </ion-note>
+          </ion-label>
+        </ion-item>
       </div>
     </transition>
   </div>
 </template>
 
 <script lang="ts">
-  export default{
+export default {
   name: "Accordion",
-  
+
   // list of data to display
   props: ["list"],
-  
+
   // data section of component
   data(): any {
     return {
-      displayList: (this as any).list
+      displayList: (this as any).list,
     };
   },
   methods: {
@@ -47,7 +50,7 @@
      * this function is called to determine if the element
      * should be in the expanded mode or not
      */
-	expandElement(listItem: any): boolean {
+    expandElement(listItem: any): boolean {
       const curE = (this as any).$refs["body-" + listItem.id];
       if (curE === undefined) return false;
       return curE.dataset.isExpanded === "true";
@@ -72,16 +75,16 @@
         }
       }, this);
       (this as any).displayList = [...(this as any).displayList];
-    }
-  }
+    },
+  },
 };
 </script>
 
 <style  scoped>
-.default-header {
+/* .default-header {
   background-color: #1d1d1d;
   margin: 0px;
-}
+} */
 .fade-enter-active,
 .fade-leave-active {
   transition: height 0.3s ease-in-out;

@@ -6,18 +6,10 @@
       </ion-toolbar>
     </ion-header>
     <ion-content :fullscreen="true">
-      <ion-button expand="full" @click="() => router.push('/login')">
-        login
+      <ion-button expand="full" @click="() => router.push('/profile')">
+        Профиль
       </ion-button>
-      <ion-item>
-        Logged user
-        <ion-label>
-          <h3>Mail: {{ mail }}</h3>
-          <ion-note>Name: {{ fullName() }}</ion-note>
-        </ion-label>
-      </ion-item>
       <ion-button expand="full" @click="showevents()">show events</ion-button>
-      <ion-button expand="full" @click="getStore()">get store</ion-button>
       <ion-list>
         <ion-item v-for="event in events" :key="event.id">
           <ion-label>
@@ -85,29 +77,9 @@ export default defineComponent({
       const response = await getEvents().catch((err) => {
         console.log('err', err)
       });
-      console.log("got events", response.data);
-      this.events = response.data.events;
+      // console.log("got events", response.data);
+      // this.events = response.data.events;
     },
-    async getStore() {
-      await this.mailFromStore()
-      console.log("mail getter: ", this.store.getters['auth/mail'])
-    },
-    async user() {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-      // @ts-ignore
-      console.log("user getter: ", this.store.getters['auth/user'])
-      return this.store.getters['auth/user']
-    },
-    async fullName() {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-      // @ts-ignore
-      return `${this.user.firstName} ${this.user.lastName}`
-    },
-    async mailFromStore() {
-      console.log("getting mail from store1", this.store.getters['auth/mail'])
-      console.log("getting user from store: ", this.store.getters['auth/user'])
-      this.mail = this.store.getters['auth/mail']
-    }
   },
   data() {
     return {
@@ -146,6 +118,7 @@ export default defineComponent({
       isSignIn,
     };
   },
+
 });
 </script>
 

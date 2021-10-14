@@ -12,7 +12,7 @@
       <ion-item>
         Logged user
         <ion-label>
-          <h3>Mail: {{ mailFromStore() }}</h3>
+          <h3>Mail: {{ mail }}</h3>
           <ion-note>Name: {{ fullName() }}</ion-note>
         </ion-label>
       </ion-item>
@@ -89,7 +89,8 @@ export default defineComponent({
       this.events = response.data.events;
     },
     async getStore() {
-      console.log("user getter: ", this.store.getters['auth/mail'])
+      await this.mailFromStore()
+      console.log("mail getter: ", this.store.getters['auth/mail'])
     },
     async user() {
       // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
@@ -103,12 +104,15 @@ export default defineComponent({
       return `${this.user.firstName} ${this.user.lastName}`
     },
     async mailFromStore() {
-      return this.store.getters['auth/mail'].string
+      console.log("getting mail from store1", this.store.getters['auth/mail'])
+      console.log("getting user from store: ", this.store.getters['auth/user'])
+      this.mail = this.store.getters['auth/mail']
     }
   },
   data() {
     return {
       token: "",
+      mail: "",
       events: [],
       list: [
         { id: 1, title: "Танго", org: "???", date: "30.09.21", duration: "", place: "Дом на Среднем", link: "", target: "", amount: ""},

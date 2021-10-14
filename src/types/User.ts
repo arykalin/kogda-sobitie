@@ -5,10 +5,10 @@ enum Role {
 
 interface User {
   email?: string;
-  fisrtName?: string;
-  lastName?: string;
-  image?: string;
-  googleId?: string;
+  name?: string;
+  givenName?: string;
+  familyName?: string;
+  picture?: string;
   active?: boolean;
   role?: Role;
   authCode?: string;

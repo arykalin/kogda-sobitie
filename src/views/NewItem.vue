@@ -138,7 +138,7 @@ export default defineComponent({
         amount: this.amount,
       }
 
-      console.log('constructed event: ' + newEvent)
+      console.log('constructed event: ' + newEvent.description)
       postEvent(newEvent)
           .then(function (response) {
             console.log(response.data);

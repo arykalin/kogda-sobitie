@@ -5,8 +5,10 @@
         <ion-title size="large">События</ion-title>
       </ion-toolbar>
     </ion-header>
-
     <ion-content :fullscreen="true">
+      <ion-button expand="full" @click="() => router.push('/profile')">
+        Профиль
+      </ion-button>
       <ion-button expand="full" @click="showevents()">show events</ion-button>
 
       <accordion :list="list"></accordion>
@@ -32,7 +34,7 @@ import { defineComponent } from "vue";
 import Accordion from "@/components/Accordion.vue";
 import { useRouter } from "vue-router";
 import { add } from "ionicons/icons";
-import axios from "axios";
+import { getEvents } from '@/api/getEvents'
 
 export default defineComponent({
   name: "Home",
@@ -46,9 +48,9 @@ export default defineComponent({
   },
   methods: {
     async showevents() {
-      const response = await axios.get("http://95.216.158.138:80/events");
-      console.log("got events", response.data);
-      this.events = response.data.events;
+      const response = await getEvents().catch((err) => {
+        console.log('err', err)
+      });
     },
   },
   data() {
@@ -154,6 +156,7 @@ export default defineComponent({
       add,
     };
   },
+
 });
 </script>
 

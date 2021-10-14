@@ -29,3 +29,4 @@ npm-debug.log*
 /platforms
 /plugins
 /www
+/client_secret.apps.googleusercontent.com.json

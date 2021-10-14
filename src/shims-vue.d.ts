@@ -1,7 +1,13 @@
 declare module '*.vue' {
-  import { defineComponent } from 'vue'
-  const component: ReturnType<typeof defineComponent>
+  import type { DefineComponent } from 'vue'
+  const component: DefineComponent<{}, {}, any>
   export default component
 }
 
-declare module 'vuex'
+declare module 'vue3-google-oauth2'
+
+declare global {
+  interface Window {
+    gapi: any;
+  }
+}

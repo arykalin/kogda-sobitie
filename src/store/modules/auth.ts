@@ -1,5 +1,5 @@
 import User from '@/types/User'
-import {getToken} from "@/api/getToken";
+import {getAuth} from "@/api/getAuth";
 
 interface AuthState {
     user: User;
@@ -22,7 +22,7 @@ const mutations = {
 const actions = {
     backendAuth({ commit }, idToken: string): Promise<void> {
         console.log("getting user id with token ", idToken)
-        return getToken(idToken)
+        return getAuth(idToken)
             .then((res) => {
                 console.log("got response ", res)
                 localStorage.setItem('token', res.data.token)

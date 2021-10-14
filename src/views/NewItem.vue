@@ -109,19 +109,19 @@ export default defineComponent({
   },
   methods: {
     postEvent() {
-      if (this.title == '') {
+      if (this.title === '') {
         this.showToast("Необходимо заполнить поле 'Название'");
         return;
       }
-      if (this.description == '') {
+      if (this.description === '') {
         this.showToast("Необходимо заполнить поле 'Описание'");
         return;
       }
-      if (this.org == '') {
+      if (this.org === '') {
         this.showToast("Необходимо заполнить поле 'Ведущий'");
         return;
       }
-      if (this.date == '') {
+      if (this.date === '') {
         this.showToast("Необходимо указать дату проведения");
         return;
       }

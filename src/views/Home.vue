@@ -9,13 +9,26 @@
       <ion-button expand="full" @click="() => router.push('/profile')">
         Профиль
       </ion-button>
-      <ion-button expand="full" @click="showevents()">show events</ion-button>
+      <ion-list>
+        <ion-item v-for="event in events" :key="event.id">
+          <ion-label>
+            <h1>{{ event.title }}</h1>
+            <ion-note>{{ event.org }}</ion-note>
+          </ion-label>
+          <ion-badge color="success" slot="end">{{ event.date }}</ion-badge>
+        </ion-item>
+      </ion-list>
 
       <accordion :list="list"></accordion>
 
       <ion-fab vertical="bottom" horizontal="end" slot="fixed">
         <ion-fab-button @click="() => router.push('/new')">
           <ion-icon :icon="add"></ion-icon>
+        </ion-fab-button>
+      </ion-fab>
+      <ion-fab vertical="bottom" horizontal="start" slot="fixed">
+        <ion-fab-button @click=showevents()>
+          <ion-icon :icon="reload"></ion-icon>
         </ion-fab-button>
       </ion-fab>
     </ion-content>
@@ -33,7 +46,7 @@ import {
 import { defineComponent } from "vue";
 import Accordion from "@/components/Accordion.vue";
 import { useRouter } from "vue-router";
-import { add } from "ionicons/icons";
+import {add, reload} from "ionicons/icons";
 import { getEvents } from '@/api/getEvents'
 
 export default defineComponent({
@@ -51,111 +64,30 @@ export default defineComponent({
       const response = await getEvents().catch((err) => {
         console.log('err', err)
       });
+      console.log('got response', response)
+      this.events = response.data.events
+      console.log('events is now', this.events)
     },
+  },
+  created () {
+    // fetch the data when the view is created and the data is
+    // already being observed
+    this.showevents()
   },
   data() {
     return {
       events: [],
       list: [
         {
-          id: 1,
-          title: "Танго",
+          title: "Танго пример аккордиона",
           org: "???",
           date: "30.09.21",
           duration: "",
-          place: "Дом на Среднем",
+          where: "Дом на Среднем",
           link: "",
           target: "",
-          amount: "",
-        },
-        {
-          id: 2,
-          title: "Ресурсные онлайн",
-          org: "Агни",
-          date: "01.10.21",
-          duration: "",
-          place: "Ресурсные состояния",
-          link: "",
-          target: "взрослые",
-          amount: "10",
-        },
-        {
-          id: 3,
-          title: "Нежная школа навигаторов",
-          org: "Ира Жукова",
-          date: "01.10.21",
-          duration: "2 месяца",
-          place: "Школа Навигаторов",
-          link: "",
-          target: "образованцы",
-          amount: "20",
-        },
-        {
-          id: 4,
-          title: "Танго",
-          org: "???",
-          date: "30.09.21",
-          duration: "",
-          place: "Дом на Среднем",
-          link: "",
-          target: "",
-          amount: "",
-        },
-        {
-          id: 5,
-          title: "Ресурсные онлайн",
-          org: "Агни",
-          date: "01.10.21",
-          duration: "",
-          place: "Ресурсные состояния",
-          link: "",
-          target: "взрослые",
-          amount: "10",
-        },
-        {
-          id: 6,
-          title: "Нежная школа навигаторов",
-          org: "Ира Жукова",
-          date: "01.10.21",
-          duration: "2 месяца",
-          place: "Школа Навигаторов",
-          link: "",
-          target: "образованцы",
-          amount: "20",
-        },
-        {
-          id: 7,
-          title: "Танго",
-          org: "???",
-          date: "30.09.21",
-          duration: "",
-          place: "Дом на Среднем",
-          link: "",
-          target: "",
-          amount: "",
-        },
-        {
-          id: 8,
-          title: "Ресурсные онлайн",
-          org: "Агни",
-          date: "01.10.21",
-          duration: "",
-          place: "Ресурсные состояния",
-          link: "",
-          target: "взрослые",
-          amount: "10",
-        },
-        {
-          id: 9,
-          title: "Нежная школа навигаторов",
-          org: "Ира Жукова",
-          date: "01.10.21",
-          duration: "2 месяца",
-          place: "Школа Навигаторов",
-          link: "",
-          target: "образованцы",
-          amount: "20",
-        },
+          amount: "1",
+        }
       ],
     };
   },
@@ -163,6 +95,7 @@ export default defineComponent({
     return {
       router: useRouter(),
       add,
+      reload,
     };
   },
 

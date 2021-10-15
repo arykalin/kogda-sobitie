@@ -22,7 +22,7 @@
       </ion-item>
 
       <ion-item>
-        <ion-input v-model="place" placeholder="Место проведения"></ion-input>
+        <ion-input v-model="where" placeholder="Место проведения"></ion-input>
       </ion-item>
 
       <ion-item>
@@ -94,7 +94,7 @@ export default defineComponent({
       title: "",
       description: "",
       org: "",
-      place: "",
+      where: "",
       date: "",
       duration: "",
       target: "",
@@ -133,7 +133,7 @@ export default defineComponent({
         link: this.link,
         org: this.org,
         target: this.target,
-        where: this.place,
+        where: this.where,
         description: this.description,
         amount: this.amount,
       }
@@ -148,11 +148,10 @@ export default defineComponent({
             console.log(error);
           });
 
-
       this.title = "";
       this.description = "";
       this.org = "";
-      this.place = "";
+      this.where = "";
       this.date = "";
       this.duration = "";
       this.target = "";

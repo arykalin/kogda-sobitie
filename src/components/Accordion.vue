@@ -1,9 +1,6 @@
 <template>
-  <div v-for="listItem in displayList" :key="listItem.id" style="margin: 0px">
-    <ion-item
-      :ref="'header-' + listItem.id"
-      @click="headerClicked(listItem)"
-    >
+  <div v-for="listItem in displayList" :key="listItem.title">
+    <ion-item @click="headerClicked(listItem)" >
       <ion-label>
         <h1>{{ listItem.title }}</h1>
         <h3>{{ listItem.org }}</h3>
@@ -12,14 +9,14 @@
     </ion-item>
     <transition name="fade">
       <div
-        :ref="'body-' + listItem.id"
+        :ref="'body-' + displayList.indexOf(listItem)"
         style="display: none; height: 115px"
         v-show="expandElement(listItem)"
       >
         <ion-item>
           <ion-label>
             <ion-note>
-              {{ "место: " + listItem.place }}<br />
+              {{ "место: " + listItem.where }}<br />
               {{ "длительность: " + listItem.duration }}<br />
               {{ "для кого: " + listItem.target }}<br />
               {{ "сколько: " + listItem.amount }}<br />
@@ -35,10 +32,8 @@
 <script lang="ts">
 export default {
   name: "Accordion",
-
   // list of data to display
   props: ["list"],
-
   // data section of component
   data(): any {
     return {
@@ -51,11 +46,10 @@ export default {
      * should be in the expanded mode or not
      */
     expandElement(listItem: any): boolean {
-      const curE = (this as any).$refs["body-" + listItem.id];
+      const curE = (this as any).$refs["body-" + (this as any).displayList.indexOf(listItem)];
       if (curE === undefined) return false;
       return curE.dataset.isExpanded === "true";
     },
-
     /**
      * this iterates through all of the elements in the list
      * and set data attribute isExpanded appropriately based on
@@ -63,7 +57,7 @@ export default {
      */
     headerClicked(listItem: any): any {
       (this as any).displayList.map((e: any) => {
-        const curE = (this as any).$refs["body-" + e.id];
+        const curE = (this as any).$refs["body-" + (this as any).displayList.indexOf(e)];
         if (e === listItem) {
           if (curE.dataset.isExpanded === "true") {
             curE.setAttribute("data-is-expanded", false);
@@ -81,10 +75,6 @@ export default {
 </script>
 
 <style  scoped>
-/* .default-header {
-  background-color: #1d1d1d;
-  margin: 0px;
-} */
 .fade-enter-active,
 .fade-leave-active {
   transition: height 0.3s ease-in-out;

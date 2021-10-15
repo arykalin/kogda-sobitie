@@ -51,14 +51,6 @@ export default defineComponent({
     IonToolbar,
   },
   methods: {
-    async del(event) {
-      console.log("deleting event: " + event);
-      const response = await deleteEvent(event,).catch((err) => {
-        console.log('err', err)
-      });
-      console.log('got response', response)
-      this.refreshEvents()
-    },
     async refreshEvents() {
       const response = await getEvents().catch((err) => {
         console.log('err', err)

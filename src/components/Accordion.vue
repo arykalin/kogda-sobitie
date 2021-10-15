@@ -8,6 +8,9 @@
         <h1>{{ listItem.title }}</h1>
         <h3>{{ listItem.org }}</h3>
         <ion-note>{{ listItem.date }}</ion-note>
+        <ion-button color="warning" slot="end" @click="() => del(listItem._id)">
+          delete
+        </ion-button>
       </ion-label>
     </ion-item>
     <transition name="fade">
@@ -19,6 +22,7 @@
         <ion-item>
           <ion-label>
             <ion-note>
+              {{ "id: " + listItem._id}}<br />
               {{ "место: " + listItem.where }}<br />
               {{ "длительность: " + listItem.duration }}<br />
               {{ "для кого: " + listItem.target }}<br />
@@ -33,6 +37,8 @@
 </template>
 
 <script lang="ts">
+import {deleteEvent} from "@/api/deleteEvent";
+
 export default {
   name: "Accordion",
   // list of data to display
@@ -44,6 +50,13 @@ export default {
     };
   },
   methods: {
+    async del(event) {
+      console.log("deleting event: " + event);
+      const response = await deleteEvent(event,).catch((err) => {
+        console.log('err', err)
+      });
+      console.log('got response', response)
+    },
     reloadAccordion() {
       console.log("displayList is " + (this as any).displayList);
       console.log("list is " + (this as any).list);

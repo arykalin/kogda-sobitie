@@ -9,19 +9,6 @@
       <ion-button expand="full" @click="() => router.push('/profile')">
         Профиль
       </ion-button>
-      <ion-list>
-        <ion-item v-for="event in events" :key="event.id">
-          <ion-label>
-            <h1>{{ event.title }}</h1>
-            <ion-note>{{ event.org }}</ion-note>
-          </ion-label>
-          <ion-badge color="success">{{ event.date }}</ion-badge>
-          <ion-button color="warning" slot="end" @click="() => del(event._id)">
-            Удалить
-          </ion-button>
-        </ion-item>
-      </ion-list>
-
       <accordion :list="list"></accordion>
 
       <ion-fab vertical="bottom" horizontal="end" slot="fixed">
@@ -78,7 +65,9 @@ export default defineComponent({
       });
       console.log('got response', response)
       this.events = response.data.events
+      this.list = response.data.events
       console.log('events is now', this.events)
+      console.log('list is now', this.list)
     },
   },
   created () {
@@ -89,18 +78,7 @@ export default defineComponent({
   data() {
     return {
       events: [],
-      list: [
-        {
-          title: "Танго пример аккордиона",
-          org: "???",
-          date: "30.09.21",
-          duration: "",
-          where: "Дом на Среднем",
-          link: "",
-          target: "",
-          amount: "1",
-        }
-      ],
+      list: [],
     };
   },
   setup() {

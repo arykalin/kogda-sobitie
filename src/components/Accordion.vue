@@ -1,4 +1,7 @@
 <template>
+  <ion-button expand="full" @click="() => reloadAccordion()">
+    Reload accordion
+  </ion-button>
   <div v-for="listItem in displayList" :key="listItem.title">
     <ion-item @click="headerClicked(listItem)" >
       <ion-label>
@@ -41,6 +44,11 @@ export default {
     };
   },
   methods: {
+    reloadAccordion() {
+      console.log("displayList is " + (this as any).displayList);
+      console.log("list is " + (this as any).list);
+      (this as any).displayList = (this as any).list
+    },
     /**
      * this function is called to determine if the element
      * should be in the expanded mode or not

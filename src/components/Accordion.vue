@@ -1,4 +1,7 @@
 <template>
+  <ion-button expand="full" @click="() => getLogs()">
+    Logs
+  </ion-button>
   <div v-for="listItem in displayList" :key="listItem.title">
     <ion-item @click="headerClicked(listItem)" >
       <ion-label>
@@ -41,6 +44,9 @@ export default {
     };
   },
   methods: {
+    getLogs() {
+      console.log("list is " + (this as any).displayList);
+    },
     /**
      * this function is called to determine if the element
      * should be in the expanded mode or not

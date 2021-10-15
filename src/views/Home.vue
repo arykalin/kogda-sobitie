@@ -80,6 +80,7 @@ export default defineComponent({
       this.events = response.data.events
       this.list = response.data.events
       console.log('events is now', this.events)
+      console.log('list is now', this.list)
     },
   },
   created () {
@@ -90,18 +91,7 @@ export default defineComponent({
   data() {
     return {
       events: [],
-      list: [
-        {
-          title: "Танго пример аккордиона",
-          org: "???",
-          date: "30.09.21",
-          duration: "",
-          where: "Дом на Среднем",
-          link: "",
-          target: "",
-          amount: "1",
-        }
-      ],
+      list: [],
     };
   },
   setup() {

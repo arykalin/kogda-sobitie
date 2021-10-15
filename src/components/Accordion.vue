@@ -1,6 +1,6 @@
 <template>
-  <ion-button expand="full" @click="() => getLogs()">
-    Logs
+  <ion-button expand="full" @click="() => reloadAccordion()">
+    Reload accordion
   </ion-button>
   <div v-for="listItem in displayList" :key="listItem.title">
     <ion-item @click="headerClicked(listItem)" >
@@ -44,7 +44,7 @@ export default {
     };
   },
   methods: {
-    getLogs() {
+    reloadAccordion() {
       console.log("displayList is " + (this as any).displayList);
       console.log("list is " + (this as any).list);
       (this as any).displayList = (this as any).list

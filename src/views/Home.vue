@@ -9,19 +9,6 @@
       <ion-button expand="full" @click="() => router.push('/profile')">
         Профиль
       </ion-button>
-      <ion-list>
-        <ion-item v-for="event in events" :key="event.id">
-          <ion-label>
-            <h1>{{ event.title }}</h1>
-            <ion-note>{{ event.org }}</ion-note>
-          </ion-label>
-          <ion-badge color="success">{{ event.date }}</ion-badge>
-          <ion-button color="warning" slot="end" @click="() => del(event._id)">
-            Удалить
-          </ion-button>
-        </ion-item>
-      </ion-list>
-
       <accordion :list="list"></accordion>
 
       <ion-fab vertical="bottom" horizontal="end" slot="fixed">

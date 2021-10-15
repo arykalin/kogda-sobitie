@@ -45,7 +45,9 @@ export default {
   },
   methods: {
     getLogs() {
-      console.log("list is " + (this as any).displayList);
+      console.log("displayList is " + (this as any).displayList);
+      console.log("list is " + (this as any).list);
+      (this as any).displayList = (this as any).list
     },
     /**
      * this function is called to determine if the element

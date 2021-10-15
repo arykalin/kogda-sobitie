@@ -9,13 +9,26 @@
       <ion-button expand="full" @click="() => router.push('/profile')">
         Профиль
       </ion-button>
-      <ion-button expand="full" @click="showevents()">show events</ion-button>
+      <ion-list>
+        <ion-item v-for="event in events" :key="event.id">
+          <ion-label>
+            <h1>{{ event.title }}</h1>
+            <ion-note>{{ event.org }}</ion-note>
+          </ion-label>
+          <ion-badge color="success" slot="end">{{ event.date }}</ion-badge>
+        </ion-item>
+      </ion-list>
 
       <accordion :list="list"></accordion>
 
       <ion-fab vertical="bottom" horizontal="end" slot="fixed">
         <ion-fab-button @click="() => router.push('/new')">
           <ion-icon :icon="add"></ion-icon>
+        </ion-fab-button>
+      </ion-fab>
+      <ion-fab vertical="bottom" horizontal="start" slot="fixed">
+        <ion-fab-button @click=showevents()>
+          <ion-icon :icon="reload"></ion-icon>
         </ion-fab-button>
       </ion-fab>
     </ion-content>
@@ -33,7 +46,7 @@ import {
 import { defineComponent } from "vue";
 import Accordion from "@/components/Accordion.vue";
 import { useRouter } from "vue-router";
-import { add } from "ionicons/icons";
+import {add, reload} from "ionicons/icons";
 import { getEvents } from '@/api/getEvents'
 
 export default defineComponent({
@@ -52,16 +65,21 @@ export default defineComponent({
         console.log('err', err)
       });
       console.log('got response', response)
-      this.list = response.data.events
-      console.log('list is now', this.list)
+      this.events = response.data.events
+      console.log('events is now', this.events)
     },
+  },
+  created () {
+    // fetch the data when the view is created and the data is
+    // already being observed
+    this.showevents()
   },
   data() {
     return {
       events: [],
       list: [
         {
-          title: "Танго",
+          title: "Танго пример аккордиона",
           org: "???",
           date: "30.09.21",
           duration: "",
@@ -69,87 +87,7 @@ export default defineComponent({
           link: "",
           target: "",
           amount: "1",
-        },
-        {
-          title: "Ресурсные онлайн",
-          org: "Агни",
-          date: "01.10.21",
-          duration: "",
-          where: "Ресурсные состояния",
-          link: "",
-          target: "взрослые",
-          amount: "2",
-        },
-        {
-          title: "Нежная школа навигаторов",
-          org: "Ира Жукова",
-          date: "01.10.21",
-          duration: "2 месяца",
-          where: "Школа Навигаторов",
-          link: "",
-          target: "образованцы",
-          amount: "3",
-        },
-        {
-          title: "Танго",
-          org: "???",
-          date: "30.09.21",
-          duration: "",
-          where: "Дом на Среднем",
-          link: "",
-          target: "",
-          amount: "4",
-        },
-        {
-          title: "Ресурсные онлайн",
-          org: "Агни",
-          date: "01.10.21",
-          duration: "",
-          where: "Ресурсные состояния",
-          link: "",
-          target: "взрослые",
-          amount: "5",
-        },
-        {
-          title: "Нежная школа навигаторов",
-          org: "Ира Жукова",
-          date: "01.10.21",
-          duration: "2 месяца",
-          where: "Школа Навигаторов",
-          link: "",
-          target: "образованцы",
-          amount: "6",
-        },
-        {
-          title: "Танго",
-          org: "???",
-          date: "30.09.21",
-          duration: "",
-          where: "Дом на Среднем",
-          link: "",
-          target: "",
-          amount: "7",
-        },
-        {
-          title: "Ресурсные онлайн",
-          org: "Агни",
-          date: "01.10.21",
-          duration: "",
-          where: "Ресурсные состояния",
-          link: "",
-          target: "взрослые",
-          amount: "8",
-        },
-        {
-          title: "Нежная школа навигаторов",
-          org: "Ира Жукова",
-          date: "01.10.21",
-          duration: "2 месяца",
-          where: "Школа Навигаторов",
-          link: "",
-          target: "образованцы",
-          amount: "10",
-        },
+        }
       ],
     };
   },
@@ -157,6 +95,7 @@ export default defineComponent({
     return {
       router: useRouter(),
       add,
+      reload,
     };
   },
 

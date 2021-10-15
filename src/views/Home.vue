@@ -15,7 +15,10 @@
             <h1>{{ event.title }}</h1>
             <ion-note>{{ event.org }}</ion-note>
           </ion-label>
-          <ion-badge color="success" slot="end">{{ event.date }}</ion-badge>
+          <ion-badge color="success">{{ event.date }}</ion-badge>
+          <ion-button color="warning" slot="end" @click="() => del(event._id)">
+            Удалить
+          </ion-button>
         </ion-item>
       </ion-list>
 
@@ -27,7 +30,7 @@
         </ion-fab-button>
       </ion-fab>
       <ion-fab vertical="bottom" horizontal="start" slot="fixed">
-        <ion-fab-button @click=showevents()>
+        <ion-fab-button @click=refreshEvents()>
           <ion-icon :icon="reload"></ion-icon>
         </ion-fab-button>
       </ion-fab>
@@ -48,6 +51,7 @@ import Accordion from "@/components/Accordion.vue";
 import { useRouter } from "vue-router";
 import {add, reload} from "ionicons/icons";
 import { getEvents } from '@/api/getEvents'
+import {deleteEvent} from "@/api/deleteEvent";
 
 export default defineComponent({
   name: "Home",
@@ -60,7 +64,15 @@ export default defineComponent({
     IonToolbar,
   },
   methods: {
-    async showevents() {
+    async del(event) {
+      console.log("deleting event: " + event);
+      const response = await deleteEvent(event,).catch((err) => {
+        console.log('err', err)
+      });
+      console.log('got response', response)
+      this.refreshEvents()
+    },
+    async refreshEvents() {
       const response = await getEvents().catch((err) => {
         console.log('err', err)
       });
@@ -72,7 +84,7 @@ export default defineComponent({
   created () {
     // fetch the data when the view is created and the data is
     // already being observed
-    this.showevents()
+    this.refreshEvents()
   },
   data() {
     return {

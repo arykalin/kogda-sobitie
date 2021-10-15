@@ -21,7 +21,7 @@
 </template>
 
 <script lang="ts">
-import {defineComponent} from "vue";
+import {defineComponent, inject} from "vue";
 import { useStore } from 'vuex'
 import {useRouter} from "vue-router";
 
@@ -29,9 +29,11 @@ export default defineComponent({
   name: "Profile",
   components: {},
   setup() {
+    const Vue3GoogleOauth = inject('Vue3GoogleOauth')
     return {
       store: useStore(),
       router: useRouter(),
+      Vue3GoogleOauth,
     }
   },
   computed: {
@@ -53,7 +55,7 @@ export default defineComponent({
     async logout() {
       // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
       // @ts-ignore
-      // await this.$gAuth.signOut()
+      await this.$gAuth.signOut()
       // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
       // @ts-ignore
       this.store.dispatch('auth/logout')

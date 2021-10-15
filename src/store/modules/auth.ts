@@ -27,7 +27,6 @@ const actions = {
                 console.log("got response ", res)
                 localStorage.setItem('token', res.data.token)
                 commit('setUser', res.data.userInfo)
-                commit('setMail', res.data.userInfo.email)
                 commit('setAuth', true)
             })
             .catch((err) => {

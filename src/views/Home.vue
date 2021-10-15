@@ -78,6 +78,7 @@ export default defineComponent({
       });
       console.log('got response', response)
       this.events = response.data.events
+      this.list = response.data.events
       console.log('events is now', this.events)
     },
   },

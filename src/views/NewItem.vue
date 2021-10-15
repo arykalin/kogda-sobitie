@@ -76,6 +76,7 @@ import {
 import {defineComponent, ref} from "vue";
 import {useRouter} from "vue-router";
 import {postEvent} from "@/api/postEvent";
+import {useStore} from "vuex";
 
 export default defineComponent({
   name: "NewItem",
@@ -88,6 +89,13 @@ export default defineComponent({
     IonTitle,
     IonToolbar,
     IonInput,
+  },
+  computed: {
+    user() {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+      // @ts-ignore
+      return this.store.getters['auth/user']
+    },
   },
   data() {
     return {
@@ -104,6 +112,7 @@ export default defineComponent({
   },
   setup() {
     return {
+      store: useStore(),
       router: useRouter(),
     };
   },
@@ -131,7 +140,7 @@ export default defineComponent({
         title: this.title,
         duration: this.duration,
         link: this.link,
-        org: this.org,
+        org: this.user.mail,
         target: this.target,
         where: this.where,
         description: this.description,

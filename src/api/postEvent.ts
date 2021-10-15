@@ -9,7 +9,7 @@ const postEvent = (event: Event): Promise<any> => {
         "Token": token
     };
     console.log('using token ' + token)
-    const obj: MyObj = JSON.stringify(event)
+    const obj = JSON.stringify(event)
     console.log('Posting event: ' + obj)
     return httpClient.post(`${END_POINT}`, obj, { headers })
 }

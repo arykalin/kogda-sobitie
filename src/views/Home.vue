@@ -51,6 +51,9 @@ export default defineComponent({
       const response = await getEvents().catch((err) => {
         console.log('err', err)
       });
+      console.log('got response', response)
+      this.list = response.data.events
+      console.log('list is now', this.list)
     },
   },
   data() {

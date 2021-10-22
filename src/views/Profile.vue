@@ -58,27 +58,37 @@ export default defineComponent({
       // @ts-ignore
       return this.store.getters['auth/user']
     },
-    fullName() {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-      // @ts-ignore
-      return `${this.user.givenName} ${this.user.familyName}`
-    },
     token() {
       return localStorage.getItem('token')
     }
   },
+  created () {
+    // fetch the data when the view is created and the data is
+    // already being observed
+    this.getFullName()
+  },
   methods: {
-    async logout() {
+    getFullName(): void {
+      if (this.user != null) {
+        this.fullName = `${this.user.givenName} ${this.user.familyName}`
+      } else {
+        this.fullName = 'user is empty'
+      }
+    },
+    async logout(): Promise<void> {
       // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
       // @ts-ignore
       await this.$gAuth.signOut()
-      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-      // @ts-ignore
-      this.store.dispatch('auth/logout')
+      await this.store.dispatch('auth/logout')
     },
-    async getStore() {
+    async getStore(): Promise<void> {
       console.log("user getter: ", this.store.getters['auth/user'])
     }
+  },
+  data() {
+    return {
+      fullName: "",
+    };
   },
 })
 </script>

@@ -1,13 +1,11 @@
 <template>
   <ion-page>
-    <ion-header>
+    <ion-header :translucent="true">
       <ion-toolbar>
         <ion-buttons slot="start">
-          <ion-back-button></ion-back-button>
+          <ion-back-button defaultHref="home"></ion-back-button>
         </ion-buttons>
       </ion-toolbar>
-    </ion-header>
-    <ion-header :translucent="true">
       <ion-toolbar>
         <ion-title>Войти</ion-title>
       </ion-toolbar>
@@ -22,7 +20,8 @@
         </ion-label>
       </ion-item>
       <ion-item>
-        <ion-button @click="handleClickSignIn" :disabled="!Vue3GoogleOauth.isInit || Vue3GoogleOauth.isAuthorized">sign in
+        <ion-button @click="handleClickSignIn" :disabled="!Vue3GoogleOauth.isInit || Vue3GoogleOauth.isAuthorized">sign
+          in
         </ion-button>
       </ion-item>
       <ion-item>
@@ -100,7 +99,7 @@ export default defineComponent({
         })
       } catch (error) {
         //on fail do something
-        await this.showToast("Login failed: "+error,  'warning');
+        await this.showToast("Login failed: " + error, 'warning');
         console.error("Error authentication: ", error)
         return null
       }

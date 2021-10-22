@@ -38,11 +38,7 @@
       </ion-item>
 
       <ion-item>
-        <ion-input
-            v-model="amount"
-            placeholder="Сколько людей"
-            type="number"
-        ></ion-input>
+        <ion-input v-model="amount" placeholder="Сколько людей" ></ion-input>
       </ion-item>
 
       <ion-item>

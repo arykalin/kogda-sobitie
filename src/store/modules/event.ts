@@ -1,13 +1,12 @@
 import Event from '@/types/Event'
-import {getEvent} from "@/api/getEvent";
 import {getEvents} from "@/api/getEvents";
 
 interface EventState {
-    events: Event;
+    events: Event[];
 }
 
 const state: EventState = {
-    events: [],
+    events: []
 }
 
 const mutations = {
@@ -16,21 +15,11 @@ const mutations = {
     },
 }
 const actions = {
-    getEvents({ commit }): Event {
+    getEvents({ commit }): Event[] {
         console.log("getting events")
-        const response = getEvents().catch((err) => {
-            console.log('err', err)
-        });
+        const response = getEvents();
         commit('setEvent', true)
-        return getEvent(idToken)
-            .then((res) => {
-                console.log("got response ", res)
-                localStorage.setItem('token', res.data.token)
-                commit('setEvent', true)
-            })
-            .catch((err) => {
-                console.log('err', err)
-            })
+        return []
     },
 }
 const getters = {

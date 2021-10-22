@@ -3,6 +3,13 @@
     <ion-header>
       <ion-toolbar>
         <ion-buttons slot="start">
+          <ion-back-button></ion-back-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-header>
+      <ion-toolbar>
+        <ion-buttons slot="start">
           <ion-back-button default-href="/home"></ion-back-button>
         </ion-buttons>
         <ion-title>Создать событие</ion-title>

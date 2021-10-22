@@ -1,5 +1,12 @@
 <template>
   <ion-page>
+    <ion-header>
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-back-button></ion-back-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
     <ion-header :translucent="true">
       <ion-toolbar>
         <ion-title>Войти</ion-title>
@@ -31,10 +38,28 @@
 
 import {defineComponent, inject} from 'vue'
 import {useStore} from 'vuex'
-import {toastController} from "@ionic/vue";
+import {
+  IonBackButton,
+  IonButtons,
+  IonContent,
+  IonHeader,
+  IonPage,
+  IonTitle,
+  IonToolbar,
+  toastController
+} from "@ionic/vue";
 
 export default defineComponent({
   name: "Login",
+  components: {
+    IonBackButton,
+    IonButtons,
+    IonContent,
+    IonHeader,
+    IonPage,
+    IonTitle,
+    IonToolbar,
+  },
   methods: {
     async handleClickSignIn() {
       try {
@@ -71,7 +96,7 @@ export default defineComponent({
           // show toast
           this.showToast("Login success", 'success');
           // return home
-          this.$router.push('/home')
+          this.$router.push('/profile');
         })
       } catch (error) {
         //on fail do something

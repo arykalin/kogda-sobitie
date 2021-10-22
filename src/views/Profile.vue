@@ -1,9 +1,15 @@
 <template>
-  <ion-header :translucent="true">
-    <ion-toolbar>
-      <ion-title>Профиль</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <ion-page>
+    <ion-header :translucent="true">
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-back-button defaultHref="home"></ion-back-button>
+        </ion-buttons>
+      </ion-toolbar>
+      <ion-toolbar>
+        <ion-title>Профиль</ion-title>
+      </ion-toolbar>
+    </ion-header>
   <ion-content :fullscreen="true">
     <ion-item>
       <ion-label class="ion-text-wrap">
@@ -18,16 +24,26 @@
     <ion-button expand="full" @click="logout()">Выйти</ion-button>
     <ion-button expand="full" @click="getStore()">get store</ion-button>
   </ion-content>
+  </ion-page>
 </template>
 
 <script lang="ts">
+import {IonButtons, IonHeader, IonToolbar, IonContent, IonPage, IonTitle, IonBackButton} from '@ionic/vue';
 import {defineComponent, inject} from "vue";
 import { useStore } from 'vuex'
 import {useRouter} from "vue-router";
 
 export default defineComponent({
   name: "Profile",
-  components: {},
+  components: {
+    IonBackButton,
+    IonButtons,
+    IonContent,
+    IonHeader,
+    IonPage,
+    IonTitle,
+    IonToolbar,
+  },
   setup() {
     const Vue3GoogleOauth = inject('Vue3GoogleOauth')
     return {

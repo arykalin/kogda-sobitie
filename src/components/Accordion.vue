@@ -2,7 +2,7 @@
   <ion-button expand="full" @click="() => reloadAccordion()">
     Reload accordion
   </ion-button>
-  <div v-for="listItem in displayList" :key="listItem.title">
+  <div v-for="listItem in events" :key="listItem.title">
     <ion-item @click="headerClicked(listItem)" >
       <ion-label class="ion-text-wrap">
         <h1>{{ listItem.title }}</h1>
@@ -15,7 +15,7 @@
     </ion-item>
     <transition name="fade">
       <div
-        :ref="'body-' + displayList.indexOf(listItem)"
+        :ref="'body-' + events.indexOf(listItem)"
         style="display: none; height: 115px"
         v-show="expandElement(listItem)"
       >
@@ -38,16 +38,22 @@
 
 <script lang="ts">
 import {deleteEvent} from "@/api/deleteEvent";
+import {useStore} from "vuex";
+import * as events from "events";
 
 export default {
   name: "Accordion",
-  // list of data to display
-  props: ["list"],
-  // data section of component
-  data(): any {
+  setup() {
     return {
-      displayList: (this as any).list,
-    };
+      store: useStore(),
+    }
+  },
+  computed: {
+    events() {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+      // @ts-ignore
+      return this.store.getters['event/events'] as Event[]
+    },
   },
   methods: {
     async del(event) {
@@ -58,8 +64,7 @@ export default {
       console.log('got response', response)
     },
     reloadAccordion() {
-      console.log("displayList is " + (this as any).displayList);
-      console.log("list is " + (this as any).list);
+      console.log("state events are" + events);
       (this as any).displayList = (this as any).list
     },
     /**

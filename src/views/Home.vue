@@ -39,6 +39,8 @@ import { useRouter } from "vue-router";
 import { add, reload } from "ionicons/icons";
 import { getEvents } from "@/api/getEvents";
 import Event from "@/types/Event";
+import {useStore} from "vuex";
+import {showToast} from "@/util/toast";
 
 export default defineComponent({
   name: "Home",
@@ -52,17 +54,10 @@ export default defineComponent({
   },
   methods: {
     async refreshEvents() {
-      //TODO: if events throw an error do not update it
-      try {const response = getEvents()
-        console.log(`got response: ${response}`);
-        this.events = response;
-        this.list = response;
-        console.log("events is now", this.events);
-        console.log("list is now", this.list);
-      }
-      catch (e) {
-       console.log(`error getting events: ${e}`)
-      }
+      await this.store.dispatch('event/updateEvents').then(() => {
+        // show toast
+        console.log("events updated")
+      })
     },
   },
   created() {
@@ -123,10 +118,13 @@ export default defineComponent({
     };
   },
   setup() {
+    const store = useStore()
     return {
       router: useRouter(),
       add,
       reload,
+      store,
+      showToast,
     };
   },
 });

@@ -11,18 +11,25 @@ const state: EventState = {
 
 const mutations = {
     setEvents(state, events: Event[]): void {
+        console.log("setEvents state: ", events);
         state.events = events
     },
 }
 const actions = {
+    //TODO: if events throw an error do not update it
     updateEvents({ commit }): void {
-        const events = getEvents()
-        console.log(`action updateEvents got response: ${events}`);
-        commit('setEvents', events);
+        try {
+            const events = getEvents()
+            console.log("action updateEvents got response: ", events);
+            commit('setEvents', events);
+        }
+        catch (e) {
+            console.log(`error getting events in action updateEvents: ${e}`)
+        }
     },
 }
 const getters = {
-    event: (state) => state.Event,
+    event: (state) => state.events,
 }
 
 export default {

@@ -1,5 +1,5 @@
 interface Event {
-    date: string;
+    date: Date;
     title: string;
     duration: string;
     link: string;

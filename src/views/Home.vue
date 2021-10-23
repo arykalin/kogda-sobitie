@@ -38,7 +38,6 @@ import Accordion from "@/components/Accordion.vue";
 import { useRouter } from "vue-router";
 import { add, reload } from "ionicons/icons";
 import { getEvents } from "@/api/getEvents";
-import { deleteEvent } from "@/api/deleteEvent";
 import Event from "@/types/Event";
 
 export default defineComponent({
@@ -53,9 +52,8 @@ export default defineComponent({
   },
   methods: {
     async refreshEvents() {
-      const response = await getEvents();
-      console.log("aaa");
-      console.log(response);
+      const response = getEvents();
+      console.log(`got response: ${response}`);
       this.events = response;
       this.list = response;
       console.log("events is now", this.events);

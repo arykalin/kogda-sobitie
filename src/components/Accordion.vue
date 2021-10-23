@@ -4,7 +4,7 @@
   </ion-button>
   <div v-for="listItem in displayList" :key="listItem.title">
     <ion-item @click="headerClicked(listItem)" >
-      <ion-label>
+      <ion-label class="ion-text-wrap">
         <h1>{{ listItem.title }}</h1>
         <h3>{{ listItem.org }}</h3>
         <ion-note>{{ listItem.date }}</ion-note>

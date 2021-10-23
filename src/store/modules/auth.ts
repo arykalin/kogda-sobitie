@@ -40,7 +40,9 @@ const actions = {
     },
 }
 const getters = {
-    user: (state) => state.user,
+    user: state => {
+        console.log("getting user from user getter")
+        return state.user},
     token: (state) => state.token,
     isAuth: (state) => state.isAuth,
 }

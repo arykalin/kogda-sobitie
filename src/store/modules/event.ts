@@ -18,18 +18,16 @@ const mutations = {
 const actions = {
     //TODO: if events throw an error do not update it
     updateEvents({ commit }): void {
-        try {
-            const events = getEvents()
-            console.log("action updateEvents got response: ", events);
-            commit('setEvents', events);
-        }
-        catch (e) {
-            console.log(`error getting events in action updateEvents: ${e}`)
-        }
+        const events = getEvents()
+        console.log("action updateEvents got response: ", events);
+        commit('setEvents', events);
     },
 }
 const getters = {
-    event: (state) => state.events,
+    events: state => {
+        console.log("getting events from events getter")
+     return state.events
+    },
 }
 
 export default {

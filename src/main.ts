@@ -28,12 +28,6 @@ import './theme/variables.css';
 /* Store */
 import store from '@/store'
 
-// Google login2
-// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-// @ts-ignore
-// import gAuthPlugin from 'vue3-google-oauth2';
-// const gauthClientId = "634894223473-3tgmno07c1tp5cucn12m5cffug6dib95.apps.googleusercontent.com";
-
 const gAuthOptions = {
     clientId:
         '634894223473-3tgmno07c1tp5cucn12m5cffug6dib95.apps.googleusercontent.com',

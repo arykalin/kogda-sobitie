@@ -53,11 +53,8 @@ export default defineComponent({
     IonToolbar,
   },
   methods: {
-    async refreshEvents() {
-      await this.store.dispatch('event/updateEvents').then(() => {
-        // show toast
-        console.log("events updated")
-      })
+    refreshEvents() {
+      this.store.dispatch('event/updateEvents')
     },
   },
   created() {

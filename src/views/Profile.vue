@@ -32,6 +32,7 @@ import {IonButtons, IonHeader, IonToolbar, IonContent, IonPage, IonTitle, IonBac
 import {defineComponent, inject} from "vue";
 import { useStore } from 'vuex'
 import {useRouter} from "vue-router";
+import User from "@/types/User";
 
 export default defineComponent({
   name: "Profile",
@@ -82,7 +83,8 @@ export default defineComponent({
       await this.store.dispatch('auth/logout')
     },
     async getStore(): Promise<void> {
-      console.log("user getter: ", this.store.getters['auth/user'])
+      console.log("user getter: ", this.store.getters['auth/user'] as User)
+      console.log("events getter: ", this.store.getters['event/events'] as Event[])
     }
   },
   data() {

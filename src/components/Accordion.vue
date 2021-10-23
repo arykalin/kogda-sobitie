@@ -40,12 +40,14 @@
 import {deleteEvent} from "@/api/deleteEvent";
 import {useStore} from "vuex";
 import * as events from "events";
+import {defineComponent} from "vue";
 
-export default {
+export default defineComponent( {
   name: "Accordion",
   setup() {
+    const store = useStore()
     return {
-      store: useStore(),
+      store,
     }
   },
   computed: {
@@ -64,7 +66,8 @@ export default {
       console.log('got response', response)
     },
     reloadAccordion() {
-      console.log("state events are" + events);
+      console.log("computed events are" + events);
+      console.log("events in state are: ", this.store.getters['event/events']);
       (this as any).displayList = (this as any).list
     },
     /**
@@ -97,7 +100,7 @@ export default {
       (this as any).displayList = [...(this as any).displayList];
     },
   },
-};
+})
 </script>
 
 <style  scoped>

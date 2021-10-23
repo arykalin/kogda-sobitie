@@ -3,7 +3,7 @@ import Event from "@/types/Event";
 
 const END_POINT = '/events'
 
-const getEvents = (): Event[] => {
+const getEvents = (): Event[] | null => {
     const answer: Event[] = [];
     httpClient.get(`${END_POINT}`)
         .then((response) => {

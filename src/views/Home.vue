@@ -54,8 +54,10 @@ export default defineComponent({
     async refreshEvents() {
       const response = getEvents();
       console.log(`got response: ${response}`);
-      this.events = response;
-      this.list = response;
+      if (response !== null) {
+        this.events = response;
+        this.list = response;
+      }
       console.log("events is now", this.events);
       console.log("list is now", this.list);
     },
@@ -67,8 +69,8 @@ export default defineComponent({
   },
   data() {
     return {
-      events: [] as Event[],
-      list: [] as Event[],
+      events: [] as Event[] | null,
+      list: [] as Event[] | null,
       // list: [
       //   {
       //     title: "Танго",

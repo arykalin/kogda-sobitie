@@ -10,16 +10,15 @@ const state: EventState = {
 }
 
 const mutations = {
-    setEvent(state, event: Event): void {
-        state.event = event
+    setEvents(state, events: Event[]): void {
+        state.events = events
     },
 }
 const actions = {
-    getEvents({ commit }): Event[] {
-        console.log("getting events")
-        const response = getEvents();
-        commit('setEvent', true)
-        return []
+    updateEvents({ commit }): void {
+        const events = getEvents()
+        console.log(`action updateEvents got response: ${events}`);
+        commit('setEvents', events);
     },
 }
 const getters = {

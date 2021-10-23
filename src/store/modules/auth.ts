@@ -20,9 +20,9 @@ const mutations = {
     },
 }
 const actions = {
-    backendAuth({ commit }, idToken: string): Promise<void> {
+    backendAuth({ commit }, idToken: string): void {
         console.log("getting user id with token ", idToken)
-        return getAuth(idToken)
+        getAuth(idToken)
             .then((res) => {
                 console.log("got response ", res)
                 localStorage.setItem('token', res.data.token)

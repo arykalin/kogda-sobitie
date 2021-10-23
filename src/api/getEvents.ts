@@ -3,7 +3,7 @@ import Event from "@/types/Event";
 
 const END_POINT = '/events'
 
-const getEvents = (): Event[] | null => {
+const getEvents = (): Event[] => {
     const answer: Event[] = [];
     httpClient.get(`${END_POINT}`)
         .then((response) => {
@@ -27,6 +27,7 @@ const getEvents = (): Event[] | null => {
         })
         .catch((error) => {
             console.error(`error getting events: ${error}`);
+            throw new Error(`error getting events: ${error}`);
         })
     return answer
 }

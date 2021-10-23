@@ -52,14 +52,17 @@ export default defineComponent({
   },
   methods: {
     async refreshEvents() {
-      const response = getEvents();
-      console.log(`got response: ${response}`);
-      if (response !== null) {
+      //TODO: if events throw an error do not update it
+      try {const response = getEvents()
+        console.log(`got response: ${response}`);
         this.events = response;
         this.list = response;
+        console.log("events is now", this.events);
+        console.log("list is now", this.list);
       }
-      console.log("events is now", this.events);
-      console.log("list is now", this.list);
+      catch (e) {
+       console.log(`error getting events: ${e}`)
+      }
     },
   },
   created() {
@@ -69,8 +72,8 @@ export default defineComponent({
   },
   data() {
     return {
-      events: [] as Event[] | null,
-      list: [] as Event[] | null,
+      events: [] as Event[],
+      list: [] as Event[],
       // list: [
       //   {
       //     title: "Танго",

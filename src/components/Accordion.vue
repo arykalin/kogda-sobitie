@@ -1,5 +1,5 @@
 <template>
-  <ion-button expand="full" @click="() => reloadAccordion()">
+  <ion-button expand="full" @click="() => showAccrodionEvents()">
     Reload accordion
   </ion-button>
   <div v-for="listItem in events" :key="listItem.title">
@@ -8,7 +8,7 @@
         <h1>{{ listItem.title }}</h1>
         <h3>{{ listItem.org }}</h3>
         <ion-note>{{ listItem.date }}</ion-note>
-        <ion-button color="warning" slot="end" @click="() => del(listItem._id)">
+        <ion-button color="warning" slot="end" @click="() => del(listItem.id)">
           delete
         </ion-button>
       </ion-label>
@@ -39,8 +39,8 @@
 <script lang="ts">
 import {deleteEvent} from "@/api/deleteEvent";
 import {useStore} from "vuex";
-import * as events from "events";
 import {defineComponent} from "vue";
+import Event from "@/types/Event";
 
 export default defineComponent( {
   name: "Accordion",
@@ -51,7 +51,7 @@ export default defineComponent( {
     }
   },
   computed: {
-    events() {
+    events(): Event[] {
       // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
       // @ts-ignore
       return this.store.getters['event/events'] as Event[]
@@ -65,10 +65,25 @@ export default defineComponent( {
       });
       console.log('got response', response)
     },
-    reloadAccordion() {
-      console.log("computed events are" + events);
+    showAccrodionEvents() {
+      console.log("computed events are" + this.events);
+      this.events.map(event => {
+        console.log("iterating over event", event.title)
+        const newEvent: Event = {
+          id: event.id,
+          title: event.title,
+          description: event.description,
+          org: event.org,
+          where: event.where,
+          date: new Date(event.date),
+          duration: event.duration,
+          target: event.target,
+          amount: event.amount,
+          link: event.link,
+        };
+        console.log("made new event: ", newEvent);
+      })
       console.log("events in state are: ", this.store.getters['event/events']);
-      (this as any).displayList = (this as any).list
     },
     /**
      * this function is called to determine if the element
@@ -99,6 +114,11 @@ export default defineComponent( {
       }, this);
       (this as any).displayList = [...(this as any).displayList];
     },
+  },
+  data() {
+    return {
+      displayList: this.events
+    };
   },
 })
 </script>

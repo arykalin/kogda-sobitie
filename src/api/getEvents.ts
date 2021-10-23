@@ -11,6 +11,7 @@ function getEvents(): Event[] {
             console.log("got response from api: ", response)
             response.data.events.map(event => {
                 const newEvent: Event = {
+                    id: event._id,
                     title: event.title,
                     description: event.description,
                     org: event.org,

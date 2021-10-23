@@ -2,7 +2,7 @@
   <ion-button expand="full" @click="() => showAccrodionEvents()">
     Reload accordion
   </ion-button>
-  <div v-for="listItem in events" :key="listItem.title">
+  <div v-for="listItem in this.events" v-bind:key="listItem.id">
     <ion-item @click="headerClicked(listItem)" >
       <ion-label class="ion-text-wrap">
         <h1>{{ listItem.title }}</h1>

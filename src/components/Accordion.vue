@@ -59,6 +59,8 @@ import {deleteEvent} from "@/api/deleteEvent";
 import {useStore} from "vuex";
 import {defineComponent} from "vue";
 import Event from "@/types/Event";
+import { mapState } from 'vuex'
+import { mapGetters } from 'vuex'
 
 export default defineComponent( {
   name: "Accordion",
@@ -68,14 +70,21 @@ export default defineComponent( {
       store,
     }
   },
-  computed: {
-    events(): Event[] {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-      // @ts-ignore
-      this.$forceUpdate();
-      return this.store.getters['event/events'] as Event[]
-    },
-  },
+  computed: mapState({
+    // arrow functions can make the code very succinct!
+    events: state => state.event.events,
+
+  }),
+  // computed: {
+  //   //FIXME: migrate to mapState https://michaelnthiessen.com/debugging-guide-why-your-component-isnt-updating/
+  //   // https://vuex.vuejs.org/guide/state.html#the-mapstate-helper
+  //   events(): Event[] {
+  //     // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+  //     // @ts-ignore
+  //     this.$forceUpdate();
+  //     return this.store.getters['event/events'] as Event[]
+  //   },
+  // },
   methods: {
     async del(event) {
       console.log("Accordion: deleting event: " + event);

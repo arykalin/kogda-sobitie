@@ -2,6 +2,24 @@
   <ion-button expand="full" @click="() => showAccrodionEvents()">
     Reload accordion
   </ion-button>
+  <ion-list>
+    <ion-item>
+      <h1>Events</h1>
+<!--      <ion-note>-->
+<!--        Events are {{this.events}}-->
+<!--      </ion-note>-->
+    </ion-item>
+  <ion-item v-for="(event,index) in this.events" :key="index">
+    <ion-label class="ion-text-wrap">
+      <h1>{{ event.title }}</h1>
+      <h3>{{ event.org }}</h3>
+      <ion-note>{{ event.date }}</ion-note>
+      <ion-button color="warning" slot="end" @click="() => del(event.id)">
+        delete
+      </ion-button>
+    </ion-label>
+  </ion-item>
+  </ion-list>
   <div v-for="listItem in this.events" v-bind:key="listItem.id">
     <ion-item @click="headerClicked(listItem)" >
       <ion-label class="ion-text-wrap">
@@ -54,21 +72,22 @@ export default defineComponent( {
     events(): Event[] {
       // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
       // @ts-ignore
+      this.$forceUpdate();
       return this.store.getters['event/events'] as Event[]
     },
   },
   methods: {
     async del(event) {
-      console.log("deleting event: " + event);
+      console.log("Accordion: deleting event: " + event);
       const response = await deleteEvent(event,).catch((err) => {
-        console.log('err', err)
+        console.log('Accordion: err', err)
       });
-      console.log('got response', response)
+      console.log('Accordion: got response', response)
     },
     showAccrodionEvents() {
-      console.log("computed events are" + this.events);
+      console.log("Accordion: computed events are" + this.events);
       this.events.map(event => {
-        console.log("iterating over event", event.title)
+        console.log("Accordion: iterating over event", event.title)
         const newEvent: Event = {
           id: event.id,
           title: event.title,
@@ -81,16 +100,17 @@ export default defineComponent( {
           amount: event.amount,
           link: event.link,
         };
-        console.log("made new event: ", newEvent);
+        console.log("Accordion: made new event: ", newEvent);
       })
-      console.log("events in state are: ", this.store.getters['event/events']);
+      console.log("Accordion: events in state are: ", this.store.getters['event/events']);
+      this.$forceUpdate();
     },
     /**
      * this function is called to determine if the element
      * should be in the expanded mode or not
      */
     expandElement(listItem: any): boolean {
-      const curE = (this as any).$refs["body-" + (this as any).displayList.indexOf(listItem)];
+      const curE = (this as any).$refs["body-" + (this as any).events.indexOf(listItem)];
       if (curE === undefined) return false;
       return curE.dataset.isExpanded === "true";
     },
@@ -100,8 +120,8 @@ export default defineComponent( {
      * this listItem that was clicked
      */
     headerClicked(listItem: any): any {
-      (this as any).displayList.map((e: any) => {
-        const curE = (this as any).$refs["body-" + (this as any).displayList.indexOf(e)];
+      (this as any).events.map((e: any) => {
+        const curE = (this as any).$refs["body-" + (this as any).events.indexOf(e)];
         if (e === listItem) {
           if (curE.dataset.isExpanded === "true") {
             curE.setAttribute("data-is-expanded", false);
@@ -112,13 +132,8 @@ export default defineComponent( {
           curE.setAttribute("data-is-expanded", false);
         }
       }, this);
-      (this as any).displayList = [...(this as any).displayList];
+      (this as any).events = [...(this as any).events];
     },
-  },
-  data() {
-    return {
-      displayList: this.events
-    };
   },
 })
 </script>

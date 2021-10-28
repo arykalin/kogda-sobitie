@@ -70,11 +70,18 @@ export default defineComponent({
       store,
     }
   },
-  computed: mapState({
-    // arrow functions can make the code very succinct!
-    events: 'event/events',
-  }),
-
+  // computed: mapState({
+  //   // arrow functions can make the code very succinct!
+  //   events: 'event/events',
+  // }),
+  //
+  computed: {
+    events() {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+      // @ts-ignore
+      return this.store.getters['event/events'] as Event[]
+    },
+  },
   methods: {
     async del(event) {
       console.log("Accordion: deleting event: " + event);

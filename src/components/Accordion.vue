@@ -68,49 +68,20 @@ export default {
       console.log('got response', response)
     },
     reloadAccordion() {
-      console.log("displayList is " + (this as any).displayList);
-      console.log("list is " + (this as any).list);
+      // console.log("displayList is " + (this as any).displayList);
+      // console.log("list is " + (this as any).list);
       (this as any).displayList = (this as any).list
     },
-    /**
-     * this function is called to determine if the element
-     * should be in the expanded mode or not
-     */
     expandElement(elemID: string): boolean {
-      // console.log("Accordion expandElement: expading element of list", listItem)
-      // console.log("Accordion expandElement: expading element from displayList", (this as any).displayList)
-      // console.log("Accordion expandElement: expading element from refs", (this as any).$refs)
-      // const curE = (this as any).$refs["body-" + (this as any).displayList.indexOf(listItem)];
-      // console.log("Accordion expandElement: expading element", curE)
-      // if (curE === undefined) return false;
-      // return curE.dataset.isExpanded === "true";
       return (this as any).isExpanded === elemID;
 
     },
-    /**
-     * this iterates through all of the elements in the list
-     * and set data attribute isExpanded appropriately based on
-     * this listItem that was clicked
-     */
     headerClicked(id: string): void {
       if ((this as any).isExpanded === id) {
         (this as any).isExpanded = ""
       } else {
         (this as any).isExpanded = id
       }
-      // (this as any).displayList.map((e: any) => {
-      //   const curE = (this as any).$refs["body-" + (this as any).displayList.indexOf(e)];
-      //   if (e === listItem) {
-      //     if (curE.dataset.isExpanded === "true") {
-      //       curE.setAttribute("data-is-expanded", false);
-      //     } else {
-      //       curE.setAttribute("data-is-expanded", true);
-      //     }
-      //   } else {
-      //     curE.setAttribute("data-is-expanded", false);
-      //   }
-      // }, this);
-      // (this as any).displayList = [...(this as any).displayList];
     },
   },
 };

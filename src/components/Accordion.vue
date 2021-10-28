@@ -1,5 +1,8 @@
 <template>
-  <div v-for="listItem in displayList" :key="listItem.title">
+  <ion-button expand="full" @click="() => getLogs(list)">
+    get logs
+  </ion-button>
+  <div v-for="listItem in list" :key="listItem.title">
     <ion-item @click="headerClicked(listItem.id)" >
       <ion-label>
         <h1>{{ listItem.title }}</h1>
@@ -34,29 +37,21 @@
 
 <script lang="ts">
 import {deleteEvent} from "@/api/deleteEvent";
-import {getEvents} from "@/api/getEvents";
 
 export default {
   name: "Accordion",
   // list of data to display
   props: ["list"],
   // data section of component
-  created() {
-    // fetch the data when the view is created and the data is
-    // already being observed
-    setInterval(() => {
-      console.log("displayList is " + (this as any).displayList);
-      console.log("list is " + (this as any).list);
-      (this as any).displayList = (this as any).list
-    }, 3000)
-  },
   data(): any {
     return {
       isExpanded: "",
-      displayList: (this as any).list,
     };
   },
   methods: {
+    getLogs(list) {
+      console.log("Accordion: list is ", list)
+    },
     async del(event) {
       console.log("deleting event: " + event);
       const response = await deleteEvent(event,).catch((err) => {

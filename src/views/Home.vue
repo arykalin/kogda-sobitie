@@ -65,15 +65,15 @@ export default defineComponent({
   created() {
     // fetch the data when the view is created and the data is
     // already being observed
-    setInterval(() => {
-      const response = getEvents();
-      console.log("aaa");
-      console.log(response);
-      this.events = response;
-      this.list = response;
-      console.log("events is now", this.events);
-      console.log("list is now", this.list);
-    }, 3000)
+    // setInterval(() => {
+    //   const response = getEvents();
+    //   console.log("aaa");
+    //   console.log(response);
+    //   this.events = response;
+    //   this.list = response;
+    //   console.log("events is now", this.events);
+    //   console.log("list is now", this.list);
+    // }, 3000)
   },
   data() {
     return {

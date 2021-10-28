@@ -1,6 +1,6 @@
 <template>
   <ion-button expand="full" @click="() => getLogs(list)">
-    get logs
+    get accordion logs
   </ion-button>
   <div v-for="listItem in list" :key="listItem.title">
     <ion-item @click="headerClicked(listItem.id)" >

@@ -93,7 +93,11 @@ export default {
      * this listItem that was clicked
      */
     headerClicked(id: string): void {
-      (this as any).isExpanded = id
+      if ((this as any).isExpanded === id) {
+        (this as any).isExpanded = ""
+      } else {
+        (this as any).isExpanded = id
+      }
       // (this as any).displayList.map((e: any) => {
       //   const curE = (this as any).$refs["body-" + (this as any).displayList.indexOf(e)];
       //   if (e === listItem) {

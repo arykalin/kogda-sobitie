@@ -72,19 +72,9 @@ export default defineComponent({
   },
   computed: mapState({
     // arrow functions can make the code very succinct!
-    events: state => state.event.events,
-
+    events: 'event/events',
   }),
-  // computed: {
-  //   //FIXME: migrate to mapState https://michaelnthiessen.com/debugging-guide-why-your-component-isnt-updating/
-  //   // https://vuex.vuejs.org/guide/state.html#the-mapstate-helper
-  //   events(): Event[] {
-  //     // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-  //     // @ts-ignore
-  //     this.$forceUpdate();
-  //     return this.store.getters['event/events'] as Event[]
-  //   },
-  // },
+
   methods: {
     async del(event) {
       console.log("Accordion: deleting event: " + event);
@@ -94,7 +84,7 @@ export default defineComponent({
       console.log('Accordion: got response', response)
     },
     showAccrodionEvents() {
-      console.log("Accordion: computed events are" + this.events);
+      console.log("Accordion: computed events are " + this.events);
       this.events.map(event => {
         console.log("Accordion: iterating over event", event.title)
         const newEvent: Event = {

@@ -4,7 +4,7 @@
   </ion-button>
   <ion-list>
     <ion-item>
-      <h1>Events</h1>
+      <h1>Events debug info</h1>
       <!--      <ion-note>-->
       <!--        Events are {{this.events}}-->
       <!--      </ion-note>-->
@@ -18,6 +18,7 @@
           delete
         </ion-button>
       </ion-label>
+      <h1>Events debug info end</h1>
     </ion-item>
   </ion-list>
   <div v-for="listItem in this.events" v-bind:key="listItem.id">
@@ -59,8 +60,6 @@ import {deleteEvent} from "@/api/deleteEvent";
 import {useStore} from "vuex";
 import {defineComponent} from "vue";
 import Event from "@/types/Event";
-import {mapState} from 'vuex'
-import {mapGetters} from 'vuex'
 
 export default defineComponent({
   name: "Accordion",

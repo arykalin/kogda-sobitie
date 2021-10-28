@@ -3,7 +3,7 @@
     Reload accordion
   </ion-button>
   <div v-for="listItem in displayList" :key="listItem.title">
-    <ion-item @click="headerClicked(listItem)" >
+    <ion-item @click="headerClicked(listItem.id)" >
       <ion-label>
         <h1>{{ listItem.title }}</h1>
         <h3>{{ listItem.org }}</h3>

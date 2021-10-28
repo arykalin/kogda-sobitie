@@ -1,8 +1,8 @@
 <template>
-  <ion-button expand="full" @click="() => getLogs(list)">
+  <ion-button expand="full" @click="() => getLogs(events)">
     get accordion logs
   </ion-button>
-  <div v-for="listItem in list" :key="listItem.title">
+  <div v-for="listItem in events" :key="listItem.title">
     <ion-item @click="headerClicked(listItem.id)" >
       <ion-label>
         <h1>{{ listItem.title }}</h1>
@@ -47,15 +47,9 @@ export default defineComponent({
     const store = useStore()
     return {
       isExpanded: "",
-    };
       store,
-    }
+    };
   },
-  // computed: mapState({
-  //   // arrow functions can make the code very succinct!
-  //   events: 'event/events',
-  // }),
-  //
   computed: {
     events() {
       // eslint-disable-next-line @typescript-eslint/ban-ts-ignore

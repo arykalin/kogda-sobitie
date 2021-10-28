@@ -1,7 +1,4 @@
 <template>
-  <ion-button expand="full" @click="() => reloadAccordion()">
-    Reload accordion
-  </ion-button>
   <div v-for="listItem in displayList" :key="listItem.title">
     <ion-item @click="headerClicked(listItem.id)" >
       <ion-label>
@@ -66,11 +63,6 @@ export default {
         console.log('err', err)
       });
       console.log('got response', response)
-    },
-    reloadAccordion() {
-      // console.log("displayList is " + (this as any).displayList);
-      // console.log("list is " + (this as any).list);
-      (this as any).displayList = (this as any).list
     },
     expandElement(elemID: string): boolean {
       return (this as any).isExpanded === elemID;

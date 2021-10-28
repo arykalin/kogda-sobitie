@@ -52,7 +52,7 @@ export default defineComponent({
     IonToolbar,
   },
   methods: {
-    async refreshEvents() {
+    async refreshEvents(): Promise<void> {
       const response = await getEvents();
       console.log("aaa");
       console.log(response);
@@ -65,58 +65,20 @@ export default defineComponent({
   created() {
     // fetch the data when the view is created and the data is
     // already being observed
-    this.refreshEvents();
+    setInterval(() => {
+      const response = getEvents();
+      console.log("aaa");
+      console.log(response);
+      this.events = response;
+      this.list = response;
+      console.log("events is now", this.events);
+      console.log("list is now", this.list);
+    }, 3000)
   },
   data() {
     return {
       events: [] as Event[],
       list: [] as Event[],
-      // list: [
-      //   {
-      //     title: "Танго",
-      //     org: "???",
-      //     date: new Date("2021-09-30"),
-      //     description: "",
-      //     duration: "",
-      //     where: "Дом на Среднем",
-      //     link: "",
-      //     target: "",
-      //     amount: "",
-      //   },
-      //   {
-      //     title: "Ресурсные онлайн",
-      //     org: "Агни",
-      //     date: new Date("2021-10-01"),
-      //     description: "",
-      //     duration: "",
-      //     where: "Ресурсные состояния",
-      //     link: "",
-      //     target: "взрослые",
-      //     amount: "10",
-      //   },
-      //   {
-      //     title: "Нежная школа навигаторов",
-      //     org: "Ира Жукова",
-      //     date: new Date("2021-10-01"),
-      //     description: "",
-      //     duration: "2 месяца",
-      //     where: "Школа Навигаторов",
-      //     link: "",
-      //     target: "образованцы",
-      //     amount: "20",
-      //   },
-      //   {
-      //     title: "Танго",
-      //     org: "???",
-      //     date: new Date("2021-09-03"),
-      //     description: "",
-      //     duration: "",
-      //     where: "Дом на Среднем",
-      //     link: "",
-      //     target: "",
-      //     amount: "",
-      //   },
-      // ] as Event[],
     };
   },
   setup() {

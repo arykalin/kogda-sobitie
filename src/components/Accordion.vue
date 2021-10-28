@@ -38,12 +38,22 @@
 
 <script lang="ts">
 import {deleteEvent} from "@/api/deleteEvent";
+import {getEvents} from "@/api/getEvents";
 
 export default {
   name: "Accordion",
   // list of data to display
   props: ["list"],
   // data section of component
+  created() {
+    // fetch the data when the view is created and the data is
+    // already being observed
+    setInterval(() => {
+      console.log("displayList is " + (this as any).displayList);
+      console.log("list is " + (this as any).list);
+      (this as any).displayList = (this as any).list
+    }, 3000)
+  },
   data(): any {
     return {
       displayList: (this as any).list,

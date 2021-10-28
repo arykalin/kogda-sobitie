@@ -5,23 +5,23 @@
   <ion-list>
     <ion-item>
       <h1>Events</h1>
-<!--      <ion-note>-->
-<!--        Events are {{this.events}}-->
-<!--      </ion-note>-->
+      <!--      <ion-note>-->
+      <!--        Events are {{this.events}}-->
+      <!--      </ion-note>-->
     </ion-item>
-  <ion-item v-for="(event,index) in this.events" :key="index">
-    <ion-label class="ion-text-wrap">
-      <h1>{{ event.title }}</h1>
-      <h3>{{ event.org }}</h3>
-      <ion-note>{{ event.date }}</ion-note>
-      <ion-button color="warning" slot="end" @click="() => del(event.id)">
-        delete
-      </ion-button>
-    </ion-label>
-  </ion-item>
+    <ion-item v-for="(event,index) in this.events" :key="index">
+      <ion-label class="ion-text-wrap">
+        <h1>{{ event.title }}</h1>
+        <h3>{{ event.org }}</h3>
+        <ion-note>{{ event.date }}</ion-note>
+        <ion-button color="warning" slot="end" @click="() => del(event.id)">
+          delete
+        </ion-button>
+      </ion-label>
+    </ion-item>
   </ion-list>
   <div v-for="listItem in this.events" v-bind:key="listItem.id">
-    <ion-item @click="headerClicked(listItem)" >
+    <ion-item @click="headerClicked(listItem)">
       <ion-label class="ion-text-wrap">
         <h1>{{ listItem.title }}</h1>
         <h3>{{ listItem.org }}</h3>
@@ -33,18 +33,18 @@
     </ion-item>
     <transition name="fade">
       <div
-        :ref="'body-' + events.indexOf(listItem)"
-        style="display: none; height: 115px"
-        v-show="expandElement(listItem)"
+          :ref="'body-' + events.indexOf(listItem)"
+          style="display: none; height: 115px"
+          v-show="expandElement(listItem)"
       >
         <ion-item>
           <ion-label>
             <ion-note>
-              {{ "id: " + listItem._id}}<br />
-              {{ "место: " + listItem.where }}<br />
-              {{ "длительность: " + listItem.duration }}<br />
-              {{ "для кого: " + listItem.target }}<br />
-              {{ "сколько: " + listItem.amount }}<br />
+              {{ "id: " + listItem._id }}<br/>
+              {{ "место: " + listItem.where }}<br/>
+              {{ "длительность: " + listItem.duration }}<br/>
+              {{ "для кого: " + listItem.target }}<br/>
+              {{ "сколько: " + listItem.amount }}<br/>
               {{ "ссылка:" + listItem.link }}
             </ion-note>
           </ion-label>
@@ -59,10 +59,10 @@ import {deleteEvent} from "@/api/deleteEvent";
 import {useStore} from "vuex";
 import {defineComponent} from "vue";
 import Event from "@/types/Event";
-import { mapState } from 'vuex'
-import { mapGetters } from 'vuex'
+import {mapState} from 'vuex'
+import {mapGetters} from 'vuex'
 
-export default defineComponent( {
+export default defineComponent({
   name: "Accordion",
   setup() {
     const store = useStore()
@@ -147,12 +147,13 @@ export default defineComponent( {
 })
 </script>
 
-<style  scoped>
+<style scoped>
 .fade-enter-active,
 .fade-leave-active {
   transition: height 0.3s ease-in-out;
   overflow: hidden;
 }
+
 .fade-enter-from,
 .fade-leave-to {
   height: 0px !important;

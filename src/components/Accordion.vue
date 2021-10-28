@@ -1,29 +1,10 @@
 <template>
-  <ion-button expand="full" @click="() => showAccrodionEvents()">
-    Reload accordion
+  <ion-button expand="full" @click="() => getLogs(list)">
+    get accordion logs
   </ion-button>
-  <ion-list>
-    <ion-item>
-      <h1>Events debug info</h1>
-      <!--      <ion-note>-->
-      <!--        Events are {{this.events}}-->
-      <!--      </ion-note>-->
-    </ion-item>
-    <ion-item v-for="(event,index) in this.events" :key="index">
-      <ion-label class="ion-text-wrap">
-        <h1>{{ event.title }}</h1>
-        <h3>{{ event.org }}</h3>
-        <ion-note>{{ event.date }}</ion-note>
-        <ion-button color="warning" slot="end" @click="() => del(event.id)">
-          delete
-        </ion-button>
-      </ion-label>
-      <h1>Events debug info end</h1>
-    </ion-item>
-  </ion-list>
-  <div v-for="listItem in this.events" v-bind:key="listItem.id">
-    <ion-item @click="headerClicked(listItem)">
-      <ion-label class="ion-text-wrap">
+  <div v-for="listItem in list" :key="listItem.title">
+    <ion-item @click="headerClicked(listItem.id)" >
+      <ion-label>
         <h1>{{ listItem.title }}</h1>
         <h3>{{ listItem.org }}</h3>
         <ion-note>{{ listItem.date }}</ion-note>
@@ -34,18 +15,17 @@
     </ion-item>
     <transition name="fade">
       <div
-          :ref="'body-' + events.indexOf(listItem)"
-          style="display: none; height: 115px"
-          v-show="expandElement(listItem)"
+        style="display: none; height: 115px"
+        v-show="expandElement(listItem.id)"
       >
         <ion-item>
           <ion-label>
             <ion-note>
-              {{ "id: " + listItem._id }}<br/>
-              {{ "место: " + listItem.where }}<br/>
-              {{ "длительность: " + listItem.duration }}<br/>
-              {{ "для кого: " + listItem.target }}<br/>
-              {{ "сколько: " + listItem.amount }}<br/>
+              {{ "id: " + listItem.id}}<br />
+              {{ "место: " + listItem.where }}<br />
+              {{ "длительность: " + listItem.duration }}<br />
+              {{ "для кого: " + listItem.target }}<br />
+              {{ "сколько: " + listItem.amount }}<br />
               {{ "ссылка:" + listItem.link }}
             </ion-note>
           </ion-label>
@@ -66,6 +46,8 @@ export default defineComponent({
   setup() {
     const store = useStore()
     return {
+      isExpanded: "",
+    };
       store,
     }
   },
@@ -82,6 +64,9 @@ export default defineComponent({
     },
   },
   methods: {
+    getLogs(list) {
+      console.log("Accordion: list is ", list)
+    },
     async del(event) {
       console.log("Accordion: deleting event: " + event);
       const response = await deleteEvent(event,).catch((err) => {
@@ -89,55 +74,16 @@ export default defineComponent({
       });
       console.log('Accordion: got response', response)
     },
-    showAccrodionEvents() {
-      console.log("Accordion: computed events are " + this.events);
-      this.events.map(event => {
-        console.log("Accordion: iterating over event", event.title)
-        const newEvent: Event = {
-          id: event.id,
-          title: event.title,
-          description: event.description,
-          org: event.org,
-          where: event.where,
-          date: new Date(event.date),
-          duration: event.duration,
-          target: event.target,
-          amount: event.amount,
-          link: event.link,
-        };
-        console.log("Accordion: made new event: ", newEvent);
-      })
-      console.log("Accordion: events in state are: ", this.store.getters['event/events']);
-      this.$forceUpdate();
+    expandElement(elemID: string): boolean {
+      return (this as any).isExpanded === elemID;
+
     },
-    /**
-     * this function is called to determine if the element
-     * should be in the expanded mode or not
-     */
-    expandElement(listItem: any): boolean {
-      const curE = (this as any).$refs["body-" + (this as any).events.indexOf(listItem)];
-      if (curE === undefined) return false;
-      return curE.dataset.isExpanded === "true";
-    },
-    /**
-     * this iterates through all of the elements in the list
-     * and set data attribute isExpanded appropriately based on
-     * this listItem that was clicked
-     */
-    headerClicked(listItem: any): any {
-      (this as any).events.map((e: any) => {
-        const curE = (this as any).$refs["body-" + (this as any).events.indexOf(e)];
-        if (e === listItem) {
-          if (curE.dataset.isExpanded === "true") {
-            curE.setAttribute("data-is-expanded", false);
-          } else {
-            curE.setAttribute("data-is-expanded", true);
-          }
-        } else {
-          curE.setAttribute("data-is-expanded", false);
-        }
-      }, this);
-      (this as any).events = [...(this as any).events];
+    headerClicked(id: string): void {
+      if ((this as any).isExpanded === id) {
+        (this as any).isExpanded = ""
+      } else {
+        (this as any).isExpanded = id
+      }
     },
   },
 })

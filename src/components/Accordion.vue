@@ -8,21 +8,20 @@
         <h1>{{ listItem.title }}</h1>
         <h3>{{ listItem.org }}</h3>
         <ion-note>{{ listItem.date }}</ion-note>
-        <ion-button color="warning" slot="end" @click="() => del(listItem._id)">
+        <ion-button color="warning" slot="end" @click="() => del(listItem.id)">
           delete
         </ion-button>
       </ion-label>
     </ion-item>
     <transition name="fade">
       <div
-        :ref="'body-' + displayList.indexOf(listItem)"
         style="display: none; height: 115px"
-        v-show="expandElement(listItem)"
+        v-show="expandElement(listItem.id)"
       >
         <ion-item>
           <ion-label>
             <ion-note>
-              {{ "id: " + listItem._id}}<br />
+              {{ "id: " + listItem.id}}<br />
               {{ "место: " + listItem.where }}<br />
               {{ "длительность: " + listItem.duration }}<br />
               {{ "для кого: " + listItem.target }}<br />
@@ -56,6 +55,7 @@ export default {
   },
   data(): any {
     return {
+      isExpanded: "",
       displayList: (this as any).list,
     };
   },
@@ -76,30 +76,37 @@ export default {
      * this function is called to determine if the element
      * should be in the expanded mode or not
      */
-    expandElement(listItem: any): boolean {
-      const curE = (this as any).$refs["body-" + (this as any).displayList.indexOf(listItem)];
-      if (curE === undefined) return false;
-      return curE.dataset.isExpanded === "true";
+    expandElement(elemID: string): boolean {
+      // console.log("Accordion expandElement: expading element of list", listItem)
+      // console.log("Accordion expandElement: expading element from displayList", (this as any).displayList)
+      // console.log("Accordion expandElement: expading element from refs", (this as any).$refs)
+      // const curE = (this as any).$refs["body-" + (this as any).displayList.indexOf(listItem)];
+      // console.log("Accordion expandElement: expading element", curE)
+      // if (curE === undefined) return false;
+      // return curE.dataset.isExpanded === "true";
+      return (this as any).isExpanded === elemID;
+
     },
     /**
      * this iterates through all of the elements in the list
      * and set data attribute isExpanded appropriately based on
      * this listItem that was clicked
      */
-    headerClicked(listItem: any): any {
-      (this as any).displayList.map((e: any) => {
-        const curE = (this as any).$refs["body-" + (this as any).displayList.indexOf(e)];
-        if (e === listItem) {
-          if (curE.dataset.isExpanded === "true") {
-            curE.setAttribute("data-is-expanded", false);
-          } else {
-            curE.setAttribute("data-is-expanded", true);
-          }
-        } else {
-          curE.setAttribute("data-is-expanded", false);
-        }
-      }, this);
-      (this as any).displayList = [...(this as any).displayList];
+    headerClicked(id: string): void {
+      (this as any).isExpanded = id
+      // (this as any).displayList.map((e: any) => {
+      //   const curE = (this as any).$refs["body-" + (this as any).displayList.indexOf(e)];
+      //   if (e === listItem) {
+      //     if (curE.dataset.isExpanded === "true") {
+      //       curE.setAttribute("data-is-expanded", false);
+      //     } else {
+      //       curE.setAttribute("data-is-expanded", true);
+      //     }
+      //   } else {
+      //     curE.setAttribute("data-is-expanded", false);
+      //   }
+      // }, this);
+      // (this as any).displayList = [...(this as any).displayList];
     },
   },
 };

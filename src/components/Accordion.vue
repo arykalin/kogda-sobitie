@@ -12,9 +12,9 @@
         <h1>{{ listItem.title }}</h1>
         <h3>{{ listItem.org }}</h3>
         <ion-note>{{ listItem.date }}</ion-note>
-        <ion-button color="warning" slot="end" @click="() => del(listItem.id)">
-          delete
-        </ion-button>
+<!--        <ion-button color="warning" slot="end" @click="() => del(listItem.id)">-->
+<!--          delete-->
+<!--        </ion-button>-->
       </ion-label>
     </ion-item>
     <transition name="fade">
@@ -58,17 +58,16 @@ export default defineComponent({
     events() {
       // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
       // @ts-ignore
-
       return this.store.getters['event/events'] as Event[]
     },
   },
   methods: {
-    getLogs(list) {
-      console.debug("Event list is ", list)
+    getLogs(events1) {
+      console.debug("Event list is ", events1)
       this.$forceUpdate
     },
     async del(event) {
-      
+
       console.debug("Accordion: deleting event: " + event);
       const response = await deleteEvent(event,).catch((err) => {
         console.debug('Accordion: err', err)

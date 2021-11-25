@@ -10,7 +10,7 @@
     >
       <Modal :data="listItem"></Modal>
     </ion-modal>
-    <ion-button @click="setOpen(true)">{{ listItem.title }}</ion-button>
+    <ion-button expand="full" @click="setOpen(true)">{{ listItem.title }}</ion-button>
   </div>
 </template>
 
@@ -56,7 +56,6 @@ export default defineComponent({
     getLogs(events) {
       this.getEvents();
       console.debug("Event list is ", events)
-      this.$forceUpdate
     },
     async del(event) {
 

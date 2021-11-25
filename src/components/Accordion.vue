@@ -3,20 +3,19 @@
     log events list
   </ion-button>
   <div v-for="listItem in events" :key="listItem.title">>
-    {{ listItem.title }}
+    <ion-modal
+        :is-open="isOpenRef"
+        css-class="my-custom-class"
+        @didDismiss="setOpen(false)"
+    >
+      <Modal :data="data"></Modal>
+    </ion-modal>
+    <ion-button @click="setOpen(true)">{{ listItem.title }}</ion-button>
   </div>
-  <ion-button @click="setOpen(true)">Show Modal</ion-button>
-  <ion-modal
-      :is-open="isOpenRef"
-      css-class="my-custom-class"
-      @didDismiss="setOpen(false)"
-  >
-    <Modal :data="data"></Modal>
-  </ion-modal>
 </template>
 
 <script lang="ts">
-import { IonModal, IonButton } from '@ionic/vue';
+import {IonModal, IonButton} from '@ionic/vue';
 import Modal from './modal.vue'
 
 import {deleteEvent} from "@/api/deleteEvent";
@@ -26,7 +25,7 @@ import Event from "@/types/Event";
 
 export default defineComponent({
   name: "Accordion",
-  components: { IonModal, IonButton, Modal },
+  components: {IonModal, IonButton, Modal},
   created() {
     // fetch the data when the view is created and the data is
     // already being observed
@@ -36,7 +35,7 @@ export default defineComponent({
   setup() {
     const isOpenRef = ref(false);
     const setOpen = (state: boolean) => isOpenRef.value = state;
-    const data = { content: 'New Content' };
+    const data = {content: 'New Content'};
     const store = useStore()
     return {
       isExpanded: "",

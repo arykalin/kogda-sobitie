@@ -7,13 +7,13 @@
   <ion-content class="ion-padding">
     {{ content }}
   </ion-content>
-  <ion-button>Close Modal</ion-button>
+  <ion-button @click="close()">Close Modal</ion-button>
 </template>
 
 <script lang="ts">
 import { IonContent, IonHeader, IonTitle, IonToolbar } from '@ionic/vue';
 import {defineComponent, ref} from 'vue';
-import {useStore} from "vuex";
+import { modalController } from "@ionic/vue";
 
 export default defineComponent({
   name: 'Modal',
@@ -25,7 +25,11 @@ export default defineComponent({
       content: 'Content',
     }
   },
-
+  methods: {
+    async close() {
+      await modalController.dismiss();
+    },
+  },
   components: { IonContent, IonHeader, IonTitle, IonToolbar }
 });
 </script>

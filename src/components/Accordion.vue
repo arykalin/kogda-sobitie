@@ -3,39 +3,7 @@
     log events list
   </ion-button>
   <div v-for="listItem in events" :key="listItem.title">>
-        {{ listItem.title }}
-  </div>
-
-  <div v-for="listItem in events" :key="listItem.title">
-    <ion-item @click="headerClicked(listItem.id)" >
-      <ion-label>
-        <h1>{{ listItem.title }}</h1>
-        <h3>{{ listItem.org }}</h3>
-        <ion-note>{{ listItem.date }}</ion-note>
-<!--        <ion-button color="warning" slot="end" @click="() => del(listItem.id)">-->
-<!--          delete-->
-<!--        </ion-button>-->
-      </ion-label>
-    </ion-item>
-    <transition name="fade">
-      <div
-        style="display: none; height: 115px"
-        v-show="expandElement(listItem.id)"
-      >
-        <ion-item>
-          <ion-label>
-            <ion-note>
-              {{ "id: " + listItem.id}}<br />
-              {{ "место: " + listItem.where }}<br />
-              {{ "длительность: " + listItem.duration }}<br />
-              {{ "для кого: " + listItem.target }}<br />
-              {{ "сколько: " + listItem.amount }}<br />
-              {{ "ссылка:" + listItem.link }}
-            </ion-note>
-          </ion-label>
-        </ion-item>
-      </div>
-    </transition>
+    {{ listItem.title }}
   </div>
 </template>
 
@@ -47,6 +15,12 @@ import Event from "@/types/Event";
 
 export default defineComponent({
   name: "Accordion",
+  created() {
+    // fetch the data when the view is created and the data is
+    // already being observed
+    this.getEvents();
+    this.$forceUpdate
+  },
   setup() {
     const store = useStore()
     return {
@@ -54,16 +28,19 @@ export default defineComponent({
       store,
     };
   },
-  computed: {
-    events() {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-      // @ts-ignore
-      return this.store.getters['event/events'] as Event[]
-    },
+  data() {
+    return {
+      events: [] as Event[]
+    };
   },
   methods: {
-    getLogs(events1) {
-      console.debug("Event list is ", events1)
+    async getEvents(): Promise<void> {
+      console.debug('getting events in data')
+      this.events = this.store.getters['event/events'] as Event[]
+    },
+    getLogs(events) {
+      this.getEvents();
+      console.debug("Event list is ", events)
       this.$forceUpdate
     },
     async del(event) {

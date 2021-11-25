@@ -6,11 +6,11 @@
       </ion-toolbar>
     </ion-header>
     <ion-content :fullscreen="true">
+      <accordion></accordion>
+<!--     Hide profile and add buttons -->
 <!--      <ion-button expand="full" @click="() => router.push('/profile')">-->
 <!--        Профиль-->
 <!--      </ion-button>-->
-      <accordion :list="list"></accordion>
-
 <!--      <ion-fab vertical="bottom" horizontal="end" slot="fixed">-->
 <!--        <ion-fab-button @click="() => router.push('/new')">-->
 <!--          <ion-icon :icon="add"></ion-icon>-->
@@ -37,8 +37,6 @@ import { defineComponent } from "vue";
 import Accordion from "@/components/Accordion.vue";
 import { useRouter } from "vue-router";
 import { add, reload } from "ionicons/icons";
-import { getEvents } from "@/api/getEvents";
-import Event from "@/types/Event";
 import {useStore} from "vuex";
 import {showToast} from "@/util/toast";
 
@@ -61,12 +59,6 @@ export default defineComponent({
     // fetch the data when the view is created and the data is
     // already being observed
     this.refreshEvents();
-  },
-  data() {
-    return {
-      events: [] as Event[],
-      list: [] as Event[],
-    };
   },
   setup() {
     const store = useStore()

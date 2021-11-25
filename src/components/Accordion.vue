@@ -8,7 +8,7 @@
         css-class="my-custom-class"
         @didDismiss="setOpen(false)"
     >
-      <Modal :data="data"></Modal>
+      <Modal :data="listItem"></Modal>
     </ion-modal>
     <ion-button @click="setOpen(true)">{{ listItem.title }}</ion-button>
   </div>

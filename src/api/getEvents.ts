@@ -4,11 +4,11 @@ import Event from "@/types/Event";
 const END_POINT = '/events'
 
 function getEvents(): Event[] {
-    console.log("getting events from api")
+    console.debug("getting events from api")
     const answer: Event[] = [];
     httpClient.get(`${END_POINT}`)
         .then((response) => {
-            console.log("got response from api: ", response)
+            console.debug("got response from api: ", response)
             response.data.events.map(event => {
                 const newEvent: Event = {
                     id: event._id,
@@ -22,10 +22,10 @@ function getEvents(): Event[] {
                     amount: event.amount,
                     link: event.link,
                 };
-                console.log("made new event: ", newEvent);
+                console.debug("made new event: ", newEvent);
                 answer.push(newEvent)
             })
-            console.log("made answer: ", answer);
+            console.debug("made answer: ", answer);
         })
         .catch((error) => {
             console.error(`error getting events: ${error}`);

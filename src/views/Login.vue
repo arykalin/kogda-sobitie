@@ -70,18 +70,18 @@ export default defineComponent({
         }
 
         // Debug info
-        console.log("googleUser", googleUser);
+        console.debug("googleUser", googleUser);
         // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
         // @ts-ignore
         this.user = googleUser.getBasicProfile().getEmail();
         // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
         // @ts-ignore
-        console.log("getId", this.user);
-        console.log("getBasicProfile", googleUser.getBasicProfile());
-        console.log("getAuthResponse", googleUser.getAuthResponse());
+        console.debug("getId", this.user);
+        console.debug("getBasicProfile", googleUser.getBasicProfile());
+        console.debug("getAuthResponse", googleUser.getAuthResponse());
         // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
         // @ts-ignore
-        console.log(
+        console.debug(
             "getAuthResponse",
             // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
             // @ts-ignore

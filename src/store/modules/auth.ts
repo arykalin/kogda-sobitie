@@ -21,16 +21,16 @@ const mutations = {
 }
 const actions = {
     backendAuth({ commit }, idToken: string): void {
-        console.log("getting user id with token ", idToken)
+        console.debug("getting user id with token ", idToken)
         getAuth(idToken)
             .then((res) => {
-                console.log("got response ", res)
+                console.debug("got response ", res)
                 localStorage.setItem('token', res.data.token)
                 commit('setUser', res.data.userInfo)
                 commit('setAuth', true)
             })
             .catch((err) => {
-                console.log('err', err)
+                console.debug('err', err)
             })
     },
     logout({commit}) {
@@ -41,7 +41,7 @@ const actions = {
 }
 const getters = {
     user: state => {
-        console.log("getting user from user getter")
+        console.debug("getting user from user getter")
         return state.user},
     token: (state) => state.token,
     isAuth: (state) => state.isAuth,

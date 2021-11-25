@@ -83,8 +83,8 @@ export default defineComponent({
       await this.store.dispatch('auth/logout')
     },
     async getStore(): Promise<void> {
-      console.log("user getter: ", this.store.getters['auth/user'] as User)
-      console.log("events getter: ", this.store.getters['event/events'] as Event[])
+      console.debug("user getter: ", this.store.getters['auth/user'] as User)
+      console.debug("events getter: ", this.store.getters['event/events'] as Event[])
     }
   },
   data() {

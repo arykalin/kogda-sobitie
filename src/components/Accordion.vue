@@ -1,7 +1,11 @@
 <template>
   <ion-button expand="full" @click="() => getLogs(events)">
-    get accordion logs
+    log events list
   </ion-button>
+  <div v-for="listItem in events" :key="listItem.title">>
+        {{ listItem.title }}
+  </div>
+
   <div v-for="listItem in events" :key="listItem.title">
     <ion-item @click="headerClicked(listItem.id)" >
       <ion-label>
@@ -60,14 +64,16 @@ export default defineComponent({
   },
   methods: {
     getLogs(list) {
-      console.log("Accordion: list is ", list)
+      console.debug("Event list is ", list)
+      this.$forceUpdate
     },
     async del(event) {
-      console.log("Accordion: deleting event: " + event);
+      
+      console.debug("Accordion: deleting event: " + event);
       const response = await deleteEvent(event,).catch((err) => {
-        console.log('Accordion: err', err)
+        console.debug('Accordion: err', err)
       });
-      console.log('Accordion: got response', response)
+      console.debug('Accordion: got response', response)
     },
     expandElement(elemID: string): boolean {
       return (this as any).isExpanded === elemID;
@@ -79,6 +85,9 @@ export default defineComponent({
       } else {
         (this as any).isExpanded = id
       }
+
+      console.debug("header clicked id", id)
+      console.debug("expanded is", (this as any).isExpanded)
     },
   },
 })

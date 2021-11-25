@@ -150,14 +150,14 @@ export default defineComponent({
         amount: this.amount,
       }
 
-      console.log('constructed event: ' + newEvent.description)
+      console.debug('constructed event: ' + newEvent.description)
       postEvent(newEvent)
           .then(function (response) {
-            console.log(response.data);
+            console.debug(response.data);
             this.showToast("Событие создано");
           })
           .catch(function (error) {
-            console.log(error);
+            console.debug(error);
           });
 
       this.title = "";

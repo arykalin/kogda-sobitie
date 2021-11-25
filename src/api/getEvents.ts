@@ -16,7 +16,7 @@ function getEvents(): Event[] {
                     description: event.description,
                     org: event.org,
                     where: event.where,
-                    date: new Date(event.date),
+                    date: event.date,
                     duration: event.duration,
                     target: event.target,
                     amount: event.amount,

@@ -2,20 +2,20 @@
   <ion-page>
     <ion-header :translucent="true">
       <ion-toolbar>
-        <ion-title size="large">События</ion-title>
+        <ion-title size="large">Колесо года</ion-title>
       </ion-toolbar>
     </ion-header>
     <ion-content :fullscreen="true">
-      <ion-button expand="full" @click="() => router.push('/profile')">
-        Профиль
-      </ion-button>
+<!--      <ion-button expand="full" @click="() => router.push('/profile')">-->
+<!--        Профиль-->
+<!--      </ion-button>-->
       <accordion :list="list"></accordion>
 
-      <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-        <ion-fab-button @click="() => router.push('/new')">
-          <ion-icon :icon="add"></ion-icon>
-        </ion-fab-button>
-      </ion-fab>
+<!--      <ion-fab vertical="bottom" horizontal="end" slot="fixed">-->
+<!--        <ion-fab-button @click="() => router.push('/new')">-->
+<!--          <ion-icon :icon="add"></ion-icon>-->
+<!--        </ion-fab-button>-->
+<!--      </ion-fab>-->
       <ion-fab vertical="bottom" horizontal="start" slot="fixed">
         <ion-fab-button @click="refreshEvents()">
           <ion-icon :icon="reload"></ion-icon>

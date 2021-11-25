@@ -14,15 +14,17 @@
 import { IonContent, IonHeader, IonTitle, IonToolbar } from '@ionic/vue';
 import {defineComponent, ref} from 'vue';
 import { modalController } from "@ionic/vue";
+import Event from "@/types/Event";
 
 export default defineComponent({
   name: 'Modal',
   props: {
     title: { type: String, default: 'Super Modal' },
+    content: Event
   },
   data() {
     return {
-      content: 'Content',
+      displayContent: this.content,
     }
   },
   methods: {

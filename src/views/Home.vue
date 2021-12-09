@@ -6,26 +6,9 @@
       </ion-toolbar>
     </ion-header>
     <ion-content :fullscreen="true">
-      <div v-for="listItem in events" :key="listItem.title">>
-        <ion-item>{{ listItem.title }}</ion-item>
-<!--        <ion-modal-->
-<!--            :is-open="isOpenRef"-->
-<!--            css-class="my-custom-class"-->
-<!--            @didDismiss="setOpen(false)"-->
-<!--        >-->
-<!--          <Modal :data="listItem"></Modal>-->
-<!--        </ion-modal>-->
-<!--        <ion-button expand="full" @click="setOpen(true)">{{ listItem.title }}</ion-button>-->
-      </div>
-<!--     Hide profile and add buttons -->
-<!--      <ion-button expand="full" @click="() => router.push('/profile')">-->
-<!--        Профиль-->
-<!--      </ion-button>-->
-<!--      <ion-fab vertical="bottom" horizontal="end" slot="fixed">-->
-<!--        <ion-fab-button @click="() => router.push('/new')">-->
-<!--          <ion-icon :icon="add"></ion-icon>-->
-<!--        </ion-fab-button>-->
-<!--      </ion-fab>-->
+
+      <accordion :list="events"></accordion>
+
       <ion-fab vertical="bottom" horizontal="start" slot="fixed">
         <ion-fab-button @click="refreshEvents()">
           <ion-icon :icon="reload"></ion-icon>
@@ -54,7 +37,7 @@ import Event from "@/types/Event";
 export default defineComponent({
   name: "Home",
   components: {
-    // Accordion,
+    Accordion,
     IonContent,
     IonHeader,
     IonPage,

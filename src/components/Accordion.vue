@@ -1,95 +1,85 @@
 <template>
-  <ion-button expand="full" @click="() => getLogs(events)">
-    log events list
-  </ion-button>
-  <div v-for="listItem in events" :key="listItem.title">>
-    <ion-modal
-        :is-open="isOpenRef"
-        css-class="my-custom-class"
-        @didDismiss="setOpen(false)"
-    >
-      <Modal :data="listItem"></Modal>
-    </ion-modal>
-    <ion-button expand="full" @click="setOpen(true)">{{ listItem.title }}</ion-button>
+  <div v-for="listItem in displayList" :key="listItem.title">
+    <ion-item @click="headerClicked(listItem)" >
+      <ion-label>
+        <h1>{{ listItem.title }}</h1>
+        <h3>{{ listItem.org }}</h3>
+        <ion-note>{{ listItem.date }}</ion-note>
+      </ion-label>
+    </ion-item>
+    <transition name="fade">
+      <div
+        :ref="'body-' + displayList.indexOf(listItem)"
+        style="display: none; height: 115px"
+        v-show="expandElement(listItem)"
+      >
+        <ion-item>
+          <ion-label>
+            <ion-note>
+              {{ "место: " + listItem.where }}<br />
+              {{ "длительность: " + listItem.duration }}<br />
+              {{ "для кого: " + listItem.target }}<br />
+              {{ "сколько: " + listItem.amount }}<br />
+              {{ "ссылка:" + listItem.link }}
+            </ion-note>
+          </ion-label>
+        </ion-item>
+      </div>
+    </transition>
   </div>
 </template>
 
 <script lang="ts">
-import {IonModal, IonButton} from '@ionic/vue';
-import Modal from './modal.vue'
-
-import {deleteEvent} from "@/api/deleteEvent";
-import {useStore} from "vuex";
-import {defineComponent, ref} from "vue";
-import Event from "@/types/Event";
-
-export default defineComponent({
+export default {
   name: "Accordion",
-  components: {IonModal, IonButton, Modal},
-  created() {
-    // fetch the data when the view is created and the data is
-    // already being observed
-    this.getEvents();
-    this.$forceUpdate
-  },
-  setup() {
-    const isOpenRef = ref(false);
-    const setOpen = (state: boolean) => isOpenRef.value = state;
-    const data = {content: 'New Content'};
-    const store = useStore()
+  // list of data to display
+  props: ["list"],
+  // data section of component
+  data(): any {
     return {
-      isExpanded: "",
-      store,
-      isOpenRef, setOpen, data
-    };
-  },
-  data() {
-    return {
-      events: [] as Event[]
+      displayList: (this as any).list,
     };
   },
   methods: {
-    async getEvents(): Promise<void> {
-      console.debug('getting events in data')
-      this.events = this.store.getters['event/events'] as Event[]
+    /**
+     * this function is called to determine if the element
+     * should be in the expanded mode or not
+     */
+    expandElement(listItem: any): boolean {
+      const curE = (this as any).$refs["body-" + (this as any).displayList.indexOf(listItem)];
+      if (curE === undefined) return false;
+      return curE.dataset.isExpanded === "true";
     },
-    getLogs(events) {
-      this.getEvents();
-      console.debug("Event list is ", events)
-    },
-    async del(event) {
-
-      console.debug("Accordion: deleting event: " + event);
-      const response = await deleteEvent(event,).catch((err) => {
-        console.debug('Accordion: err', err)
-      });
-      console.debug('Accordion: got response', response)
-    },
-    expandElement(elemID: string): boolean {
-      return (this as any).isExpanded === elemID;
-
-    },
-    headerClicked(id: string): void {
-      if ((this as any).isExpanded === id) {
-        (this as any).isExpanded = ""
-      } else {
-        (this as any).isExpanded = id
-      }
-
-      console.debug("header clicked id", id)
-      console.debug("expanded is", (this as any).isExpanded)
+    /**
+     * this iterates through all of the elements in the list
+     * and set data attribute isExpanded appropriately based on
+     * this listItem that was clicked
+     */
+    headerClicked(listItem: any): any {
+      (this as any).displayList.map((e: any) => {
+        const curE = (this as any).$refs["body-" + (this as any).displayList.indexOf(e)];
+        if (e === listItem) {
+          if (curE.dataset.isExpanded === "true") {
+            curE.setAttribute("data-is-expanded", false);
+          } else {
+            curE.setAttribute("data-is-expanded", true);
+          }
+        } else {
+          curE.setAttribute("data-is-expanded", false);
+        }
+      }, this);
+      (this as any).displayList = [...(this as any).displayList];
     },
   },
-})
+};
 </script>
 
-<style scoped>
+<style  scoped>
 .fade-enter-active,
 .fade-leave-active {
   transition: height 0.3s ease-in-out;
   overflow: hidden;
 }
-
 .fade-enter-from,
 .fade-leave-to {
   height: 0px !important;

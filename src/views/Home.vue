@@ -6,12 +6,6 @@
       </ion-toolbar>
     </ion-header>
     <ion-content :fullscreen="true">
-      <ion-button expand="full" @click="() => getLogs(events)">
-        log events list
-      </ion-button>
-      <ion-button expand="full" @click="() => getAll()">
-        get all
-      </ion-button>
       <div v-for="listItem in events" :key="listItem.title">>
         <ion-item>{{ listItem.title }}</ion-item>
 <!--        <ion-modal-->
@@ -76,10 +70,10 @@ export default defineComponent({
             this.events = this.store.getters['event/events'] as Event[]
             console.debug("this.events now is", this.events)
           })
-          .then(() => {
-            console.debug("running forceupdate")
-            this.$forceUpdate
-          })
+          // .then(() => {
+          //   console.debug("running forceupdate")
+          //   this.$forceUpdate
+          // })
           .catch((error) => {
             console.error("error loading events", error)
           })

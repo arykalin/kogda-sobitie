@@ -1,7 +1,4 @@
 <template>
-  <ion-button expand="full" @click="() => getLogs(events)">
-    log events list
-  </ion-button>
   <div v-for="listItem in events" :key="listItem.title">
     <ion-item @click="headerClicked(listItem)" >
       <ion-label>
@@ -30,6 +27,7 @@
       </div>
     </transition>
   </div>
+
 </template>
 
 <script lang="ts">

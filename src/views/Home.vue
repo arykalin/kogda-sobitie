@@ -7,7 +7,7 @@
     </ion-header>
     <ion-content :fullscreen="true">
 
-      <accordion :list="events"></accordion>
+      <accordion></accordion>
 
       <ion-fab vertical="bottom" horizontal="start" slot="fixed">
         <ion-fab-button @click="refreshEvents()">

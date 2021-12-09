@@ -1,5 +1,8 @@
 <template>
-  <div v-for="listItem in displayList" :key="listItem.title">
+  <ion-button expand="full" @click="() => getLogs(events)">
+    log events list
+  </ion-button>
+  <div v-for="listItem in events" :key="listItem.title">
     <ion-item @click="headerClicked(listItem)" >
       <ion-label>
         <h1>{{ listItem.title }}</h1>
@@ -9,7 +12,7 @@
     </ion-item>
     <transition name="fade">
       <div
-        :ref="'body-' + displayList.indexOf(listItem)"
+        :ref="'body-' + events.indexOf(listItem)"
         style="display: none; height: 115px"
         v-show="expandElement(listItem)"
       >
@@ -30,23 +33,44 @@
 </template>
 
 <script lang="ts">
-export default {
+
+import {useStore} from "vuex";
+import Event from "@/types/Event";
+import {defineComponent, ref} from "vue";
+
+export default defineComponent({
   name: "Accordion",
-  // list of data to display
-  props: ["list"],
-  // data section of component
-  data(): any {
+  setup() {
+    const store = useStore()
     return {
-      displayList: (this as any).list,
+      isExpanded: "",
+      store,
     };
   },
+  created() {
+    this.refreshEvents()
+  },
   methods: {
+    async refreshEvents() {
+      console.debug("refreshing events")
+      await this.store.dispatch('event/updateEvents')
+          .then(() => {
+            console.debug("setting this.events")
+            this.events = this.store.getters['event/events'] as Event[]
+            console.debug("this.events now is", this.events)
+          })
+          .catch((error) => {
+            console.error("error loading events", error)
+          })
+      console.debug("finished data loading")
+
+    },
     /**
      * this function is called to determine if the element
      * should be in the expanded mode or not
      */
     expandElement(listItem: any): boolean {
-      const curE = (this as any).$refs["body-" + (this as any).displayList.indexOf(listItem)];
+      const curE = (this as any).$refs["body-" + (this as any).events.indexOf(listItem)];
       if (curE === undefined) return false;
       return curE.dataset.isExpanded === "true";
     },
@@ -56,8 +80,8 @@ export default {
      * this listItem that was clicked
      */
     headerClicked(listItem: any): any {
-      (this as any).displayList.map((e: any) => {
-        const curE = (this as any).$refs["body-" + (this as any).displayList.indexOf(e)];
+      (this as any).events.map((e: any) => {
+        const curE = (this as any).$refs["body-" + (this as any).events.indexOf(e)];
         if (e === listItem) {
           if (curE.dataset.isExpanded === "true") {
             curE.setAttribute("data-is-expanded", false);
@@ -68,10 +92,15 @@ export default {
           curE.setAttribute("data-is-expanded", false);
         }
       }, this);
-      (this as any).displayList = [...(this as any).displayList];
+      (this as any).events = [...(this as any).events];
     },
   },
-};
+  data() {
+    return {
+      events: [] as Event[]
+    };
+  },
+})
 </script>
 
 <style  scoped>

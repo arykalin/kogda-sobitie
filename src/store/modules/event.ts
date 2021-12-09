@@ -17,10 +17,9 @@ const mutations = {
 }
 const actions = {
     //TODO: if events throw an error do not update it
-    updateEvents({ commit }): void {
-        const events = getEvents()
-        console.debug("action updateEvents got response: ", events);
-        commit('setEvents', events);
+    async updateEvents({ commit }) {
+        // console.debug("action updateEvents got response: ", events);
+        commit('setEvents', await getEvents());
     },
 }
 const getters = {

@@ -8,7 +8,6 @@ const getEvents = async (): Promise<Event[] | string> => {
     const answer: Event[] = [];
     try {
         const response = await httpClient.get(`${END_POINT}`)
-        // const { data } = await response.data.events;
         console.debug("got response from api: ", response)
         response.data.events.map(event => {
             const newEvent: Event = {

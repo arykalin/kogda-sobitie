@@ -62,18 +62,14 @@ export default defineComponent({
     IonToolbar,
   },
   methods: {
-    async getAll() {
-      console.debug("getting all")
+    async refreshEvents() {
+      console.debug("refreshing events")
       await this.store.dispatch('event/updateEvents')
           .then(() => {
             console.debug("setting this.events")
             this.events = this.store.getters['event/events'] as Event[]
             console.debug("this.events now is", this.events)
           })
-          // .then(() => {
-          //   console.debug("running forceupdate")
-          //   this.$forceUpdate
-          // })
           .catch((error) => {
             console.error("error loading events", error)
           })
@@ -84,27 +80,14 @@ export default defineComponent({
       console.debug('getting events in data')
       this.events = this.store.getters['event/events'] as Event[]
     },
-    getLogs(events) {
-      this.getEvents();
-      console.debug("Event list is ", events)
-    },
-    async refreshEvents() {
-      await this.store.dispatch('event/updateEvents')
-    },
   },
   data() {
     return {
       events: [] as Event[]
     };
   },
-
   created() {
-    // fetch the data when the view is created and the data is
-    // already being observed
-    this.getAll()
-    // this.refreshEvents()
-    // this.getEvents();
-    // this.$forceUpdate
+    this.refreshEvents()
   },
   setup() {
     const store = useStore()

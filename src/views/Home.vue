@@ -6,7 +6,19 @@
       </ion-toolbar>
     </ion-header>
     <ion-content :fullscreen="true">
-      <accordion></accordion>
+      <ion-button expand="full" @click="() => getLogs(events)">
+        log events list
+      </ion-button>
+      <div v-for="listItem in events" :key="listItem.title">>
+        <ion-modal
+            :is-open="isOpenRef"
+            css-class="my-custom-class"
+            @didDismiss="setOpen(false)"
+        >
+          <Modal :data="listItem"></Modal>
+        </ion-modal>
+        <ion-button expand="full" @click="setOpen(true)">{{ listItem.title }}</ion-button>
+      </div>
 <!--     Hide profile and add buttons -->
 <!--      <ion-button expand="full" @click="() => router.push('/profile')">-->
 <!--        Профиль-->
@@ -33,17 +45,18 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/vue";
-import { defineComponent } from "vue";
+import {defineComponent, ref} from "vue";
 import Accordion from "@/components/Accordion.vue";
 import { useRouter } from "vue-router";
 import { add, reload } from "ionicons/icons";
 import {useStore} from "vuex";
 import {showToast} from "@/util/toast";
+import Event from "@/types/Event";
 
 export default defineComponent({
   name: "Home",
   components: {
-    Accordion,
+    // Accordion,
     IonContent,
     IonHeader,
     IonPage,
@@ -51,23 +64,44 @@ export default defineComponent({
     IonToolbar,
   },
   methods: {
-    refreshEvents() {
-      this.store.dispatch('event/updateEvents')
+    async getEvents(): Promise<void> {
+      console.debug('getting events in data')
+      this.events = this.store.getters['event/events'] as Event[]
+    },
+    getLogs(events) {
+      this.getEvents();
+      console.debug("Event list is ", events)
+    },
+    async refreshEvents() {
+      await this.store.dispatch('event/updateEvents')
     },
   },
+  data() {
+    return {
+      events: [] as Event[]
+    };
+  },
+
   created() {
     // fetch the data when the view is created and the data is
     // already being observed
     this.refreshEvents();
+    this.getEvents();
+    this.$forceUpdate
   },
   setup() {
     const store = useStore()
+    const isOpenRef = ref(false);
+    const setOpen = (state: boolean) => isOpenRef.value = state;
+    const data = {content: 'New Content'};
     return {
       router: useRouter(),
       add,
       reload,
       store,
       showToast,
+      isExpanded: "",
+      isOpenRef, setOpen, data
     };
   },
 });

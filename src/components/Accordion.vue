@@ -36,7 +36,7 @@
 
 import {useStore} from "vuex";
 import Event from "@/types/Event";
-import {defineComponent, ref} from "vue";
+import {defineComponent} from "vue";
 
 export default defineComponent({
   name: "Accordion",
@@ -70,7 +70,7 @@ export default defineComponent({
      * should be in the expanded mode or not
      */
     expandElement(listItem: any): boolean {
-      const curE = (this as any).$refs["body-" + (this as any).events.indexOf(listItem)];
+      const curE = (this as any).$refs["body-" + this.events.indexOf(listItem)];
       if (curE === undefined) return false;
       return curE.dataset.isExpanded === "true";
     },
@@ -80,8 +80,8 @@ export default defineComponent({
      * this listItem that was clicked
      */
     headerClicked(listItem: any): any {
-      (this as any).events.map((e: any) => {
-        const curE = (this as any).$refs["body-" + (this as any).events.indexOf(e)];
+      this.events.map((e: any) => {
+        const curE = (this as any).$refs["body-" + this.events.indexOf(e)];
         if (e === listItem) {
           if (curE.dataset.isExpanded === "true") {
             curE.setAttribute("data-is-expanded", false);
@@ -92,7 +92,7 @@ export default defineComponent({
           curE.setAttribute("data-is-expanded", false);
         }
       }, this);
-      (this as any).events = [...(this as any).events];
+      this.events = [...this.events];
     },
   },
   data() {

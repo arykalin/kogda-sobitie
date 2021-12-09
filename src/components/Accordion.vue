@@ -1,5 +1,5 @@
 <template>
-  <div v-for="listItem in events" :key="listItem.title">
+  <div v-for="listItem in sortByDate(events)" :key="listItem.title">
     <ion-item @click="headerClicked(listItem)" >
       <ion-label>
         <h1>{{ listItem.title }}</h1>
@@ -64,6 +64,12 @@ export default defineComponent({
   methods: {
     stringToDate: function (date) {
       return moment(date,"DD-MM-YYYY").format("DD-MM-YYYY");
+    },
+    sortByDate: function (list){
+      return list.sort((fst, snd) => {
+        if (fst > snd) return -1;
+        else return 1;
+      })
     },
     async refreshEvents() {
       console.debug("refreshing events")

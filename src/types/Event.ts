@@ -1,6 +1,6 @@
 type Event = {
     id: string;
-    date: string;
+    date: Date;
     title: string;
     duration: string;
     link: string;

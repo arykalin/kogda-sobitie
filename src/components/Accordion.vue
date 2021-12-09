@@ -6,8 +6,7 @@
     <ion-modal
         :is-open="isOpenRef"
         css-class="my-custom-class"
-        @didDismiss="setOpen(false)"
-    >
+        @didDismiss="setOpen(false)">
       <Modal :data="listItem"></Modal>
     </ion-modal>
     <ion-button expand="full" @click="setOpen(true)">{{ listItem.title }}</ion-button>
@@ -34,7 +33,9 @@ export default defineComponent({
   },
   setup() {
     const isOpenRef = ref(false);
+    // console.log(isOpenRef.value);
     const setOpen = (state: boolean) => isOpenRef.value = state;
+    // console.log(isOpenRef.value);
     const data = {content: 'New Content'};
     const store = useStore()
     return {
@@ -53,45 +54,19 @@ export default defineComponent({
       console.debug('getting events in data')
       this.events = this.store.getters['event/events'] as Event[]
     },
+
     getLogs(events) {
       this.getEvents();
       console.debug("Event list is ", events)
     },
-    async del(event) {
 
+    async del(event) {
       console.debug("Accordion: deleting event: " + event);
       const response = await deleteEvent(event,).catch((err) => {
         console.debug('Accordion: err', err)
       });
       console.debug('Accordion: got response', response)
     },
-    expandElement(elemID: string): boolean {
-      return (this as any).isExpanded === elemID;
-
-    },
-    headerClicked(id: string): void {
-      if ((this as any).isExpanded === id) {
-        (this as any).isExpanded = ""
-      } else {
-        (this as any).isExpanded = id
-      }
-
-      console.debug("header clicked id", id)
-      console.debug("expanded is", (this as any).isExpanded)
-    },
   },
 })
 </script>
-
-<style scoped>
-.fade-enter-active,
-.fade-leave-active {
-  transition: height 0.3s ease-in-out;
-  overflow: hidden;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  height: 0px !important;
-}
-</style>

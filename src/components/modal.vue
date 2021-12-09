@@ -1,36 +1,38 @@
 <template>
   <ion-header>
-    <ion-toolbar>
-      <ion-title>{{ title }}</ion-title>
-    </ion-toolbar>
-  </ion-header>
-  <ion-content class="ion-padding">
-    <ion-label>
+    <ion-title>
       <h1>{{ content.title }}</h1>
-      <h3>{{ content.org }}</h3>
-      <ion-note>{{ content.date }}</ion-note>
-    </ion-label>
-    <ion-item>
-      <ion-label>
-        <ion-note>
-          {{ "id: " + content.id }}<br/>
-          {{ "место: " + content.where }}<br/>
-          {{ "длительность: " + content.duration }}<br/>
-          {{ "для кого: " + content.target }}<br/>
-          {{ "сколько: " + content.amount }}<br/>
-          {{ "ссылка:" + content.link }}
-        </ion-note>
-      </ion-label>
-    </ion-item>
+      <h5>{{ content.date }}</h5>
+    </ion-title>
+  </ion-header>
+
+  <ion-content class="ion-padding">
+    <ion-note>
+      {{ "организатор: " + content.org}} <br/>
+      {{ "место: " + content.where }}<br/>
+      {{ "длительность: " + content.duration }}<br/>
+      {{ "для кого: " + content.target }}<br/>
+      {{ "сколько: " + content.amount }}<br/>
+      {{ "ссылка: " + content.link }}<br/>
+      {{}}<br/>
+    </ion-note>
+    {{ content.description }}
   </ion-content>
-  <ion-button @click="close()">Close Modal</ion-button>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button @click="close()" color="light" size="small">
+      <ion-icon :icon="arrowDown"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </template>
 
 <script lang="ts">
-import {IonContent, IonHeader, IonTitle, IonToolbar} from '@ionic/vue';
-import {defineComponent, ref} from 'vue';
+
+import {defineComponent} from 'vue';
 import {modalController} from "@ionic/vue";
-import Event from "@/types/Event";
+import { 
+  arrowDown,
+} from 'ionicons/icons';
 
 export default defineComponent({
   name: 'Modal',
@@ -48,6 +50,10 @@ export default defineComponent({
       await modalController.dismiss();
     },
   },
-  components: {IonContent, IonHeader, IonTitle, IonToolbar}
+  setup() {
+    return {
+      arrowDown,
+    }
+  },
 });
 </script>

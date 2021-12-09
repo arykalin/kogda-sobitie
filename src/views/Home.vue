@@ -59,10 +59,6 @@ export default defineComponent({
           console.debug("finished data loading")
 
     },
-    async getEvents(): Promise<void> {
-      console.debug('getting events in data')
-      this.events = this.store.getters['event/events'] as Event[]
-    },
   },
   data() {
     return {

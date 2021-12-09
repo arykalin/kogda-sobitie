@@ -2,7 +2,7 @@
   <ion-page>
     <ion-header :translucent="true">
       <ion-toolbar>
-        <ion-title size="large">Колесо года</ion-title>
+        <ion-title size="large" color="dark">Колесо года</ion-title>
       </ion-toolbar>
     </ion-header>
     <ion-content :fullscreen="true">

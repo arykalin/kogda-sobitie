@@ -86,7 +86,7 @@ export default defineComponent({
 
     },
     /**
-     * this function is called to determine if the element
+     * this function is called to determine if the element 11
      * should be in the expanded mode or not
      */
     expandElement(listItem: any): boolean {

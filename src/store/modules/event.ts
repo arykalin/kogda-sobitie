@@ -1,40 +1,32 @@
 import Event from '@/types/Event'
-import {getEvent} from "@/api/getEvent";
 import {getEvents} from "@/api/getEvents";
 
 interface EventState {
-    events: Event;
+    events: Event[];
 }
 
 const state: EventState = {
-    events: [],
+    events: []
 }
 
 const mutations = {
-    setEvent(state, event: Event): void {
-        state.event = event
+    setEvents(state, events: Event[]): void {
+        console.debug("setEvents state: ", events);
+        state.events = events
     },
 }
 const actions = {
-    getEvents({ commit }): Event {
-        console.log("getting events")
-        const response = getEvents().catch((err) => {
-            console.log('err', err)
-        });
-        commit('setEvent', true)
-        return getEvent(idToken)
-            .then((res) => {
-                console.log("got response ", res)
-                localStorage.setItem('token', res.data.token)
-                commit('setEvent', true)
-            })
-            .catch((err) => {
-                console.log('err', err)
-            })
+    //TODO: if events throw an error do not update it
+    async updateEvents({ commit }) {
+        // console.debug("action updateEvents got response: ", events);
+        commit('setEvents', await getEvents());
     },
 }
 const getters = {
-    event: (state) => state.Event,
+    events: state => {
+        console.debug("getting events from events getter")
+     return state.events
+    },
 }
 
 export default {

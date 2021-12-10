@@ -3,7 +3,7 @@ enum Role {
   ADMIN = 'admin',
 }
 
-interface User {
+type User = {
   email?: string;
   name?: string;
   givenName?: string;

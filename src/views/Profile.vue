@@ -1,9 +1,15 @@
 <template>
-  <ion-header :translucent="true">
-    <ion-toolbar>
-      <ion-title>Профиль</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <ion-page>
+    <ion-header :translucent="true">
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-back-button defaultHref="home"></ion-back-button>
+        </ion-buttons>
+      </ion-toolbar>
+      <ion-toolbar>
+        <ion-title>Профиль</ion-title>
+      </ion-toolbar>
+    </ion-header>
   <ion-content :fullscreen="true">
     <ion-item>
       <ion-label class="ion-text-wrap">
@@ -18,16 +24,27 @@
     <ion-button expand="full" @click="logout()">Выйти</ion-button>
     <ion-button expand="full" @click="getStore()">get store</ion-button>
   </ion-content>
+  </ion-page>
 </template>
 
 <script lang="ts">
+import {IonButtons, IonHeader, IonToolbar, IonContent, IonPage, IonTitle, IonBackButton} from '@ionic/vue';
 import {defineComponent, inject} from "vue";
 import { useStore } from 'vuex'
 import {useRouter} from "vue-router";
+import User from "@/types/User";
 
 export default defineComponent({
   name: "Profile",
-  components: {},
+  components: {
+    IonBackButton,
+    IonButtons,
+    IonContent,
+    IonHeader,
+    IonPage,
+    IonTitle,
+    IonToolbar,
+  },
   setup() {
     const Vue3GoogleOauth = inject('Vue3GoogleOauth')
     return {
@@ -42,27 +59,38 @@ export default defineComponent({
       // @ts-ignore
       return this.store.getters['auth/user']
     },
-    fullName() {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-      // @ts-ignore
-      return `${this.user.givenName} ${this.user.familyName}`
-    },
     token() {
       return localStorage.getItem('token')
     }
   },
+  created () {
+    // fetch the data when the view is created and the data is
+    // already being observed
+    this.getFullName()
+  },
   methods: {
-    async logout() {
+    getFullName(): void {
+      if (this.user != null) {
+        this.fullName = `${this.user.givenName} ${this.user.familyName}`
+      } else {
+        this.fullName = 'user is empty'
+      }
+    },
+    async logout(): Promise<void> {
       // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
       // @ts-ignore
       await this.$gAuth.signOut()
-      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-      // @ts-ignore
-      this.store.dispatch('auth/logout')
+      await this.store.dispatch('auth/logout')
     },
-    async getStore() {
-      console.log("user getter: ", this.store.getters['auth/user'])
+    async getStore(): Promise<void> {
+      console.debug("user getter: ", this.store.getters['auth/user'] as User)
+      console.debug("events getter: ", this.store.getters['event/events'] as Event[])
     }
+  },
+  data() {
+    return {
+      fullName: "",
+    };
   },
 })
 </script>

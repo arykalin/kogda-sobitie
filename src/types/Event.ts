@@ -1,4 +1,5 @@
-interface Event {
+type Event = {
+    id: string;
     date: string;
     title: string;
     duration: string;

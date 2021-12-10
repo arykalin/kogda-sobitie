@@ -1,28 +1,23 @@
 <template>
-  <ion-button expand="full" @click="() => reloadAccordion()">
-    Reload accordion
-  </ion-button>
-  <div v-for="listItem in displayList" :key="listItem.title">
+  <div v-for="listItem in sortByDate(events)" :key="listItem.title">
     <ion-item @click="headerClicked(listItem)" >
       <ion-label>
         <h1>{{ listItem.title }}</h1>
         <h3>{{ listItem.org }}</h3>
-        <ion-note>{{ listItem.date }}</ion-note>
-        <ion-button color="warning" slot="end" @click="() => del(listItem._id)">
-          delete
-        </ion-button>
+        <ion-note>
+          <span>{{ stringToDate(listItem.date) }}</span>
+        </ion-note>
       </ion-label>
     </ion-item>
     <transition name="fade">
       <div
-        :ref="'body-' + displayList.indexOf(listItem)"
+        :ref="'body-' + events.indexOf(listItem)"
         style="display: none; height: 115px"
         v-show="expandElement(listItem)"
       >
         <ion-item>
           <ion-label>
             <ion-note>
-              {{ "id: " + listItem._id}}<br />
               {{ "место: " + listItem.where }}<br />
               {{ "длительность: " + listItem.duration }}<br />
               {{ "для кого: " + listItem.target }}<br />
@@ -34,40 +29,68 @@
       </div>
     </transition>
   </div>
+
 </template>
 
 <script lang="ts">
-import {deleteEvent} from "@/api/deleteEvent";
 
-export default {
+import {useStore} from "vuex";
+import Event from "@/types/Event";
+import {defineComponent} from "vue";
+import {
+  IonNote,
+  IonLabel,
+  IonItem
+} from "@ionic/vue";
+import moment from 'moment';
+
+export default defineComponent({
   name: "Accordion",
-  // list of data to display
-  props: ["list"],
-  // data section of component
-  data(): any {
+  components: {
+    IonNote,
+    IonLabel,
+    IonItem,
+  },
+  setup() {
+    const store = useStore()
     return {
-      displayList: (this as any).list,
+      isExpanded: "",
+      store,
     };
   },
+  created() {
+    this.refreshEvents()
+  },
   methods: {
-    async del(event) {
-      console.log("deleting event: " + event);
-      const response = await deleteEvent(event,).catch((err) => {
-        console.log('err', err)
-      });
-      console.log('got response', response)
+    stringToDate: function (date) {
+      return moment(date,"DD-MM-YYYY").format("DD-MM-YYYY");
     },
-    reloadAccordion() {
-      console.log("displayList is " + (this as any).displayList);
-      console.log("list is " + (this as any).list);
-      (this as any).displayList = (this as any).list
+    sortByDate: function (list){
+      return list.sort((fst, snd) => {
+        if (fst > snd) return -1;
+        else return 1;
+      })
+    },
+    async refreshEvents() {
+      console.debug("refreshing events")
+      await this.store.dispatch('event/updateEvents')
+          .then(() => {
+            console.debug("setting this.events")
+            this.events = this.store.getters['event/events'] as Event[]
+            console.debug("this.events now is", this.events)
+          })
+          .catch((error) => {
+            console.error("error loading events", error)
+          })
+      console.debug("finished data loading")
+
     },
     /**
-     * this function is called to determine if the element
+     * this function is called to determine if the element 11
      * should be in the expanded mode or not
      */
     expandElement(listItem: any): boolean {
-      const curE = (this as any).$refs["body-" + (this as any).displayList.indexOf(listItem)];
+      const curE = (this as any).$refs["body-" + this.events.indexOf(listItem)];
       if (curE === undefined) return false;
       return curE.dataset.isExpanded === "true";
     },
@@ -77,8 +100,8 @@ export default {
      * this listItem that was clicked
      */
     headerClicked(listItem: any): any {
-      (this as any).displayList.map((e: any) => {
-        const curE = (this as any).$refs["body-" + (this as any).displayList.indexOf(e)];
+      this.events.map((e: any) => {
+        const curE = (this as any).$refs["body-" + this.events.indexOf(e)];
         if (e === listItem) {
           if (curE.dataset.isExpanded === "true") {
             curE.setAttribute("data-is-expanded", false);
@@ -89,13 +112,18 @@ export default {
           curE.setAttribute("data-is-expanded", false);
         }
       }, this);
-      (this as any).displayList = [...(this as any).displayList];
+      this.events = [...this.events];
     },
   },
-};
+  data() {
+    return {
+      events: [] as Event[]
+    };
+  },
+})
 </script>
 
-<style  scoped>
+<style scoped>
 .fade-enter-active,
 .fade-leave-active {
   transition: height 0.3s ease-in-out;

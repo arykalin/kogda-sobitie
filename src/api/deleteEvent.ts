@@ -6,7 +6,7 @@ const deleteEvent = (eventID: string): Promise<any> => {
     const headers = {
         "Token": token
     };
-    console.log("running deleteEvent id" + eventID)
+    console.debug("running deleteEvent id" + eventID)
     return httpClient.delete(`${END_POINT}/${eventID}`,
         { headers })
 }

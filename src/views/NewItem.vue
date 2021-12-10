@@ -3,6 +3,13 @@
     <ion-header>
       <ion-toolbar>
         <ion-buttons slot="start">
+          <ion-back-button></ion-back-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-header>
+      <ion-toolbar>
+        <ion-buttons slot="start">
           <ion-back-button default-href="/home"></ion-back-button>
         </ion-buttons>
         <ion-title>Создать событие</ion-title>
@@ -38,11 +45,7 @@
       </ion-item>
 
       <ion-item>
-        <ion-input
-            v-model="amount"
-            placeholder="Сколько людей"
-            type="number"
-        ></ion-input>
+        <ion-input v-model="amount" placeholder="Сколько людей" ></ion-input>
       </ion-item>
 
       <ion-item>
@@ -147,14 +150,14 @@ export default defineComponent({
         amount: this.amount,
       }
 
-      console.log('constructed event: ' + newEvent.description)
+      console.debug('constructed event: ' + newEvent.description)
       postEvent(newEvent)
           .then(function (response) {
-            console.log(response.data);
+            console.debug(response.data);
             this.showToast("Событие создано");
           })
           .catch(function (error) {
-            console.log(error);
+            console.debug(error);
           });
 
       this.title = "";

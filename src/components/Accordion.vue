@@ -1,10 +1,12 @@
 <template>
-  <div v-for="listItem in events" :key="listItem.title">
+  <div v-for="listItem in sortByDate(events)" :key="listItem.title">
     <ion-item @click="headerClicked(listItem)" >
       <ion-label>
         <h1>{{ listItem.title }}</h1>
         <h3>{{ listItem.org }}</h3>
-        <ion-note>{{ listItem.date }}</ion-note>
+        <ion-note>
+          <span>{{ stringToDate(listItem.date) }}</span>
+        </ion-note>
       </ion-label>
     </ion-item>
     <transition name="fade">
@@ -35,9 +37,20 @@
 import {useStore} from "vuex";
 import Event from "@/types/Event";
 import {defineComponent} from "vue";
+import {
+  IonNote,
+  IonLabel,
+  IonItem
+} from "@ionic/vue";
+import moment from 'moment';
 
 export default defineComponent({
   name: "Accordion",
+  components: {
+    IonNote,
+    IonLabel,
+    IonItem,
+  },
   setup() {
     const store = useStore()
     return {
@@ -49,6 +62,15 @@ export default defineComponent({
     this.refreshEvents()
   },
   methods: {
+    stringToDate: function (date) {
+      return moment(date,"DD-MM-YYYY").format("DD-MM-YYYY");
+    },
+    sortByDate: function (list){
+      return list.sort((fst, snd) => {
+        if (fst > snd) return -1;
+        else return 1;
+      })
+    },
     async refreshEvents() {
       console.debug("refreshing events")
       await this.store.dispatch('event/updateEvents')
@@ -101,7 +123,7 @@ export default defineComponent({
 })
 </script>
 
-<style  scoped>
+<style scoped>
 .fade-enter-active,
 .fade-leave-active {
   transition: height 0.3s ease-in-out;

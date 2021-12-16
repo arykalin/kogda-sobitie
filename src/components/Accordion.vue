@@ -1,11 +1,11 @@
 <template>
-  <div v-for="listItem in sortByDate(events)" :key="listItem.title">
+  <div v-for="listItem in sortByDate(events, true)" :key="listItem.title">
     <ion-item @click="headerClicked(listItem)" >
       <ion-label>
         <h1>{{ listItem.title }}</h1>
         <h3>{{ listItem.org }}</h3>
         <ion-note>
-          <span>{{ stringToDate(listItem.date) }}</span>
+          <span>{{ stringToDateDMY(listItem.date) }}</span>
         </ion-note>
       </ion-label>
     </ion-item>
@@ -22,7 +22,7 @@
               {{ "длительность: " + listItem.duration }}<br />
               {{ "для кого: " + listItem.target }}<br />
               {{ "сколько: " + listItem.amount }}<br />
-              {{ "ссылка:" + listItem.link }}
+              {{ "ссылка: " + listItem.link }}
             </ion-note>
           </ion-label>
         </ion-item>
@@ -62,13 +62,17 @@ export default defineComponent({
     this.refreshEvents()
   },
   methods: {
-    stringToDate: function (date) {
+    stringToDateDMY: function (date) {
       return moment(date,"DD-MM-YYYY").format("DD-MM-YYYY");
     },
-    sortByDate: function (list){
+    stringToDateMDY: function (date) {
+      return moment(date,"DD-MM-YYYY").format("MM-DD-YYYY");
+    },
+    sortByDate: function (list: Event[], asc: boolean){
       return list.sort((fst, snd) => {
-        if (fst > snd) return -1;
-        else return 1;
+        return (new Date(this.stringToDateMDY(fst.date)).valueOf() - 
+                new Date(this.stringToDateMDY(snd.date)).valueOf()) *
+               (asc ? 1 : -1);
       })
     },
     async refreshEvents() {

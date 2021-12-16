@@ -46,6 +46,7 @@ import moment from 'moment';
 
 export default defineComponent({
   name: "Accordion",
+  props: ['filter', 'sort'],
   components: {
     IonNote,
     IonLabel,
@@ -73,6 +74,18 @@ export default defineComponent({
         return (new Date(this.stringToDateMDY(fst.date)).valueOf() - 
                 new Date(this.stringToDateMDY(snd.date)).valueOf()) *
                (asc ? 1 : -1);
+      })
+    },
+    getUpToDateEvents: function (list: Event[]) {
+      return list.filter(event => {
+        return new Date(this.stringToDateMDY(event.date)) >= 
+               new Date(moment().format("MM/DD/YYYY"));
+      })
+    },
+    getPastEvents: function (list: Event[]) {
+      return list.filter(event => {
+        return new Date(this.stringToDateMDY(event.date)) < 
+               new Date(moment().format("MM/DD/YYYY"));
       })
     },
     async refreshEvents() {

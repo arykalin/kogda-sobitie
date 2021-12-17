@@ -1,5 +1,5 @@
 <template>
-  <div v-for="listItem in sortByDate(events, true)" :key="listItem.title">
+  <div v-for="listItem in this.sortEvents(this.filterEvents(events))" :key="listItem.title">
     <ion-item @click="headerClicked(listItem)" >
       <ion-label>
         <h1>{{ listItem.title }}</h1>
@@ -46,7 +46,11 @@ import moment from 'moment';
 
 export default defineComponent({
   name: "Accordion",
-  props: ['filter', 'sort'],
+  // props: ['filter', 'sort'],
+  props: {
+    filter: Object, 
+    sort: Object
+  },
   components: {
     IonNote,
     IonLabel,
@@ -68,6 +72,18 @@ export default defineComponent({
     },
     stringToDateMDY: function (date) {
       return moment(date,"DD-MM-YYYY").format("MM-DD-YYYY");
+    },
+    filterEvents: function (list: Event[]) {
+      if (this.filter == null) return list;
+      this.filter.forEach(element => {
+        if (element == 'upToDate') list = this.getUpToDateEvents(list);
+        if (element == 'past') list = this.getPastEvents(list);
+      });
+      return list;
+    },
+    sortEvents: function(list: Event[]) {
+      if (this.sort == null) return list;
+      return this.sortByDate(list, this.sort == 'asc' ? true : false);
     },
     sortByDate: function (list: Event[], asc: boolean){
       return list.sort((fst, snd) => {
@@ -117,6 +133,8 @@ export default defineComponent({
      * this listItem that was clicked
      */
     headerClicked(listItem: any): any {
+      console.log(this.filter);
+      console.log(this.sort);
       this.events.map((e: any) => {
         const curE = (this as any).$refs["body-" + this.events.indexOf(e)];
         if (e === listItem) {
@@ -134,7 +152,7 @@ export default defineComponent({
   },
   data() {
     return {
-      events: [] as Event[]
+      events: [] as Event[],
     };
   },
 })

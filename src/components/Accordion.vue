@@ -1,5 +1,5 @@
 <template>
-  <div v-for="listItem in this.sortEvents(this.filterEvents(events))" :key="listItem.title">
+    <div v-for="listItem in sort(filter(events, ['upToDate']), 'asc')" :key="listItem.title">
     <ion-item @click="headerClicked(listItem)" >
       <ion-label>
         <h1>{{ listItem.title }}</h1>
@@ -42,15 +42,15 @@ import {
   IonLabel,
   IonItem
 } from "@ionic/vue";
+import {sortEvents, filterEvents} from "@/tools/SortsAndFilters";
 import moment from 'moment';
 
 export default defineComponent({
   name: "Accordion",
-  // props: ['filter', 'sort'],
-  props: {
-    filter: Object, 
-    sort: Object
-  },
+  // props: {
+  //   filter: Object, 
+  //   sort: String
+  // },
   components: {
     IonNote,
     IonLabel,
@@ -70,40 +70,48 @@ export default defineComponent({
     stringToDateDMY: function (date) {
       return moment(date,"DD-MM-YYYY").format("DD-MM-YYYY");
     },
-    stringToDateMDY: function (date) {
-      return moment(date,"DD-MM-YYYY").format("MM-DD-YYYY");
-    },
-    filterEvents: function (list: Event[]) {
-      if (this.filter == null) return list;
-      this.filter.forEach(element => {
-        if (element == 'upToDate') list = this.getUpToDateEvents(list);
-        if (element == 'past') list = this.getPastEvents(list);
-      });
-      return list;
-    },
-    sortEvents: function(list: Event[]) {
-      if (this.sort == null) return list;
-      return this.sortByDate(list, this.sort == 'asc' ? true : false);
-    },
-    sortByDate: function (list: Event[], asc: boolean){
-      return list.sort((fst, snd) => {
-        return (new Date(this.stringToDateMDY(fst.date)).valueOf() - 
-                new Date(this.stringToDateMDY(snd.date)).valueOf()) *
-               (asc ? 1 : -1);
-      })
-    },
-    getUpToDateEvents: function (list: Event[]) {
-      return list.filter(event => {
-        return new Date(this.stringToDateMDY(event.date)) >= 
-               new Date(moment().format("MM/DD/YYYY"));
-      })
-    },
-    getPastEvents: function (list: Event[]) {
-      return list.filter(event => {
-        return new Date(this.stringToDateMDY(event.date)) < 
-               new Date(moment().format("MM/DD/YYYY"));
-      })
-    },
+
+    sort: function (list: Event[], sort: string): Event[] { return sortEvents(list, sort); },
+
+    filter: function (list: Event[], filter: string[]): Event[] { return filterEvents(list, filter); },
+
+    // stringToDateMDY: function (date) {
+    //   return moment(date,"DD-MM-YYYY").format("MM-DD-YYYY");
+    // },
+    // filterEvents: function (list: Event[]) {
+    //   if (this.filter == null) return list;
+    //   this.filter.forEach(element => {
+    //     if (element == 'upToDate') list = this.getUpToDateEvents(list);
+    //     if (element == 'past') list = this.getPastEvents(list);
+    //   });
+    //   return list;
+    // },
+    // sortEvents: function(list: Event[]) {
+    //   console.log(this.sort);
+    //   if (this.sort == null) return list;
+    //   const newList = this.sortByDate(list, this.sort == 'asc' ? true : false);
+    //   console.log(newList);
+    //   return newList;
+    // },
+    // sortByDate: function (list: Event[], asc: boolean){
+    //   return list.sort((fst, snd) => {
+    //     return (new Date(this.stringToDateMDY(fst.date)).valueOf() - 
+    //             new Date(this.stringToDateMDY(snd.date)).valueOf()) *
+    //            (asc ? 1 : -1);
+    //   })
+    // },
+    // getUpToDateEvents: function (list: Event[]) {
+    //   return list.filter(event => {
+    //     return new Date(this.stringToDateMDY(event.date)) >= 
+    //            new Date(moment().format("MM/DD/YYYY"));
+    //   })
+    // },
+    // getPastEvents: function (list: Event[]) {
+    //   return list.filter(event => {
+    //     return new Date(this.stringToDateMDY(event.date)) < 
+    //            new Date(moment().format("MM/DD/YYYY"));
+    //   })
+    // },
     async refreshEvents() {
       console.debug("refreshing events")
       await this.store.dispatch('event/updateEvents')
@@ -133,8 +141,6 @@ export default defineComponent({
      * this listItem that was clicked
      */
     headerClicked(listItem: any): any {
-      console.log(this.filter);
-      console.log(this.sort);
       this.events.map((e: any) => {
         const curE = (this as any).$refs["body-" + this.events.indexOf(e)];
         if (e === listItem) {

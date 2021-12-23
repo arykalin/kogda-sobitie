@@ -29,6 +29,8 @@
     "vuex-persistedstate": "^4.1.0"
   },
   "devDependencies": {
+    "json-schema": ">=0.4.0",
+    "ansi-regex": ">=5.0.1",
     "@capacitor/cli": "3.2.2",
     "@types/gapi": "^0.0.41",
     "@types/gapi.auth2": "^0.0.55",

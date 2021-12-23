@@ -22,7 +22,8 @@
               {{ "длительность: " + listItem.duration }}<br />
               {{ "для кого: " + listItem.target }}<br />
               {{ "сколько: " + listItem.amount }}<br />
-              {{ "ссылка:" + listItem.link }}
+              {{ "ссылка:" }}
+              <a :href="listItem.link" target="_blank">{{ listItem.link }}</a>
             </ion-note>
           </ion-label>
         </ion-item>

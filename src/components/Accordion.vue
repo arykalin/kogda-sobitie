@@ -1,34 +1,31 @@
 <template>
-  <div v-for="listItem in sortByDate(events)" :key="listItem.title">
-    <ion-item @click="headerClicked(listItem)" >
-      <ion-label>
-        <h1>{{ listItem.title }}</h1>
-        <h3>{{ listItem.org }}</h3>
-        <ion-note>
-          <span>{{ stringToDate(listItem.date) }}</span>
-        </ion-note>
-      </ion-label>
-    </ion-item>
-    <transition name="fade">
-      <div
-        :ref="'body-' + events.indexOf(listItem)"
-        style="display: none; height: 115px"
-        v-show="expandElement(listItem)"
-      >
-        <ion-item>
-          <ion-label>
-            <ion-note>
-              {{ "место: " + listItem.where }}<br />
-              {{ "длительность: " + listItem.duration }}<br />
-              {{ "для кого: " + listItem.target }}<br />
-              {{ "сколько: " + listItem.amount }}<br />
-              {{ "ссылка:" }}
-              <a :href="listItem.link" target="_blank">{{ listItem.link }}</a>
-            </ion-note>
-          </ion-label>
-        </ion-item>
-      </div>
-    </transition>
+    <div v-for="listItem in sort(filter(events, ['upToDate']), 'asc')" :key="listItem.title">
+      <ion-accordion-group>
+        <ion-accordion value=listItem.title>
+          <ion-item slot="header">
+            <ion-label>
+              <h1>{{ listItem.title }}</h1>
+              <h3>{{ listItem.org }}</h3>
+              <ion-note>
+                <span>{{ stringToDateDMY(listItem.date) }}</span>
+              </ion-note>
+            </ion-label>
+          </ion-item>
+
+          <ion-item slot="content">
+            <ion-label>
+              <ion-note>
+                {{ "место: " + listItem.where }}<br />
+                {{ "длительность: " + listItem.duration }}<br />
+                {{ "для кого: " + listItem.target }}<br />
+                {{ "сколько: " + listItem.amount }}<br />
+                {{ "ссылка:" }}
+                <a :href="listItem.link" target="_blank">{{ listItem.link }}</a>
+              </ion-note>
+            </ion-label>
+          </ion-item>
+        </ion-accordion>
+      </ion-accordion-group>
   </div>
 
 </template>
@@ -43,10 +40,15 @@ import {
   IonLabel,
   IonItem
 } from "@ionic/vue";
+import {sortEvents, filterEvents} from "@/tools/SortsAndFilters";
 import moment from 'moment';
 
 export default defineComponent({
   name: "Accordion",
+  // props: {
+  //   filter: Object,
+  //   sort: String
+  // },
   components: {
     IonNote,
     IonLabel,
@@ -63,15 +65,14 @@ export default defineComponent({
     this.refreshEvents()
   },
   methods: {
-    stringToDate: function (date) {
+    stringToDateDMY: function (date) {
       return moment(date,"DD-MM-YYYY").format("DD-MM-YYYY");
     },
-    sortByDate: function (list){
-      return list.sort((fst, snd) => {
-        if (fst > snd) return -1;
-        else return 1;
-      })
-    },
+
+    sort: function (list: Event[], sort: string): Event[] { return sortEvents(list, sort); },
+
+    filter: function (list: Event[], filter: string[]): Event[] { return filterEvents(list, filter); },
+
     async refreshEvents() {
       console.debug("refreshing events")
       await this.store.dispatch('event/updateEvents')
@@ -86,39 +87,10 @@ export default defineComponent({
       console.debug("finished data loading")
 
     },
-    /**
-     * this function is called to determine if the element 11
-     * should be in the expanded mode or not
-     */
-    expandElement(listItem: any): boolean {
-      const curE = (this as any).$refs["body-" + this.events.indexOf(listItem)];
-      if (curE === undefined) return false;
-      return curE.dataset.isExpanded === "true";
-    },
-    /**
-     * this iterates through all of the elements in the list
-     * and set data attribute isExpanded appropriately based on
-     * this listItem that was clicked
-     */
-    headerClicked(listItem: any): any {
-      this.events.map((e: any) => {
-        const curE = (this as any).$refs["body-" + this.events.indexOf(e)];
-        if (e === listItem) {
-          if (curE.dataset.isExpanded === "true") {
-            curE.setAttribute("data-is-expanded", false);
-          } else {
-            curE.setAttribute("data-is-expanded", true);
-          }
-        } else {
-          curE.setAttribute("data-is-expanded", false);
-        }
-      }, this);
-      this.events = [...this.events];
-    },
   },
   data() {
     return {
-      events: [] as Event[]
+      events: [] as Event[],
     };
   },
 })

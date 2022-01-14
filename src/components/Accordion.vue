@@ -1,9 +1,9 @@
 <template>
-    <div v-for="listItem in sort(filter(events, ['upToDate']), 'asc')" :key="listItem.title">
+    <div v-for="listItem in sort(filter(events, ['noFilter']), 'asc')" :key="listItem.title">
       <ion-accordion-group>
         <ion-accordion value=listItem.title>
           <ion-item slot="header">
-            <ion-label>
+            <ion-label class="ion-text-wrap">
               <h1>{{ listItem.title }}</h1>
               <h3>{{ listItem.org }}</h3>
               <ion-note>
@@ -13,7 +13,7 @@
           </ion-item>
 
           <ion-item slot="content">
-            <ion-label>
+            <ion-label class="ion-text-wrap">
               <ion-note>
                 {{ "место: " + listItem.where }}<br />
                 {{ "длительность: " + listItem.duration }}<br />

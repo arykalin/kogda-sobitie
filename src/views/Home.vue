@@ -4,12 +4,12 @@
       <ion-toolbar>
         <ion-title size="large" color="dark">Колесо года</ion-title>
 
-        <!-- <ion-select 
-          :interface-options="customPopoverOptions" 
-          interface="popover" 
-          placeholder="фильтровать" 
-          slot="end" 
-          multiple="true" 
+        <!-- <ion-select
+          :interface-options="customPopoverOptions"
+          interface="popover"
+          placeholder="фильтровать"
+          slot="end"
+          multiple="true"
           v-model=filter
           >
           <ion-select-option value="noFilter">все события</ion-select-option>
@@ -19,12 +19,12 @@
           <ion-select-option value="period">периодические события</ion-select-option>
         </ion-select>
 
-        <ion-select 
-          :interface-options="customPopoverOptions" 
-          interface="popover" 
-          placeholder="сортировать" 
-          slot="end" 
-          v-model=sort 
+        <ion-select
+          :interface-options="customPopoverOptions"
+          interface="popover"
+          placeholder="сортировать"
+          slot="end"
+          v-model=sort
           >
           <ion-select-option value="asc">по возрастанию</ion-select-option>
           <ion-select-option value="desc">по убыванию</ion-select-option>
@@ -50,7 +50,7 @@ import {defineComponent} from "vue";
 import Accordion from "@/components/Accordion.vue";
 import { useRouter } from "vue-router";
 import { add, reload } from "ionicons/icons";
-// import { 
+// import {
 //   IonSelect,
 //   IonSelectOption
 // } from '@ionic/vue';

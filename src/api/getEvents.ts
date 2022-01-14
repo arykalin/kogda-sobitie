@@ -22,10 +22,10 @@ const getEvents = async (): Promise<Event[] | string> => {
                 amount: event.amount,
                 link: event.link,
             };
-            console.debug("made new event: ", newEvent);
+            // console.debug("made new event: ", newEvent);
             answer.push(newEvent)
         })
-        console.debug("made answer: ", answer);
+        // console.debug("made answer: ", answer);
     } catch (error: any) {
         if (error) {
             return error.message

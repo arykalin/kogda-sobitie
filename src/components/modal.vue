@@ -7,16 +7,42 @@
   </ion-header>
 
   <ion-content class="ion-padding">
-    <ion-note>
-      {{ "организатор: " + content.org}} <br/>
-      {{ "место: " + content.where }}<br/>
-      {{ "длительность: " + content.duration }}<br/>
-      {{ "для кого: " + content.target }}<br/>
-      {{ "сколько: " + content.amount }}<br/>
-      {{ "ссылка: " + content.link }}<br/>
-      {{}}<br/>
-    </ion-note>
-    {{ content.description }}
+    <ion-item>
+      <ion-input :v-model=content.title :value=content.title></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-input :v-model=content.description :value=content.description></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-input :v-model=content.org :value=content.org></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-input :v-model=content.where :value=content.where></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-input :v-model=content.date type="date" :value=content.date></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-input :v-model=content.duration :value=content.duration></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-input :v-model=content.target :value=content.target></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-input :v-model=content.amount  :value=content.amount></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-input :v-model="content.link" :value=content.link type="url"></ion-input>
+    </ion-item>
+
     <ion-fab vertical="top" horizontal="end" slot="fixed">
       <ion-button @click="showData()">Debug</ion-button>
       <ion-fab-button @click="close()" color="light" size="small">

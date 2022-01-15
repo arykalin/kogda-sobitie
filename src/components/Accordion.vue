@@ -25,16 +25,26 @@
             <ion-button expand="block" fill="solid" @click="() => router.push('/profile')">
               Редактировать
             </ion-button>
+            <ion-button expand="full" @click="setOpen(true)">{{ listItem.title }}</ion-button>
           </ion-label>
         </ion-item>
       </ion-accordion>
     </ion-accordion-group>
+    <ion-modal
+        :is-open="isOpenRef"
+        css-class="my-custom-class"
+        @didDismiss="setOpen(false)">
+      <Modal :data="listItem"></Modal>
+    </ion-modal>
   </div>
 
 </template>
 
 <script lang="ts">
+import {IonModal, IonButton} from '@ionic/vue';
+import Modal from './modal.vue'
 
+import {deleteEvent} from "@/api/deleteEvent";
 import {useStore} from "vuex";
 import Event from "@/types/Event";
 import {defineComponent, ref} from "vue";
@@ -60,6 +70,11 @@ export default defineComponent({
     IonAccordion, IonAccordionGroup
   },
   setup() {
+    const isOpenRef = ref(false);
+    // console.log(isOpenRef.value);
+    const setOpen = (state: boolean) => isOpenRef.value = state;
+    // console.log(isOpenRef.value);
+    const data = {content: 'New Content'};
     const accordionGroup = ref();
     const logAccordionValue = () => {
       if (accordionGroup.value) {
@@ -78,6 +93,7 @@ export default defineComponent({
       logAccordionValue,
       isExpanded: "",
       store,
+      isOpenRef, setOpen, data
     };
   },
   created() {
@@ -109,6 +125,13 @@ export default defineComponent({
           })
       console.debug("finished data loading")
 
+    },
+    async del(event) {
+      console.debug("Accordion: deleting event: " + event);
+      const response = await deleteEvent(event,).catch((err) => {
+        console.debug('Accordion: err', err)
+      });
+      console.debug('Accordion: got response', response)
     },
   },
   data() {

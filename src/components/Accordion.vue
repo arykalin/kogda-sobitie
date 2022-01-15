@@ -22,27 +22,16 @@
               {{ "ссылка:" }}
               <a :href="listItem.link" target="_blank">{{ listItem.link }}</a>
             </ion-note>
-            <ion-button expand="block" fill="solid" @click="() => router.push('/profile')">
-              Редактировать
-            </ion-button>
-            <ion-button expand="full" @click="setOpen(true)">{{ listItem.title }}</ion-button>
+            <ion-button expand="block" fill="solid"  @click="openModal(listItem)">Edit</ion-button>
           </ion-label>
         </ion-item>
       </ion-accordion>
     </ion-accordion-group>
-    <ion-modal
-        :is-open="isOpenRef"
-        css-class="my-custom-class"
-        @didDismiss="setOpen(false)">
-      <Modal :data="listItem"></Modal>
-    </ion-modal>
   </div>
 
 </template>
 
 <script lang="ts">
-import {IonModal, IonButton} from '@ionic/vue';
-import Modal from './modal.vue'
 
 import {deleteEvent} from "@/api/deleteEvent";
 import {useStore} from "vuex";
@@ -55,7 +44,9 @@ import {
 } from "@ionic/vue";
 import {sortEvents, filterEvents} from "@/tools/SortsAndFilters";
 import moment from 'moment';
-import {IonAccordion, IonAccordionGroup, IonButton} from '@ionic/vue';
+import {IonAccordion, IonAccordionGroup, IonButton, modalController} from '@ionic/vue';
+import {IonModal} from '@ionic/vue';
+import EditEvent from './modal.vue'
 
 export default defineComponent({
   name: "Accordion",
@@ -67,12 +58,12 @@ export default defineComponent({
     IonNote,
     IonLabel,
     IonItem,
+    IonModal, EditEvent,
     IonAccordion, IonAccordionGroup
   },
   setup() {
     const isOpenRef = ref(false);
     // console.log(isOpenRef.value);
-    const setOpen = (state: boolean) => isOpenRef.value = state;
     // console.log(isOpenRef.value);
     const data = {content: 'New Content'};
     const accordionGroup = ref();
@@ -93,13 +84,25 @@ export default defineComponent({
       logAccordionValue,
       isExpanded: "",
       store,
-      isOpenRef, setOpen, data
+      isOpenRef, data
     };
   },
   created() {
     this.refreshEvents()
   },
   methods: {
+    async openModal(listItem) {
+      const modal = await modalController
+          .create({
+            component: EditEvent,
+            cssClass: 'my-custom-class',
+            componentProps: {
+              title: listItem.title,
+              event: listItem
+            },
+          })
+      return modal.present();
+    },
     stringToDateDMY: function (date) {
       return moment(date, "DD-MM-YYYY").format("DD-MM-YYYY");
     },

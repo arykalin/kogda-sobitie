@@ -1,31 +1,34 @@
 <template>
-    <div v-for="listItem in sort(filter(events, ['noFilter']), 'asc')" :key="listItem.title">
-      <ion-accordion-group>
-        <ion-accordion value=listItem.title>
-          <ion-item slot="header">
-            <ion-label class="ion-text-wrap">
-              <h1>{{ listItem.title }}</h1>
-              <h3>{{ listItem.org }}</h3>
-              <ion-note>
-                <span>{{ stringToDateDMY(listItem.date) }}</span>
-              </ion-note>
-            </ion-label>
-          </ion-item>
+  <div v-for="listItem in sort(filter(events, ['noFilter']), 'asc')" :key="listItem.title">
+    <ion-accordion-group>
+      <ion-accordion value=listItem.title>
+        <ion-item slot="header">
+          <ion-label class="ion-text-wrap">
+            <h1>{{ listItem.title }}</h1>
+            <h3>{{ listItem.org }}</h3>
+            <ion-note>
+              <span>{{ stringToDateDMY(listItem.date) }}</span>
+            </ion-note>
+          </ion-label>
+        </ion-item>
 
-          <ion-item slot="content">
-            <ion-label class="ion-text-wrap">
-              <ion-note>
-                {{ "место: " + listItem.where }}<br />
-                {{ "длительность: " + listItem.duration }}<br />
-                {{ "для кого: " + listItem.target }}<br />
-                {{ "сколько: " + listItem.amount }}<br />
-                {{ "ссылка:" }}
-                <a :href="listItem.link" target="_blank">{{ listItem.link }}</a>
-              </ion-note>
-            </ion-label>
-          </ion-item>
-        </ion-accordion>
-      </ion-accordion-group>
+        <ion-item slot="content">
+          <ion-label class="ion-text-wrap">
+            <ion-note>
+              {{ "место: " + listItem.where }}<br/>
+              {{ "длительность: " + listItem.duration }}<br/>
+              {{ "для кого: " + listItem.target }}<br/>
+              {{ "сколько: " + listItem.amount }}<br/>
+              {{ "ссылка:" }}
+              <a :href="listItem.link" target="_blank">{{ listItem.link }}</a>
+            </ion-note>
+            <ion-button expand="block" fill="solid" @click="() => router.push('/profile')">
+              Редактировать
+            </ion-button>
+          </ion-label>
+        </ion-item>
+      </ion-accordion>
+    </ion-accordion-group>
   </div>
 
 </template>
@@ -42,14 +45,14 @@ import {
 } from "@ionic/vue";
 import {sortEvents, filterEvents} from "@/tools/SortsAndFilters";
 import moment from 'moment';
-import { IonAccordion, IonAccordionGroup, IonButton } from '@ionic/vue';
+import {IonAccordion, IonAccordionGroup, IonButton} from '@ionic/vue';
 
 export default defineComponent({
   name: "Accordion",
-  // props: {
-  //   filter: Object,
-  //   sort: String
-  // },
+// props: {
+//   filter: Object,
+//   sort: String
+// },
   components: {
     IonNote,
     IonLabel,
@@ -82,12 +85,16 @@ export default defineComponent({
   },
   methods: {
     stringToDateDMY: function (date) {
-      return moment(date,"DD-MM-YYYY").format("DD-MM-YYYY");
+      return moment(date, "DD-MM-YYYY").format("DD-MM-YYYY");
     },
 
-    sort: function (list: Event[], sort: string): Event[] { return sortEvents(list, sort); },
+    sort: function (list: Event[], sort: string): Event[] {
+      return sortEvents(list, sort);
+    },
 
-    filter: function (list: Event[], filter: string[]): Event[] { return filterEvents(list, filter); },
+    filter: function (list: Event[], filter: string[]): Event[] {
+      return filterEvents(list, filter);
+    },
 
     async refreshEvents() {
       console.debug("refreshing events")
@@ -118,6 +125,7 @@ export default defineComponent({
   transition: height 0.3s ease-in-out;
   overflow: hidden;
 }
+
 .fade-enter-from,
 .fade-leave-to {
   height: 0px !important;

@@ -4,6 +4,9 @@
       <ion-toolbar>
         <ion-title size="large" color="dark">Колесо года</ion-title>
 
+        <ion-button expand="block" fill="solid" slot="start" @click="() => router.push('/profile')">
+          Профиль
+        </ion-button>
         <!-- <ion-select
           :interface-options="customPopoverOptions"
           interface="popover"

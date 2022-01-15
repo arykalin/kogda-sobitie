@@ -8,10 +8,12 @@
 
   <ion-content class="ion-padding">
     <ion-item>
+      <ion-label color="secondary">Название:</ion-label>
       <ion-input :v-model=content.title :value=content.title></ion-input>
     </ion-item>
 
     <ion-item>
+      <ion-label color="secondary">Комментарий:</ion-label>
       <ion-input :v-model=content.description :value=content.description></ion-input>
     </ion-item>
 
@@ -53,7 +55,7 @@
 
 <script lang="ts">
 
-import {IonContent, IonHeader, IonTitle, IonToolbar} from '@ionic/vue';
+import {IonContent, IonLabel, IonHeader, IonTitle, IonToolbar} from '@ionic/vue';
 import {defineComponent} from 'vue';
 import {modalController} from "@ionic/vue";
 import {
@@ -62,7 +64,7 @@ import {
 
 export default defineComponent({
   name: 'EditEvent',
-  components: {IonContent, IonHeader, IonTitle, IonToolbar},
+  components: {IonContent, IonHeader, IonLabel, IonTitle, IonToolbar},
   props: {
     title: {type: String, default: 'Super Modal'},
     event: Event

@@ -62,29 +62,13 @@ export default defineComponent({
     IonAccordion, IonAccordionGroup
   },
   setup() {
-    const isOpenRef = ref(false);
-    // console.log(isOpenRef.value);
-    // console.log(isOpenRef.value);
     const data = {content: 'New Content'};
     const accordionGroup = ref();
-    const logAccordionValue = () => {
-      if (accordionGroup.value) {
-        console.log(accordionGroup.value.$el.value);
-      }
-    }
-    const closeAccordion = () => {
-      if (accordionGroup.value) {
-        accordionGroup.value.$el.value = undefined;
-      }
-    }
     const store = useStore()
     return {
       accordionGroup,
-      closeAccordion,
-      logAccordionValue,
-      isExpanded: "",
       store,
-      isOpenRef, data
+      data
     };
   },
   created() {
@@ -128,13 +112,6 @@ export default defineComponent({
           })
       console.debug("finished data loading")
 
-    },
-    async del(event) {
-      console.debug("Accordion: deleting event: " + event);
-      const response = await deleteEvent(event,).catch((err) => {
-        console.debug('Accordion: err', err)
-      });
-      console.debug('Accordion: got response', response)
     },
   },
   data() {

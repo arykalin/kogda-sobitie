@@ -44,7 +44,6 @@
     </ion-item>
 
     <ion-fab vertical="top" horizontal="end" slot="fixed">
-      <ion-button @click="showData()">Debug</ion-button>
       <ion-fab-button @click="close()" color="light" size="small">
         <ion-icon :icon="arrowDown"></ion-icon>
       </ion-fab-button>
@@ -77,7 +76,7 @@ export default defineComponent({
     async close() {
       await modalController.dismiss();
     },
-    async showData() {
+    async debugButton() {
       console.debug("modal for item:", this.event);
     }
   },

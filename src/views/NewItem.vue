@@ -58,13 +58,12 @@
           fill="outline"
           color="medium"
       >Сохранить
-      </ion-button
-      >
+      </ion-button>
     </ion-content>
   </ion-page>
 </template>
 
-<script>
+<script lang="ts">
 import {
   IonBackButton,
   IonButtons,
@@ -76,10 +75,11 @@ import {
   IonInput,
   toastController,
 } from "@ionic/vue";
-import {defineComponent, ref} from "vue";
+import {defineComponent} from "vue";
 import {useRouter} from "vue-router";
 import {postEvent} from "@/api/postEvent";
 import {useStore} from "vuex";
+import Event from "@/types/Event";
 
 export default defineComponent({
   name: "NewItem",
@@ -95,8 +95,6 @@ export default defineComponent({
   },
   computed: {
     user() {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-      // @ts-ignore
       return this.store.getters['auth/user']
     },
   },
@@ -138,7 +136,7 @@ export default defineComponent({
         return;
       }
 
-      const newEvent = {
+      const newEvent: Event = {
         date: this.date,
         title: this.title,
         duration: this.duration,

@@ -33,7 +33,6 @@
 
 <script lang="ts">
 
-import {deleteEvent} from "@/api/deleteEvent";
 import {useStore} from "vuex";
 import Event from "@/types/Event";
 import {defineComponent, ref} from "vue";
@@ -45,8 +44,7 @@ import {
 import {sortEvents, filterEvents} from "@/tools/SortsAndFilters";
 import moment from 'moment';
 import {IonAccordion, IonAccordionGroup, IonButton, modalController} from '@ionic/vue';
-import {IonModal} from '@ionic/vue';
-import EditEvent from './modal.vue'
+import UpdateEvent from './UpdateEventModal.vue'
 
 export default defineComponent({
   name: "Accordion",
@@ -58,7 +56,6 @@ export default defineComponent({
     IonNote,
     IonLabel,
     IonItem,
-    IonModal, EditEvent,
     IonAccordion, IonAccordionGroup
   },
   setup() {
@@ -78,7 +75,7 @@ export default defineComponent({
     async openModal(listItem) {
       const modal = await modalController
           .create({
-            component: EditEvent,
+            component: UpdateEvent,
             cssClass: 'my-custom-class',
             componentProps: {
               title: listItem.title,

@@ -2,7 +2,7 @@ import httpClient from './httpClient'
 import Event from "@/types/Event";
 const END_POINT = '/event'
 
-const deleteEvent = (eventID: string, event: Event): Promise<any> => {
+const putEvent = (eventID: string, event: Event): Promise<any> => {
     const token = localStorage.getItem('token')
     const headers = {
         "Token": token
@@ -13,4 +13,4 @@ const deleteEvent = (eventID: string, event: Event): Promise<any> => {
         { headers })
 }
 
-export { deleteEvent }
+export { putEvent }

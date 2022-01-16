@@ -38,13 +38,26 @@
     </ion-item>
 
     <ion-item>
-      <ion-input :v-model=content.amount  :value=content.amount></ion-input>
+      <ion-input :v-model=content.amount :value=content.amount></ion-input>
     </ion-item>
 
     <ion-item>
       <ion-input :v-model="content.link" :value=content.link type="url"></ion-input>
     </ion-item>
 
+    <ion-button @click="debugButton()"
+                expand="block"
+                fill="outline"
+                color="medium">
+      Debug log
+    </ion-button>
+    <ion-button
+        @click="postEvent()"
+        expand="block"
+        fill="outline"
+        color="medium"
+    >Сохранить
+    </ion-button>
     <ion-fab vertical="top" horizontal="end" slot="fixed">
       <ion-fab-button @click="close()" color="light" size="small">
         <ion-icon :icon="arrowDown"></ion-icon>
@@ -55,23 +68,27 @@
 
 <script lang="ts">
 
-import {IonContent, IonLabel, IonHeader, IonTitle, IonToolbar} from '@ionic/vue';
+import {IonContent, IonLabel, IonHeader, IonTitle, toastController} from '@ionic/vue';
+import Event from "@/types/Event";
 import {defineComponent} from 'vue';
 import {modalController} from "@ionic/vue";
 import {
   arrowDown,
 } from 'ionicons/icons';
+import {putEvent} from "@/api/putEvent";
 
 export default defineComponent({
-  name: 'EditEvent',
-  components: {IonContent, IonHeader, IonLabel, IonTitle, IonToolbar},
+  name: 'UpdateEvent',
+  components: {IonContent, IonHeader, IonLabel, IonTitle},
   props: {
     title: {type: String, default: 'Super Modal'},
     event: Event
   },
   data() {
     return {
-      content: this.event,
+      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+      // @ts-ignore
+      content: this.event as Event,
     }
   },
   methods: {
@@ -79,8 +96,31 @@ export default defineComponent({
       await modalController.dismiss();
     },
     async debugButton() {
-      console.debug("modal for item:", this.event);
-    }
+      console.debug("modal for item:", this.content);
+    },
+    postEvent() {
+
+      console.debug('constructed event: ' + this.content)
+      putEvent("", this.content)
+          .then(function (response) {
+            console.debug(response.data);
+            // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+            // @ts-ignore
+            this.showToast("Событие обновлено");
+          })
+          .catch(function (error) {
+            console.debug(error);
+          });
+    },
+    async showToast(message) {
+      const toast = await toastController
+          .create({
+            message: message,
+            duration: 1500,
+            color: "light",
+          })
+      return toast.present();
+    },
   },
   setup() {
     return {

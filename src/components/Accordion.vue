@@ -1,5 +1,5 @@
 <template>
-    <div v-for="listItem in sort(filter(events, ['upToDate']), 'asc')" :key="listItem.title">
+    <div v-for="listItem in sort(filter(events, filter_type), sort_type)" :key="listItem.title">
       <ion-accordion-group>
         <ion-accordion value=listItem.title>
           <ion-item slot="header">
@@ -46,10 +46,10 @@ import { IonAccordion, IonAccordionGroup, IonButton } from '@ionic/vue';
 
 export default defineComponent({
   name: "Accordion",
-  // props: {
-  //   filter: Object,
-  //   sort: String
-  // },
+  props: {
+    filter_type: [String],
+    sort_type: String
+  },
   components: {
     IonNote,
     IonLabel,

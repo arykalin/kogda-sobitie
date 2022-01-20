@@ -2,7 +2,7 @@
   <ion-header>
     <ion-title>
       <h1>{{ title }}</h1>
-      <h5>{{ content.date }}</h5>
+      <h5>{{ date }}</h5>
     </ion-title>
   </ion-header>
 
@@ -74,6 +74,8 @@ import {
   IonHeader,
   IonTitle,
   IonInput,
+  IonItem,
+  IonButton,
   toastController} from '@ionic/vue';
 import Event from "@/types/Event";
 import {defineComponent} from 'vue';
@@ -87,7 +89,7 @@ import moment from "moment";
 
 export default defineComponent({
   name: 'UpdateEvent',
-  components: {IonContent, IonHeader, IonLabel, IonInput, IonTitle},
+  components: {IonContent, IonHeader, IonLabel, IonInput, IonItem, IonButton, IonTitle},
   props: {
     event: Event
   },
@@ -101,6 +103,7 @@ export default defineComponent({
       title: this.event.title,
       // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
       // @ts-ignore
+      // date: this.stringToDateDMY(this.event.date),
       date: this.stringToDateDMY(this.event.date),
       // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
       // @ts-ignore
@@ -127,18 +130,31 @@ export default defineComponent({
   },
   methods: {
     stringToDateDMY: function (date) {
+      console.debug("string to date from:", date)
       return moment(date, "DD-MM-YYYY").format("DD-MM-YYYY");
     },
     async close() {
       await modalController.dismiss();
     },
     async debugButton() {
-      console.debug("title is:", this.title)
+      const newEvent: Event = {
+        id:  this.origEvent.id,
+        date: "",
+        title: this.title,
+        duration: this.duration,
+        link: this.link,
+        org: this.org,
+        target: "",
+        where: this.where,
+        description: this.description,
+        amount: this.amount,
+      }
+      console.debug("updated event is:", newEvent)
     },
     postEvent() {
       const newEvent: Event = {
         id:  this.origEvent.id,
-        date: this.date,
+        date: "",
         title: this.title,
         duration: this.duration,
         link: this.link,
@@ -149,7 +165,7 @@ export default defineComponent({
         amount: this.amount,
       }
       console.debug('constructed event: ' + newEvent)
-      putEvent("", newEvent)
+      putEvent(this.origEvent.id, newEvent)
           .then(function (response) {
             console.debug(response.data);
             // eslint-disable-next-line @typescript-eslint/ban-ts-ignore

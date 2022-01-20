@@ -9,10 +9,10 @@
           interface="popover"
           placeholder="фильтровать"
           slot="end"
-          multiple="true"
           value="upToDate"
           v-model=filter
           >
+          <ion-select-option value="all">все события</ion-select-option>
           <ion-select-option value="upToDate">актуальные события</ion-select-option>
           <ion-select-option value="past">прошедшие события</ion-select-option>
         </ion-select>

@@ -4,19 +4,17 @@
       <ion-toolbar>
         <ion-title size="large" color="dark">Колесо года</ion-title>
 
-        <!-- <ion-select
+        <ion-select
           :interface-options="customPopoverOptions"
           interface="popover"
           placeholder="фильтровать"
           slot="end"
-          multiple="true"
+          value="upToDate"
           v-model=filter
           >
-          <ion-select-option value="noFilter">все события</ion-select-option>
+          <ion-select-option value="all">все события</ion-select-option>
           <ion-select-option value="upToDate">актуальные события</ion-select-option>
           <ion-select-option value="past">прошедшие события</ion-select-option>
-          <ion-select-option value="oneTime">разовые события</ion-select-option>
-          <ion-select-option value="period">периодические события</ion-select-option>
         </ion-select>
 
         <ion-select
@@ -24,16 +22,17 @@
           interface="popover"
           placeholder="сортировать"
           slot="end"
+          value="asc"
           v-model=sort
           >
-          <ion-select-option value="asc">по возрастанию</ion-select-option>
-          <ion-select-option value="desc">по убыванию</ion-select-option>
-        </ion-select> -->
+          <ion-select-option value="asc">по возрастанию даты</ion-select-option>
+          <ion-select-option value="desc">по убыванию даты</ion-select-option>
+        </ion-select>
 
       </ion-toolbar>
     </ion-header>
     <ion-content :fullscreen="true">
-      <accordion :filter="this.filter" :sort="this.sort"></accordion>
+      <accordion :filter_type="this.filter" :sort_type="this.sort"></accordion>
     </ion-content>
   </ion-page>
 </template>
@@ -50,16 +49,16 @@ import {defineComponent} from "vue";
 import Accordion from "@/components/Accordion.vue";
 import { useRouter } from "vue-router";
 import { add, reload } from "ionicons/icons";
-// import {
-//   IonSelect,
-//   IonSelectOption
-// } from '@ionic/vue';
+import {
+  IonSelect,
+  IonSelectOption
+} from '@ionic/vue';
 
 export default defineComponent({
   name: "Home",
   data() {
     return {
-      filter: "upToDate",
+      filter: ["upToDate"],
       sort: "asc"
     };
   },
@@ -70,8 +69,8 @@ export default defineComponent({
     IonPage,
     IonTitle,
     IonToolbar,
-    // IonSelect,
-    // IonSelectOption,
+    IonSelect,
+    IonSelectOption,
   },
   setup() {
     const customPopoverOptions: any = {

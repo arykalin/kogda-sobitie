@@ -28,11 +28,8 @@ function getPastEvents(list: Event[]): Event[] {
 }
 
 function filterEvents(list: Event[], filter): Event[] {
-    if (filter == []) return list;
-    filter.forEach(element => {
-        if (element == 'upToDate') list = getUpToDateEvents(list);
-        if (element == 'past') list = getPastEvents(list);
-    });
+    if (filter == 'upToDate') return getUpToDateEvents(list);
+    if (filter == 'past') return getPastEvents(list);
     return list;
 }
 

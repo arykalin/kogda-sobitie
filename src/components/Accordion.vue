@@ -1,9 +1,9 @@
 <template>
-    <div v-for="listItem in sort(filter(events, ['upToDate']), 'asc')" :key="listItem.title">
+    <div v-for="listItem in sort(filter(events, filter_type), sort_type)" :key="listItem.title">
       <ion-accordion-group>
         <ion-accordion value=listItem.title>
           <ion-item slot="header">
-            <ion-label>
+            <ion-label class="ion-text-wrap">
               <h1>{{ listItem.title }}</h1>
               <h3>{{ listItem.org }}</h3>
               <ion-note>
@@ -13,7 +13,7 @@
           </ion-item>
 
           <ion-item slot="content">
-            <ion-label>
+            <ion-label class="ion-text-wrap">
               <ion-note>
                 {{ "место: " + listItem.where }}<br />
                 {{ "длительность: " + listItem.duration }}<br />
@@ -34,7 +34,7 @@
 
 import {useStore} from "vuex";
 import Event from "@/types/Event";
-import {defineComponent} from "vue";
+import {defineComponent, ref} from "vue";
 import {
   IonNote,
   IonLabel,
@@ -42,21 +42,38 @@ import {
 } from "@ionic/vue";
 import {sortEvents, filterEvents} from "@/tools/SortsAndFilters";
 import moment from 'moment';
+import { IonAccordion, IonAccordionGroup, IonButton } from '@ionic/vue';
 
 export default defineComponent({
   name: "Accordion",
-  // props: {
-  //   filter: Object,
-  //   sort: String
-  // },
+  props: {
+    filter_type: [String],
+    sort_type: String
+  },
   components: {
     IonNote,
     IonLabel,
     IonItem,
+    IonAccordion, 
+    IonAccordionGroup
   },
   setup() {
+    const accordionGroup = ref();
+    const logAccordionValue = () => {
+      if (accordionGroup.value) {
+        console.log(accordionGroup.value.$el.value);
+      }
+    }
+    const closeAccordion = () => {
+      if (accordionGroup.value) {
+        accordionGroup.value.$el.value = undefined;
+      }
+    }
     const store = useStore()
     return {
+      accordionGroup,
+      closeAccordion,
+      logAccordionValue,
       isExpanded: "",
       store,
     };
@@ -70,7 +87,6 @@ export default defineComponent({
     },
 
     sort: function (list: Event[], sort: string): Event[] { return sortEvents(list, sort); },
-
     filter: function (list: Event[], filter: string[]): Event[] { return filterEvents(list, filter); },
 
     async refreshEvents() {

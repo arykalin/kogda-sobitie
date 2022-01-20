@@ -9,40 +9,40 @@
   <ion-content class="ion-padding">
     <ion-item>
       <ion-label color="secondary">Название:</ion-label>
-      <ion-input :v-model=content.title :value=content.title></ion-input>
+      <ion-input v-model="title" :value=title></ion-input>
     </ion-item>
 
     <ion-item>
       <ion-label color="secondary">Комментарий:</ion-label>
-      <ion-input :v-model=content.description :value=content.description></ion-input>
+      <ion-input :v-model=description :value=description></ion-input>
     </ion-item>
 
     <ion-item>
-      <ion-input :v-model=content.org :value=content.org></ion-input>
+      <ion-input :v-model=org :value=org></ion-input>
     </ion-item>
 
     <ion-item>
-      <ion-input :v-model=content.where :value=content.where></ion-input>
+      <ion-input :v-model=where :value=where></ion-input>
     </ion-item>
 
     <ion-item>
-      <ion-input :v-model=content.date type="date" :value=content.date></ion-input>
+      <ion-input :v-model=date type="date" :value=date></ion-input>
     </ion-item>
 
     <ion-item>
-      <ion-input :v-model=content.duration :value=content.duration></ion-input>
+      <ion-input :v-model=duration :value=duration></ion-input>
     </ion-item>
 
     <ion-item>
-      <ion-input :v-model=content.target :value=content.target></ion-input>
+      <ion-input :v-model=target :value=target></ion-input>
     </ion-item>
 
     <ion-item>
-      <ion-input :v-model=content.amount :value=content.amount></ion-input>
+      <ion-input :v-model=amount :value=amount></ion-input>
     </ion-item>
 
     <ion-item>
-      <ion-input :v-model="content.link" :value=content.link type="url"></ion-input>
+      <ion-input :v-model="link" :value=link type="url"></ion-input>
     </ion-item>
 
     <ion-button @click="debugButton()"
@@ -68,7 +68,13 @@
 
 <script lang="ts">
 
-import {IonContent, IonLabel, IonHeader, IonTitle, toastController} from '@ionic/vue';
+import {
+  IonContent,
+  IonLabel,
+  IonHeader,
+  IonTitle,
+  IonInput,
+  toastController} from '@ionic/vue';
 import Event from "@/types/Event";
 import {defineComponent} from 'vue';
 import {modalController} from "@ionic/vue";
@@ -76,32 +82,74 @@ import {
   arrowDown,
 } from 'ionicons/icons';
 import {putEvent} from "@/api/putEvent";
+import event from "@/store/modules/event";
+import moment from "moment";
 
 export default defineComponent({
   name: 'UpdateEvent',
-  components: {IonContent, IonHeader, IonLabel, IonTitle},
+  components: {IonContent, IonHeader, IonLabel, IonInput, IonTitle},
   props: {
-    title: {type: String, default: 'Super Modal'},
     event: Event
   },
   data() {
     return {
       // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
       // @ts-ignore
-      content: this.event as Event,
+      origEvent: event as Event,
+      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+      // @ts-ignore
+      title: this.event.title,
+      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+      // @ts-ignore
+      date: this.stringToDateDMY(this.event.date),
+      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+      // @ts-ignore
+      duration: this.event.duration,
+      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+      // @ts-ignore
+      link: this.event.link,
+      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+      // @ts-ignore
+      org: this.event.org,
+      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+      // @ts-ignore
+      target: this.event.target,
+      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+      // @ts-ignore
+      where: this.event.where,
+      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+      // @ts-ignore
+      description: this.event.description,
+      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+      // @ts-ignore
+      amount: this.event.amount,
     }
   },
   methods: {
+    stringToDateDMY: function (date) {
+      return moment(date, "DD-MM-YYYY").format("DD-MM-YYYY");
+    },
     async close() {
       await modalController.dismiss();
     },
     async debugButton() {
-      console.debug("modal for item:", this.content);
+      console.debug("title is:", this.title)
     },
     postEvent() {
-
-      console.debug('constructed event: ' + this.content)
-      putEvent("", this.content)
+      const newEvent: Event = {
+        id:  this.origEvent.id,
+        date: this.date,
+        title: this.title,
+        duration: this.duration,
+        link: this.link,
+        org: this.org,
+        target: "",
+        where: this.where,
+        description: this.description,
+        amount: this.amount,
+      }
+      console.debug('constructed event: ' + newEvent)
+      putEvent("", newEvent)
           .then(function (response) {
             console.debug(response.data);
             // eslint-disable-next-line @typescript-eslint/ban-ts-ignore

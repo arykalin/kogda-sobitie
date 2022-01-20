@@ -95,6 +95,8 @@ export default defineComponent({
   },
   computed: {
     user() {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+      // @ts-ignore
       return this.store.getters['auth/user']
     },
   },
@@ -136,7 +138,9 @@ export default defineComponent({
         return;
       }
 
+
       const newEvent: Event = {
+        id:  "",
         date: this.date,
         title: this.title,
         duration: this.duration,
@@ -152,6 +156,8 @@ export default defineComponent({
       postEvent(newEvent)
           .then(function (response) {
             console.debug(response.data);
+            // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+            // @ts-ignore
             this.showToast("Событие создано");
           })
           .catch(function (error) {

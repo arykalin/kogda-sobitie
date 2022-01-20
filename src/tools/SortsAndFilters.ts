@@ -28,19 +28,12 @@ function getPastEvents(list: Event[]): Event[] {
 }
 
 function filterEvents(list: Event[], filter): Event[] {
-    console.log("filter is");
-    console.log(filter);
-    if (filter == []) return list;
-    filter.forEach(element => {
-        if (element == 'upToDate') list = getUpToDateEvents(list);
-        if (element == 'past') list = getPastEvents(list);
-    });
+    if (filter == 'upToDate') return getUpToDateEvents(list);
+    if (filter == 'past') return getPastEvents(list);
     return list;
 }
 
 function sortEvents(list: Event[], sort): Event[] {
-    console.log("sort is");
-    console.log(sort);
     if (sort == 'asc') return sortByDate(list, true);
     if (sort == 'desc') return sortByDate(list, false);
     return list;

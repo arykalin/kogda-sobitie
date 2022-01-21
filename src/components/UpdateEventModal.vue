@@ -14,35 +14,46 @@
 
     <ion-item>
       <ion-label color="secondary">Комментарий:</ion-label>
-      <ion-input :v-model=description :value=description></ion-input>
+      <ion-input v-model="description" :value=description></ion-input>
     </ion-item>
 
     <ion-item>
-      <ion-input :v-model=org :value=org></ion-input>
+      <ion-label color="secondary">Организатор:</ion-label>
+      <ion-input v-model=org :value=org></ion-input>
     </ion-item>
 
     <ion-item>
-      <ion-input :v-model=where :value=where></ion-input>
+      <ion-label color="secondary">Местоположение:</ion-label>
+      <ion-input v-model=where :value=where></ion-input>
     </ion-item>
 
     <ion-item>
-      <ion-input :v-model=date type="date" :value=date></ion-input>
+      <ion-label color="secondary">Дата:</ion-label>
+      <ion-input v-model=date type="date"></ion-input>
     </ion-item>
 
     <ion-item>
-      <ion-input :v-model=duration :value=duration></ion-input>
+      <ion-datetime :value=date></ion-datetime>
     </ion-item>
 
     <ion-item>
-      <ion-input :v-model=target :value=target></ion-input>
+      <ion-label color="secondary">Продолжительность:</ion-label>
+      <ion-input v-model=duration :value=duration></ion-input>
     </ion-item>
 
     <ion-item>
-      <ion-input :v-model=amount :value=amount></ion-input>
+      <ion-label color="secondary">Для кого:</ion-label>
+      <ion-input v-model=target :value=target></ion-input>
     </ion-item>
 
     <ion-item>
-      <ion-input :v-model="link" :value=link type="url"></ion-input>
+      <ion-label color="secondary">Сколько людей:</ion-label>
+      <ion-input v-model=amount :value=amount></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label color="secondary">Ссылка:</ion-label>
+      <ion-input v-model="link" :value=link type="url"></ion-input>
     </ion-item>
 
     <ion-button @click="debugButton()"
@@ -76,6 +87,7 @@ import {
   IonInput,
   IonItem,
   IonButton,
+  IonDatetime,
   toastController} from '@ionic/vue';
 import Event from "@/types/Event";
 import {defineComponent} from 'vue';
@@ -86,10 +98,11 @@ import {
 import {putEvent} from "@/api/putEvent";
 import event from "@/store/modules/event";
 import moment from "moment";
+import { format, parseISO } from 'date-fns';
 
 export default defineComponent({
   name: 'UpdateEvent',
-  components: {IonContent, IonHeader, IonLabel, IonInput, IonItem, IonButton, IonTitle},
+  components: {IonContent, IonHeader, IonLabel, IonInput, IonItem, IonButton, IonDatetime, IonTitle},
   props: {
     event: Event
   },
@@ -97,14 +110,14 @@ export default defineComponent({
     return {
       // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
       // @ts-ignore
-      origEvent: event as Event,
+      id: this.event.id,
       // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
       // @ts-ignore
       title: this.event.title,
       // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
       // @ts-ignore
       // date: this.stringToDateDMY(this.event.date),
-      date: this.stringToDateDMY(this.event.date),
+      date: this.event.date,
       // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
       // @ts-ignore
       duration: this.event.duration,
@@ -113,10 +126,10 @@ export default defineComponent({
       link: this.event.link,
       // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
       // @ts-ignore
-      org: this.event.org,
+      org: this.event.org as string,
       // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
       // @ts-ignore
-      target: this.event.target,
+      target: this.event.target as string,
       // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
       // @ts-ignore
       where: this.event.where,
@@ -138,13 +151,13 @@ export default defineComponent({
     },
     async debugButton() {
       const newEvent: Event = {
-        id:  this.origEvent.id,
-        date: "",
+        id:  this.id,
+        date: this.date,
         title: this.title,
         duration: this.duration,
         link: this.link,
         org: this.org,
-        target: "",
+        target: this.target,
         where: this.where,
         description: this.description,
         amount: this.amount,
@@ -153,19 +166,19 @@ export default defineComponent({
     },
     postEvent() {
       const newEvent: Event = {
-        id:  this.origEvent.id,
-        date: "",
+        id:  this.id,
+        date: this.date,
         title: this.title,
         duration: this.duration,
         link: this.link,
         org: this.org,
-        target: "",
+        target: this.target,
         where: this.where,
         description: this.description,
         amount: this.amount,
       }
       console.debug('constructed event: ' + newEvent)
-      putEvent(this.origEvent.id, newEvent)
+      putEvent(this.id, newEvent)
           .then(function (response) {
             console.debug(response.data);
             // eslint-disable-next-line @typescript-eslint/ban-ts-ignore

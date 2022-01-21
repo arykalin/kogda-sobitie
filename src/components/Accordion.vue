@@ -1,16 +1,16 @@
 <template>
-  <div v-for="listItem in sort(filter(events, ['noFilter']), 'asc')" :key="listItem.title">
-    <ion-accordion-group>
-      <ion-accordion value=listItem.title>
-        <ion-item slot="header">
-          <ion-label class="ion-text-wrap">
-            <h1>{{ listItem.title }}</h1>
-            <h3>{{ listItem.org }}</h3>
-            <ion-note>
-              <span>{{ stringToDateDMY(listItem.date) }}</span>
-            </ion-note>
-          </ion-label>
-        </ion-item>
+    <div v-for="listItem in sort(filter(events, filter_type), sort_type)" :key="listItem.title">
+      <ion-accordion-group>
+        <ion-accordion value=listItem.title>
+          <ion-item slot="header">
+            <ion-label class="ion-text-wrap">
+              <h1>{{ listItem.title }}</h1>
+              <h3>{{ listItem.org }}</h3>
+              <ion-note>
+                <span>{{ stringToDateDMY(listItem.date) }}</span>
+              </ion-note>
+            </ion-label>
+          </ion-item>
 
         <ion-item slot="content">
           <ion-label class="ion-text-wrap">
@@ -48,15 +48,16 @@ import UpdateEvent from './UpdateEventModal.vue'
 
 export default defineComponent({
   name: "Accordion",
-// props: {
-//   filter: Object,
-//   sort: String
-// },
+  props: {
+    filter_type: [String],
+    sort_type: String
+  },
   components: {
     IonNote,
     IonLabel,
     IonItem,
-    IonAccordion, IonAccordionGroup
+    IonAccordion,
+    IonAccordionGroup
   },
   setup() {
     const data = {content: 'New Content'};
@@ -88,13 +89,8 @@ export default defineComponent({
       return moment(date, "DD-MM-YYYY").format("DD-MM-YYYY");
     },
 
-    sort: function (list: Event[], sort: string): Event[] {
-      return sortEvents(list, sort);
-    },
-
-    filter: function (list: Event[], filter: string[]): Event[] {
-      return filterEvents(list, filter);
-    },
+    sort: function (list: Event[], sort: string): Event[] { return sortEvents(list, sort); },
+    filter: function (list: Event[], filter: string[]): Event[] { return filterEvents(list, filter); },
 
     async refreshEvents() {
       console.debug("refreshing events")

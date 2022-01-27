@@ -16,13 +16,14 @@
         <ion-label>
           <h1>IsInit: {{ Vue3GoogleOauth.isInit }}</h1>
           <h1>IsAuthorized: {{ Vue3GoogleOauth.isAuthorized }}</h1>
-          <h2 v-if="user">signed user: {{ user }}</h2>
+          <h2>signed user: {{ user }}</h2>
         </ion-label>
       </ion-item>
       <ion-item>
-        <ion-button @click="handleClickSignIn" :disabled="!Vue3GoogleOauth.isInit || Vue3GoogleOauth.isAuthorized">sign
-          in
-        </ion-button>
+        <button @click="handleClickSignIn" :disabled="!Vue3GoogleOauth.isInit || Vue3GoogleOauth.isAuthorized">sign in</button>
+        <button @click="handleClickGetAuthCode" :disabled="!Vue3GoogleOauth.isInit">get authCode</button>
+        <button @click="handleClickSignOut" :disabled="!Vue3GoogleOauth.isAuthorized">sign out</button>
+        <button @click="handleClickDisconnect" :disabled="!Vue3GoogleOauth.isAuthorized">disconnect</button>
       </ion-item>
       <ion-item>
         <ion-label>
@@ -35,6 +36,7 @@
 
 <script lang="ts">
 
+import { getAuth } from '@/api/getAuth'
 import {defineComponent, inject} from 'vue'
 import {useStore} from 'vuex'
 import {
@@ -62,9 +64,11 @@ export default defineComponent({
   methods: {
     async handleClickSignIn() {
       try {
+        console.debug("running this.$gAuth.signIn()");
         // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
         // @ts-ignore
         const googleUser = await this.$gAuth.signIn()
+        console.debug("got: ", googleUser);
         if (!googleUser) {
           return null
         }
@@ -97,12 +101,59 @@ export default defineComponent({
           // return home
           this.$router.push('/profile');
         })
+
+        //getting token from server
+        try {
+          const tokenResp = await getAuth(this.idToken);
+          console.log("got token: ", tokenResp.data.msg);
+        } catch (error) {
+          //on fail do something
+          console.error("error getting token: ", error);
+        }
       } catch (error) {
         //on fail do something
         await this.showToast("Login failed: " + error, 'warning');
         console.error("Error authentication: ", error)
         return null
       }
+    },
+    async handleClickGetAuthCode(){
+      var authCode
+      try {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+        // @ts-ignore
+        authCode = await this.$gAuth.getAuthCode();
+        console.log("authCode", authCode);
+      } catch(error) {
+        //on fail do something
+        console.error(error);
+        return null;
+      }
+
+      //getting token from server
+      try {
+        const tokenResp = await getAuth(authCode);
+        console.log("got token: ", tokenResp.data.msg);
+      } catch (error) {
+        //on fail do something
+        console.error("error getting token: ", error);
+      }
+    },
+    async handleClickSignOut() {
+      try {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+        // @ts-ignore
+        await this.$gAuth.signOut();
+        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+        // @ts-ignore
+        console.log("isAuthorized", this.Vue3GoogleOauth.isAuthorized);
+        this.user = "";
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    handleClickDisconnect() {
+      window.location.href = `https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=${window.location.href}`;
     },
     async showToast(message, color) {
       const toast = await toastController

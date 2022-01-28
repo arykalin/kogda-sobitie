@@ -12,20 +12,21 @@
             </ion-label>
           </ion-item>
 
-          <ion-item slot="content">
-            <ion-label class="ion-text-wrap">
-              <ion-note>
-                {{ "место: " + listItem.where }}<br />
-                {{ "длительность: " + listItem.duration }}<br />
-                {{ "для кого: " + listItem.target }}<br />
-                {{ "сколько: " + listItem.amount }}<br />
-                {{ "ссылка:" }}
-                <a :href="listItem.link" target="_blank">{{ listItem.link }}</a>
-              </ion-note>
-            </ion-label>
-          </ion-item>
-        </ion-accordion>
-      </ion-accordion-group>
+        <ion-item slot="content">
+          <ion-label class="ion-text-wrap">
+            <ion-note>
+              {{ "место: " + listItem.where }}<br/>
+              {{ "длительность: " + listItem.duration }}<br/>
+              {{ "для кого: " + listItem.target }}<br/>
+              {{ "сколько: " + listItem.amount }}<br/>
+              {{ "ссылка:" }}
+              <a :href="listItem.link" target="_blank">{{ listItem.link }}</a>
+            </ion-note>
+            <ion-button expand="block" fill="solid"  @click="openModal(listItem)">Edit</ion-button>
+          </ion-label>
+        </ion-item>
+      </ion-accordion>
+    </ion-accordion-group>
   </div>
 
 </template>
@@ -42,7 +43,8 @@ import {
 } from "@ionic/vue";
 import {sortEvents, filterEvents} from "@/tools/SortsAndFilters";
 import moment from 'moment';
-import { IonAccordion, IonAccordionGroup, IonButton } from '@ionic/vue';
+import {IonAccordion, IonAccordionGroup, IonButton, modalController} from '@ionic/vue';
+import UpdateEvent from './UpdateEventModal.vue'
 
 export default defineComponent({
   name: "Accordion",
@@ -54,36 +56,37 @@ export default defineComponent({
     IonNote,
     IonLabel,
     IonItem,
-    IonAccordion, 
+    IonAccordion,
     IonAccordionGroup
   },
   setup() {
+    const data = {content: 'New Content'};
     const accordionGroup = ref();
-    const logAccordionValue = () => {
-      if (accordionGroup.value) {
-        console.log(accordionGroup.value.$el.value);
-      }
-    }
-    const closeAccordion = () => {
-      if (accordionGroup.value) {
-        accordionGroup.value.$el.value = undefined;
-      }
-    }
     const store = useStore()
     return {
       accordionGroup,
-      closeAccordion,
-      logAccordionValue,
-      isExpanded: "",
       store,
+      data
     };
   },
   created() {
     this.refreshEvents()
   },
   methods: {
+    async openModal(listItem) {
+      const modal = await modalController
+          .create({
+            component: UpdateEvent,
+            cssClass: 'my-custom-class',
+            componentProps: {
+              title: listItem.title,
+              event: listItem
+            },
+          })
+      return modal.present();
+    },
     stringToDateDMY: function (date) {
-      return moment(date,"DD-MM-YYYY").format("DD-MM-YYYY");
+      return moment(date, "DD-MM-YYYY").format("DD-MM-YYYY");
     },
 
     sort: function (list: Event[], sort: string): Event[] { return sortEvents(list, sort); },
@@ -118,6 +121,7 @@ export default defineComponent({
   transition: height 0.3s ease-in-out;
   overflow: hidden;
 }
+
 .fade-enter-from,
 .fade-leave-to {
   height: 0px !important;

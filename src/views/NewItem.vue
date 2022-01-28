@@ -58,13 +58,12 @@
           fill="outline"
           color="medium"
       >Сохранить
-      </ion-button
-      >
+      </ion-button>
     </ion-content>
   </ion-page>
 </template>
 
-<script>
+<script lang="ts">
 import {
   IonBackButton,
   IonButtons,
@@ -76,10 +75,11 @@ import {
   IonInput,
   toastController,
 } from "@ionic/vue";
-import {defineComponent, ref} from "vue";
+import {defineComponent} from "vue";
 import {useRouter} from "vue-router";
 import {postEvent} from "@/api/postEvent";
 import {useStore} from "vuex";
+import Event from "@/types/Event";
 
 export default defineComponent({
   name: "NewItem",
@@ -138,7 +138,9 @@ export default defineComponent({
         return;
       }
 
-      const newEvent = {
+
+      const newEvent: Event = {
+        id:  "",
         date: this.date,
         title: this.title,
         duration: this.duration,
@@ -154,6 +156,8 @@ export default defineComponent({
       postEvent(newEvent)
           .then(function (response) {
             console.debug(response.data);
+            // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+            // @ts-ignore
             this.showToast("Событие создано");
           })
           .catch(function (error) {

@@ -14,14 +14,14 @@
     <ion-item>
       <ion-label class="ion-text-wrap">
         <h1>Full name: {{ fullName }} </h1>
-        <h2>User Info: {{ user }}</h2>
-        <h3>Token: {{ token }}</h3>
+        <h2>Email: {{ email }}</h2>
       </ion-label>
     </ion-item>
     <ion-button expand="full" @click="() => router.push('/login')">
       Войти
     </ion-button>
     <ion-button expand="full" @click="logout()">Выйти</ion-button>
+    <ion-button expand="full" @click="refreshProfile()">Refresh</ion-button>
     <ion-button expand="full" @click="getStore()">get store</ion-button>
   </ion-content>
   </ion-page>
@@ -33,6 +33,7 @@ import {defineComponent, inject} from "vue";
 import { useStore } from 'vuex'
 import {useRouter} from "vue-router";
 import User from "@/types/User";
+import {getAuth} from "@/api/getAuth";
 
 export default defineComponent({
   name: "Profile",
@@ -66,15 +67,35 @@ export default defineComponent({
   created () {
     // fetch the data when the view is created and the data is
     // already being observed
-    this.getFullName()
+    this.getInfo()
   },
   methods: {
-    getFullName(): void {
+    getInfo(): void {
       if (this.user != null) {
         this.fullName = `${this.user.givenName} ${this.user.familyName}`
       } else {
         this.fullName = 'user is empty'
       }
+      if (this.user != null) {
+        this.email = this.user.email
+      } else {
+        this.email = 'empty'
+      }
+    },
+    async refreshProfile(){
+      // setting token
+      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+      // @ts-ignore
+      const {id_token: idToken} = this.$gAuth.instance.currentUser.get().getAuthResponse();
+
+      //getting token from server
+      try {
+        await this.store.dispatch('auth/backendAuth', idToken)
+      } catch (error) {
+        //on fail do something
+        console.error("error getting token: ", error);
+      }
+      this.getInfo()
     },
     async logout(): Promise<void> {
       // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
@@ -90,6 +111,7 @@ export default defineComponent({
   data() {
     return {
       fullName: "",
+      email: "",
     };
   },
 })

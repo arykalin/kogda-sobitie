@@ -13,21 +13,25 @@
 
     <ion-content :fullscreen="true">
       <ion-item>
-        <ion-label>
-          <h1>IsInit: {{ Vue3GoogleOauth.isInit }}</h1>
-          <h1>IsAuthorized: {{ Vue3GoogleOauth.isAuthorized }}</h1>
-          <h2>signed user: {{ user }}</h2>
-        </ion-label>
+        <button expand="block" fill="solid" slot="start"
+                @click="handleClickSignIn"
+                :disabled="!Vue3GoogleOauth.isInit || Vue3GoogleOauth.isAuthorized">
+          Войти через Google
+        </button>
       </ion-item>
       <ion-item>
-        <button @click="handleClickSignIn" :disabled="!Vue3GoogleOauth.isInit || Vue3GoogleOauth.isAuthorized">sign in</button>
-        <button @click="handleClickGetAuthCode" :disabled="!Vue3GoogleOauth.isInit">get authCode</button>
-        <button @click="handleClickSignOut" :disabled="!Vue3GoogleOauth.isAuthorized">sign out</button>
-        <button @click="handleClickDisconnect" :disabled="!Vue3GoogleOauth.isAuthorized">disconnect</button>
-      </ion-item>
-      <ion-item>
-        <ion-label>
-          Token: {{ token }}
+        <ion-label class="ion-text-wrap">
+          <ion-note>
+            <br>Debug info:<br/>
+            IsInit: {{ Vue3GoogleOauth.isInit }}<br/>
+            IsAuthorized: {{ Vue3GoogleOauth.isAuthorized }}<br/>
+            signed user: {{ user }}<br/>
+            Token: {{ token }}<br/>
+          </ion-note>
+          <button @click="handleClickSignIn" :disabled="!Vue3GoogleOauth.isInit || Vue3GoogleOauth.isAuthorized">sign in</button>
+          <button @click="handleClickGetAuthCode" :disabled="!Vue3GoogleOauth.isInit">get authCode</button>
+          <button @click="handleClickSignOut" :disabled="!Vue3GoogleOauth.isAuthorized">sign out</button>
+          <button @click="handleClickDisconnect" :disabled="!Vue3GoogleOauth.isAuthorized">disconnect</button>
         </ion-label>
       </ion-item>
     </ion-content>
@@ -118,26 +122,46 @@ export default defineComponent({
       }
     },
     async handleClickGetAuthCode(){
-      var authCode
-      try {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-        // @ts-ignore
-        authCode = await this.$gAuth.getAuthCode();
-        console.log("authCode", authCode);
-      } catch(error) {
-        //on fail do something
-        console.error(error);
-        return null;
-      }
+      // var authCode
+      // try {
+      //   // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+      //   // @ts-ignore
+      //   authCode = await this.$gAuth.getAuthCode();
+      //   console.log("authCode", authCode);
+      // } catch(error) {
+      //   //on fail do something
+      //   console.error(error);
+      //   return null;
+      // }
+
+      // setting token
+      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+      // @ts-ignore
+      console.log("getAuthResponse", this.$gAuth.instance.currentUser.get().getAuthResponse());
+      // setting token
+      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+      // @ts-ignore
+      const {id_token: idToken} = this.$gAuth.instance.currentUser.get().getAuthResponse();
+      this.idToken = idToken;
 
       //getting token from server
       try {
-        const tokenResp = await getAuth(authCode);
-        console.log("got token: ", tokenResp.data.msg);
+        const tokenResp = await getAuth(this.idToken);
+        console.log("got resp: ", tokenResp.data);
+        if (tokenResp.data.msg != "sucess") {
+          console.error("failed to get token from backend:", tokenResp.data.msg)
+        }
+        this.store.dispatch('auth/backendAuth', tokenResp.data.token).then(() => {
+          // show toast
+          this.showToast("Login success", 'success');
+          // return home
+          this.$router.push('/profile');
+        })
       } catch (error) {
         //on fail do something
         console.error("error getting token: ", error);
       }
+
     },
     async handleClickSignOut() {
       try {
@@ -165,6 +189,16 @@ export default defineComponent({
       return toast.present();
     },
   },
+  computed: {
+    user() {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+      // @ts-ignore
+      return this.store.getters['auth/user']
+    },
+    token() {
+      return localStorage.getItem('token')
+    }
+  },
   setup() {
     const store = useStore()
     const Vue3GoogleOauth = inject('Vue3GoogleOauth')
@@ -176,7 +210,6 @@ export default defineComponent({
   data() {
     return {
       idToken: "",
-      user: "",
     };
   },
 })

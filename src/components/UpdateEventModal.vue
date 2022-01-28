@@ -28,13 +28,13 @@
     </ion-item>
 
     <ion-item>
-      <ion-label color="secondary">Дата:</ion-label>
-      <ion-input v-model=date type="date"></ion-input>
+      <ion-label color="secondary">Дата: {{ date }}</ion-label>
+<!--      <ion-input v-model=date type="date"></ion-input>-->
     </ion-item>
 
-    <ion-item>
-      <ion-datetime :value=date></ion-datetime>
-    </ion-item>
+<!--    <ion-item>-->
+<!--      <ion-datetime :value=date></ion-datetime>-->
+<!--    </ion-item>-->
 
     <ion-item>
       <ion-label color="secondary">Продолжительность:</ion-label>
